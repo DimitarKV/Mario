@@ -1,4 +1,4 @@
-package Exceptions;
+package exceptions;
 
 public class CouldNotReadFileException extends RuntimeException {
     public CouldNotReadFileException(String message) {

@@ -2,8 +2,8 @@ import javax.swing.*;
 import java.awt.*;
 
 public class MarioFrame extends JFrame {
-    private static final int FRAME_WIDTH = 1280;
-    private static final int FRAME_HEIGHT = 720;
+    private static final int FRAME_WIDTH = 960;
+    private static final int FRAME_HEIGHT = 620;
 
     public MarioFrame(String frameTitle) throws HeadlessException {
         super(frameTitle);

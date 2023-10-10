@@ -1,4 +1,7 @@
+import utils.TileSetReader;
+
 import javax.imageio.ImageIO;
+import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.File;
@@ -7,27 +10,23 @@ import java.io.IOException;
 public class MarioGame implements KeyListener {
     private final MarioFrame frame;
     private final MarioPanel panel;
+    private final Player mario;
 
-    private Integer playerPositionX = 100, playerPositionY = 100, playerXVelocity = 0, playerYVelocity = 0;
+    private Integer currentLevel = 1;
 
     public MarioGame() {
         frame = new MarioFrame("TU/e Mario");
         panel = new MarioPanel();
+
+        //TODO: CHUNKS
+        //TODO: FIIIIIIIIIIX
+        mario = new Player(null, null, null, null, null, null);
+
         frame.add(panel);
         panel.addKeyListener(this);
 
-        GameObject mario = new GameObject();
-        try {
-            mario.image = ImageIO.read(new File("./resources/Mario.png"));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        TileSetReader.readTileset("./resources/levels/default-tileset.tsj");
 
-
-//        mario.height = 64;
-//        mario.width = 32;
-
-        panel.AddGameObject(mario);
     }
 
     public void run() {
@@ -57,10 +56,9 @@ public class MarioGame implements KeyListener {
 //            case KeyEvent.VK_W -> {}
 //            case KeyEvent.VK_S -> {}
             case KeyEvent.VK_A -> {
-                playerXVelocity = -1;
+
             }
             case KeyEvent.VK_D -> {
-                playerXVelocity = 1;
             }
             case KeyEvent.VK_SPACE -> {
             }

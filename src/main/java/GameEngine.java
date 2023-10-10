@@ -1,4 +1,4 @@
-import Exceptions.CouldNotReadFileException;
+import exceptions.CouldNotReadFileException;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
