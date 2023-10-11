@@ -1,11 +1,10 @@
+import enums.StateEnum;
 import utils.TileSetReader;
 
-import javax.imageio.ImageIO;
-import java.awt.*;
+//import javax.smartcardio.CardTerminals.State;
+
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.io.File;
-import java.io.IOException;
 
 public class MarioGame implements KeyListener {
     private final MarioFrame frame;
@@ -13,6 +12,7 @@ public class MarioGame implements KeyListener {
     private final Player mario;
 
     private Integer currentLevel = 1;
+    private StateEnum state;
 
     public MarioGame() {
         frame = new MarioFrame("TU/e Mario");
@@ -31,6 +31,7 @@ public class MarioGame implements KeyListener {
 
     public void run() {
         Long prevRender = System.currentTimeMillis();
+        state = StateEnum.MENU;
         while (true) {
             Long elapsed = System.currentTimeMillis() - prevRender;
             prevRender = System.currentTimeMillis();
@@ -48,19 +49,21 @@ public class MarioGame implements KeyListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
-        switch (e.getKeyCode()) {
-//            case KeyEvent.VK_UP -> {}
-//            case KeyEvent.VK_DOWN -> {}
-//            case KeyEvent.VK_LEFT -> {}
-//            case KeyEvent.VK_RIGHT -> {}
-//            case KeyEvent.VK_W -> {}
-//            case KeyEvent.VK_S -> {}
-            case KeyEvent.VK_A -> {
+        if(state == StateEnum.GAME){
+            switch (e.getKeyCode()) {
+                // case KeyEvent.VK_UP -> {}
+                // case KeyEvent.VK_DOWN -> {}
+                // case KeyEvent.VK_LEFT -> {}
+                // case KeyEvent.VK_RIGHT -> {}
+                // case KeyEvent.VK_W -> {}
+                // case KeyEvent.VK_S -> {}
+                case KeyEvent.VK_A -> {
 
-            }
-            case KeyEvent.VK_D -> {
-            }
-            case KeyEvent.VK_SPACE -> {
+                }
+                case KeyEvent.VK_D -> {
+                }
+                case KeyEvent.VK_SPACE -> {
+                }
             }
         }
     }
