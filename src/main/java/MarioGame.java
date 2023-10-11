@@ -1,8 +1,6 @@
 import enums.StateEnum;
 import utils.TileSetReader;
 
-//import javax.smartcardio.CardTerminals.State;
-
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
