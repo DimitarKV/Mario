@@ -6,7 +6,8 @@ import java.awt.event.KeyListener;
 
 public class MarioGame implements KeyListener {
     private final MarioFrame frame;
-    private final MarioPanel panel;
+    private final StartMenuPanel startMenuPanel;
+    private final MarioPanel gamePanel;
     private final Player mario;
 
     private Integer currentLevel = 1;
@@ -14,14 +15,17 @@ public class MarioGame implements KeyListener {
 
     public MarioGame() {
         frame = new MarioFrame("TU/e Mario");
-        panel = new MarioPanel();
+        startMenuPanel = new StartMenuPanel(frame);
+        gamePanel = new MarioPanel();
+
 
         //TODO: CHUNKS
         //TODO: FIIIIIIIIIIX
         mario = new Player(null, null, null, null, null, null);
 
-        frame.add(panel);
-        panel.addKeyListener(this);
+        frame.add(startMenuPanel);
+        frame.add(gamePanel);
+        gamePanel.addKeyListener(this);
 
         TileSetReader.readTileset("./resources/levels/default-tileset.tsj");
 
@@ -34,7 +38,7 @@ public class MarioGame implements KeyListener {
             Long elapsed = System.currentTimeMillis() - prevRender;
             prevRender = System.currentTimeMillis();
 
-            panel.repaint();
+            gamePanel.repaint();
         }
     }
 
