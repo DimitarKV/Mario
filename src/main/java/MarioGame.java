@@ -23,7 +23,7 @@ public class MarioGame implements KeyListener {
         frame.add(panel);
         panel.addKeyListener(this);
 
-        TileSetReader.readTileset("./resources/levels/default-tileset.tsj");
+        TileSetReader.readTileset("./resources/levels/level1/default-tileset.tsj");
 
     }
 
