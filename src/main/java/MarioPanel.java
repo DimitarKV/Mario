@@ -17,7 +17,6 @@ public class MarioPanel extends JPanel {
         this.players = new ArrayList<>();
         super.setFocusable(true);
         super.setVisible(true);
-        super.setLayout(null);
         super.requestFocusInWindow();
     }
 
@@ -25,6 +24,8 @@ public class MarioPanel extends JPanel {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
+
+        g2d.drawRect(50, 430, 517, 136);
 
         for (var player :
                 players) {

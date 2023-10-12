@@ -3,6 +3,7 @@ import types.Vector2;
 import utils.TileSetReader;
 
 import javax.imageio.ImageIO;
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -20,14 +21,10 @@ public class MarioGame implements KeyListener {
 
     private Integer currentLevel = 1;
     private StateEnum state;
+    private JLabel xLabel;
+    private JLabel yLabel;
 
     public MarioGame() {
-        frame = new MarioFrame("TU/e Mario");
-//        startMenuPanel = new StartMenuPanel(frame);
-        gamePanel = new MarioPanel();
-        frame.addKeyListener(this);
-        frame.add(gamePanel);
-
         List<BufferedImage> sprites = new ArrayList<>();
         try {
             sprites.add(ImageIO.read(new File("./resources/mario/mario_yoshi/MR0.png")));
@@ -35,11 +32,22 @@ public class MarioGame implements KeyListener {
             throw new RuntimeException(e);
         }
         mario = new Player(sprites, new Vector2(100, 100), 67, 71);
-
-//        frame.add(startMenuPanel);
-        gamePanel.AddPlayer(mario);
-
         TileSetReader.readTileset("./resources/levels/level1/default-tileset.tsj");
+
+        frame = new MarioFrame("TU/e Mario");
+//        startMenuPanel = new StartMenuPanel(frame);
+        gamePanel = new MarioPanel();
+        gamePanel.addKeyListener(this);
+        gamePanel.AddPlayer(mario);
+        xLabel = new JLabel();
+        yLabel = new JLabel();
+        xLabel.setVisible(true);
+        yLabel.setVisible(true);
+        gamePanel.add(xLabel);
+        gamePanel.add(yLabel);
+        frame.add(gamePanel, 0);
+//        frame.add(startMenuPanel);
+
 
     }
 
@@ -49,9 +57,14 @@ public class MarioGame implements KeyListener {
         while (true) {
             Long elapsed = System.nanoTime() - prevRender;
             prevRender = System.nanoTime();
+
+
             mario.move(elapsed);
 
-            frame.repaint();
+            xLabel.setText("" + mario.topLeft().x);
+            yLabel.setText("" + mario.topLeft().y);
+            gamePanel.requestFocusInWindow();
+            gamePanel.repaint();
         }
     }
 
@@ -77,6 +90,9 @@ public class MarioGame implements KeyListener {
                 }
                 case KeyEvent.VK_D -> {
                     mario.walkRight();
+                }
+                case KeyEvent.VK_W -> {
+                    mario.jump();
                 }
                 case KeyEvent.VK_SPACE -> {
                     mario.jump();
