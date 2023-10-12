@@ -8,13 +8,17 @@ import java.util.List;
 
 public class MarioPanel extends JPanel {
     private final List<GameObject> gameObjects;
+    private final List<Player> players;
 //    private final List<>
 
 
     public MarioPanel() {
         this.gameObjects = new ArrayList<>();
+        this.players = new ArrayList<>();
         super.setFocusable(true);
         super.setVisible(true);
+        super.setLayout(null);
+        super.requestFocusInWindow();
     }
 
     @Override
@@ -22,19 +26,18 @@ public class MarioPanel extends JPanel {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
 
-        GameObject mario = new GameObject();
-        try {
-            mario.image = ImageIO.read(new File("./resources/Mario.png"));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        for (var player :
+                players) {
+            g2d.drawImage(player.getCurrentSprite(), (int)player.getPosition().x, (int)player.getPosition().y, null);
         }
-
-        float ratio = (float)mario.image.getWidth() / mario.image.getHeight();
-        g2d.drawImage(mario.image.getScaledInstance(32, 32 * (int)(1/ratio),Image.SCALE_DEFAULT), 0, 0, null);
     }
 
     public void AddGameObject(GameObject object) {
         gameObjects.add(object);
         object.index = gameObjects.size() - 1;
+    }
+
+    public void AddPlayer(Player player) {
+        this.players.add(player);
     }
 }
