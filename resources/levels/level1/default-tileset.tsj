@@ -8,67 +8,6 @@
  "tilecount":783,
  "tiledversion":"1.10.2",
  "tileheight":32,
- "tiles":[
-        {
-         "id":0,
-         "objectgroup":
-            {
-             "draworder":"index",
-             "id":2,
-             "name":"",
-             "objects":[
-                    {
-                     "height":9.37762980803287,
-                     "id":5,
-                     "name":"",
-                     "rotation":0,
-                     "type":"",
-                     "visible":true,
-                     "width":10.6470213218106,
-                     "x":4.442870298222,
-                     "y":4.35219947580931
-                    }, 
-                    {
-                     "height":0,
-                     "id":6,
-                     "name":"",
-                     "rotation":0,
-                     "type":"",
-                     "visible":true,
-                     "width":0,
-                     "x":19.3582205851102,
-                     "y":22.078345257491
-                    }, 
-                    {
-                     "height":0,
-                     "id":7,
-                     "name":"",
-                     "rotation":0,
-                     "type":"",
-                     "visible":true,
-                     "width":0,
-                     "x":6.21095133526953,
-                     "y":21.4889849118085
-                    }, 
-                    {
-                     "ellipse":true,
-                     "height":0,
-                     "id":8,
-                     "name":"",
-                     "rotation":0,
-                     "type":"",
-                     "visible":true,
-                     "width":0,
-                     "x":19.0862081178721,
-                     "y":11.0618403343487
-                    }],
-             "opacity":1,
-             "type":"objectgroup",
-             "visible":true,
-             "x":0,
-             "y":0
-            }
-        }],
  "tilewidth":32,
  "type":"tileset",
  "version":"1.10"
