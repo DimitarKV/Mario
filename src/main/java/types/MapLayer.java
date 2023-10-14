@@ -2,8 +2,9 @@ package types;
 
 import java.util.List;
 
-public class Layer {
+public class MapLayer {
     public List<Integer> data;
+    public List<MapLayerObject> objects;
     public Integer height;
     public Integer id;
     public String name;

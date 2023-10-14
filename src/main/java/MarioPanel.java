@@ -1,19 +1,23 @@
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class MarioPanel extends JPanel {
-    private final List<GameObject> gameObjects;
+
+    private final List<BufferedImage> tileset;
+    private final List<Integer> mapIndeces;
     private final List<Player> players;
 //    private final List<>
 
 
     public MarioPanel() {
-        this.gameObjects = new ArrayList<>();
+        this.tileset = new ArrayList<>();
+        this.mapIndeces = new ArrayList<>();
         this.players = new ArrayList<>();
         super.setFocusable(true);
         super.setVisible(true);
@@ -25,20 +29,20 @@ public class MarioPanel extends JPanel {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
 
-        g2d.drawRect(50, 430, 517, 136);
+//        g2d.drawRect(50, 430, 517, 136);
 
         for (var player :
                 players) {
-            g2d.drawImage(player.getCurrentSprite(), (int)player.getPosition().x, (int)player.getPosition().y, null);
+            g2d.drawImage(player.getCurrentSprite(), (int)player.getPosition().x, (int)player.getPosition().y, player.getWidth(), player.getHeight(), null);
         }
     }
 
-    public void AddGameObject(GameObject object) {
-        gameObjects.add(object);
-        object.index = gameObjects.size() - 1;
-    }
+//    public void AddGameObject(GameObject object) {
+//        gameObjects.add(object);
+//        object.index = gameObjects.size() - 1;
+//    }
 
-    public void AddPlayer(Player player) {
+    public void addPlayer(Player player) {
         this.players.add(player);
     }
 }

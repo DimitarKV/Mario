@@ -11,7 +11,8 @@ public class MapDescriptor {
     public Integer tileHeight;
     @SerializedName("tilewidth")
     public Integer tileWidth;
-    public List<Layer> layers;
+    @SerializedName("layers")
+    public List<MapLayer> mapLayers;
     @SerializedName("nextlayerid")
     public Integer nextLayerId;
     @SerializedName("nextobjectid")

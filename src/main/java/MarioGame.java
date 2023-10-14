@@ -1,90 +1,125 @@
+import enums.PlayerStateEnum;
 import enums.StateEnum;
+import types.HitBox;
+import types.MapDescriptor;
 import types.Vector2;
+import utils.MapReader;
 import utils.TileSetReader;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.List;
 
 public class MarioGame implements KeyListener {
     private final MarioFrame frame;
     private final StartMenuPanel startMenuPanel;
     private final MarioPanel gamePanel;
-    private final Player mario;
+    private final Player mario, fakeMario;
+    private final MapDescriptor mapDescriptor;
+    private JLayeredPane layers;
+
+    private Collisions collisions;
 
     private Integer currentLevel = 1;
     private StateEnum state;
     private JLabel xLabel;
     private JLabel yLabel;
+    private List<BufferedImage> tileset;
 
     public MarioGame() {
-        List<BufferedImage> sprites = new ArrayList<>();
+        Map<PlayerStateEnum, List<BufferedImage>> sprites = new HashMap<>();
         try {
-            sprites.add(ImageIO.read(new File("./resources/mario/mario_yoshi/MR0.png")));
+            sprites.put(PlayerStateEnum.MOVING_LEFT, Arrays.asList(ImageIO.read(new File("./resources/mario/mario_yoshi/ML0.png")), ImageIO.read(new File("./resources/mario/mario_yoshi/ML1.png")), ImageIO.read(new File("./resources/mario/mario_yoshi/ML0.png"))));
+            sprites.put(PlayerStateEnum.MOVING_RIGHT, Arrays.asList(ImageIO.read(new File("./resources/mario/mario_yoshi/MR0.png")), ImageIO.read(new File("./resources/mario/mario_yoshi/MR1.png")), ImageIO.read(new File("./resources/mario/mario_yoshi/MR0.png"))));
+            sprites.put(PlayerStateEnum.AIRBORNE_LEFT, Arrays.asList(ImageIO.read(new File("./resources/mario/mario_yoshi/J.png"))));
+            sprites.put(PlayerStateEnum.AIRBORNE_RIGHT, Arrays.asList(ImageIO.read(new File("./resources/mario/mario_yoshi/J.png"))));
+            sprites.put(PlayerStateEnum.STATIONARY_LEFT, Arrays.asList(ImageIO.read(new File("./resources/mario/mario_yoshi/ML0.png"))));
+            sprites.put(PlayerStateEnum.STATIONARY_RIGHT, Arrays.asList(ImageIO.read(new File("./resources/mario/mario_yoshi/MR0.png"))));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+
+        tileset = TileSetReader.readTileset("./resources/levels/level1/default-tileset.tsj");
+        mapDescriptor = MapReader.readMap("./resources/levels/level1/map1.tmj");
+
         mario = new Player(sprites, new Vector2(100, 100), 67, 71);
-        TileSetReader.readTileset("./resources/levels/level1/default-tileset.tsj");
+        fakeMario = new Player(sprites, new Vector2(300, 100), 120, 120);
+        collisions = new Collisions();
+        collisions.addMovingCollider(mario);
+        collisions.addMovingCollider(fakeMario);
+
 
         frame = new MarioFrame("TU/e Mario");
+        frame.setLayout(null);
+        frame.addKeyListener(this);
+
+        layers = new JLayeredPane();
+        layers.setBounds(0, 0, this.frame.getWidth(), this.frame.getHeight());
+
         startMenuPanel = new StartMenuPanel(frame);
+        startMenuPanel.setOpaque(true);
+        startMenuPanel.setBounds(0, 0, frame.getWidth(), frame.getHeight());
+
         gamePanel = new MarioPanel();
-        gamePanel.addKeyListener(this);
-        gamePanel.AddPlayer(mario);
+        gamePanel.setOpaque(true);
+        gamePanel.setBounds(0, 0, frame.getWidth(), frame.getHeight());
+
+
+        gamePanel.addPlayer(mario);
+        gamePanel.addPlayer(fakeMario);
         xLabel = new JLabel();
         yLabel = new JLabel();
         xLabel.setVisible(true);
         yLabel.setVisible(true);
         gamePanel.add(xLabel);
         gamePanel.add(yLabel);
-        frame.add(gamePanel, 0);
-//        frame.add(startMenuPanel);
+
+        layers.add(gamePanel);
+        layers.add(startMenuPanel);
+
+        frame.add(layers);
+        frame.setVisible(true);
     }
 
     public void run() {
-        Long prevRender = System.nanoTime();
-        state = StateEnum.MENU;
+            Long prevRender = System.nanoTime();
+            state = StateEnum.MENU;
+            Long prevFPSReading = 0L, currentFrames = 0L, lastFPSRender = 0L;
 
-        while (true) {
-            Long elapsed = System.nanoTime() - prevRender;
-            prevRender = System.nanoTime();
-            render();
-            if(state == StateEnum.GAME){
-                mario.move(elapsed);
+            while (true) {
+                Long elapsed = System.nanoTime() - prevRender;
+                prevRender = System.nanoTime();
 
-                xLabel.setText("" + mario.topLeft().x);
-                yLabel.setText("" + mario.topLeft().y);
-                gamePanel.requestFocusInWindow();
-                gamePanel.repaint();
+
+                if (state == StateEnum.GAME) {
+
+                    //TODO: CHECK FOR COLLISIONS
+                    this.collisions.checkCollisions();
+
+                    layers.moveToFront(gamePanel);
+                    mario.move(elapsed);
+                    fakeMario.move(elapsed);
+
+                    if (System.nanoTime() - lastFPSRender > 500000000) {
+                        xLabel.setText("" + currentFrames * 2);
+                        currentFrames = 0L;
+                        lastFPSRender = System.nanoTime();
+                    }
+                    currentFrames++;
+
+                    gamePanel.repaint();
+                } else if (state == StateEnum.MENU) {
+                    layers.moveToFront(startMenuPanel);
+                    startMenuPanel.setVisible(true);
+                }
+                frame.requestFocusInWindow();
             }
-        }
-    }
-
-    public void render(){
-        BufferStrategy bs = frame.getBufferStrategy();
-        if(bs == null){
-            frame.createBufferStrategy(3);
-            return;
-        }
-        Graphics g = bs.getDrawGraphics();
-        g.setColor(new Color(34,78,240));
-        g.fillRect(0,0,frame.getWidth(), frame.getHeight());
-
-        if(state == StateEnum.MENU){
-            startMenuPanel.render(g);
-        }
-
-        g.dispose();
-        bs.show();
     }
 
     @Override
@@ -94,14 +129,8 @@ public class MarioGame implements KeyListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
-        if(state == StateEnum.GAME){
+        if (state == StateEnum.GAME) {
             switch (e.getKeyCode()) {
-                // case KeyEvent.VK_UP -> {}
-                // case KeyEvent.VK_DOWN -> {}
-                // case KeyEvent.VK_LEFT -> {}
-                // case KeyEvent.VK_RIGHT -> {}
-                // case KeyEvent.VK_W -> {}
-                // case KeyEvent.VK_S -> {}
                 case KeyEvent.VK_A -> {
                     mario.walkLeft();
                 }
@@ -114,20 +143,23 @@ public class MarioGame implements KeyListener {
                 case KeyEvent.VK_SPACE -> {
                     mario.jump();
                 }
+                case KeyEvent.VK_ESCAPE -> {
+                    this.state = StateEnum.MENU;
+                }
+            }
+        } else if (this.state == StateEnum.MENU) {
+            switch (e.getKeyCode()) {
+                case KeyEvent.VK_ESCAPE -> {
+                    this.state = StateEnum.GAME;
+                }
             }
         }
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
-        if(state == StateEnum.GAME){
+        if (state == StateEnum.GAME) {
             switch (e.getKeyCode()) {
-                // case KeyEvent.VK_UP -> {}
-                // case KeyEvent.VK_DOWN -> {}
-                // case KeyEvent.VK_LEFT -> {}
-                // case KeyEvent.VK_RIGHT -> {}
-                // case KeyEvent.VK_W -> {}
-                // case KeyEvent.VK_S -> {}
                 case KeyEvent.VK_A -> {
                     mario.stopWalkLeft();
                 }

@@ -25,4 +25,8 @@ public class Vector2 {
     public Vector2 times(double scalar) {
         return new Vector2(this.x * scalar, this.y * scalar);
     }
+
+    public boolean equals(Vector2 other) {
+        return this.x == other.x && this.y == other.y;
+    }
 }
