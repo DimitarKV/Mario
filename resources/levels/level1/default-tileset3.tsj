@@ -1,0 +1,14 @@
+{ "columns":29,
+ "image":"..\/..\/tilesets\/default-tileset3.png",
+ "imageheight":1787,
+ "imagewidth":1884,
+ "margin":0,
+ "name":"default-tileset3",
+ "spacing":1,
+ "tilecount":783,
+ "tiledversion":"1.10.2",
+ "tileheight":64,
+ "tilewidth":64,
+ "type":"tileset",
+ "version":"1.10"
+}
