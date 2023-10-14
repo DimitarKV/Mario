@@ -7,6 +7,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -15,7 +16,7 @@ import java.util.List;
 
 public class MarioGame implements KeyListener {
     private final MarioFrame frame;
-//    private final StartMenuPanel startMenuPanel;
+    private final StartMenuPanel startMenuPanel;
     private final MarioPanel gamePanel;
     private final Player mario;
 
@@ -35,7 +36,7 @@ public class MarioGame implements KeyListener {
         TileSetReader.readTileset("./resources/levels/level1/default-tileset.tsj");
 
         frame = new MarioFrame("TU/e Mario");
-//        startMenuPanel = new StartMenuPanel(frame);
+        startMenuPanel = new StartMenuPanel(frame);
         gamePanel = new MarioPanel();
         gamePanel.addKeyListener(this);
         gamePanel.AddPlayer(mario);
@@ -47,28 +48,44 @@ public class MarioGame implements KeyListener {
         gamePanel.add(yLabel);
         frame.add(gamePanel, 0);
 //        frame.add(startMenuPanel);
-
-
     }
 
     public void run() {
         Long prevRender = System.nanoTime();
-        state = StateEnum.GAME;
+        state = StateEnum.MENU;
+
         while (true) {
             Long elapsed = System.nanoTime() - prevRender;
             prevRender = System.nanoTime();
+            render();
+            if(state == StateEnum.GAME){
+                mario.move(elapsed);
 
-
-            mario.move(elapsed);
-
-            xLabel.setText("" + mario.topLeft().x);
-            yLabel.setText("" + mario.topLeft().y);
-            gamePanel.requestFocusInWindow();
-            gamePanel.repaint();
+                xLabel.setText("" + mario.topLeft().x);
+                yLabel.setText("" + mario.topLeft().y);
+                gamePanel.requestFocusInWindow();
+                gamePanel.repaint();
+            }
         }
     }
 
+    public void render(){
+        BufferStrategy bs = frame.getBufferStrategy();
+        if(bs == null){
+            frame.createBufferStrategy(3);
+            return;
+        }
+        Graphics g = bs.getDrawGraphics();
+        g.setColor(new Color(34,78,240));
+        g.fillRect(0,0,frame.getWidth(), frame.getHeight());
 
+        if(state == StateEnum.MENU){
+            startMenuPanel.render(g);
+        }
+
+        g.dispose();
+        bs.show();
+    }
 
     @Override
     public void keyTyped(KeyEvent e) {

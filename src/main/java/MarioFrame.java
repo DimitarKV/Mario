@@ -11,4 +11,12 @@ public class MarioFrame extends JFrame {
         super.setSize(FRAME_WIDTH, FRAME_HEIGHT);
         super.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
+
+    public static int getFrameHeight() {
+        return FRAME_HEIGHT;
+    }
+
+    public static int getFrameWidth() {
+        return FRAME_WIDTH;
+    }
 }
