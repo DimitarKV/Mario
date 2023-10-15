@@ -55,7 +55,7 @@ public class Player extends AbstractCollidable {
     }
 
     private boolean canFall() {
-        return this.position.y < 300;
+        return this.position.y < 960 - this.height;
     }
 
     private boolean canMoveRight() {
@@ -84,7 +84,7 @@ public class Player extends AbstractCollidable {
 
         if (!this.canFall() && this.getTotalVelocity().y > 0) {
             this.mainVelocity = new Vector2(this.mainVelocity.x, 0);
-            this.position = new Vector2(this.position.x, 300);
+            this.position = new Vector2(this.position.x, 960 - this.height);
         }
 
 //        if (!canMoveUp() && this.getTotalVelocity().y < 0) {
@@ -198,7 +198,7 @@ public class Player extends AbstractCollidable {
 
     public void jump() {
         if (!canFall())
-            this.mainVelocity = new Vector2(this.mainVelocity.x, -2 * moveSpeed);
+            this.mainVelocity = new Vector2(this.mainVelocity.x, -2.5 * moveSpeed);
     }
 
 //    @Override

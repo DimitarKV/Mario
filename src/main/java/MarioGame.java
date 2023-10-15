@@ -20,12 +20,13 @@ public class MarioGame implements KeyListener {
     private final MarioFrame frame;
     private final StartMenuPanel startMenuPanel;
     private final MarioPanel gamePanel;
-    private final Player mario, fakeMario;
+    private final Player mario;
     private final MapDescriptor mapDescriptor;
     private JLayeredPane layers;
 
     private Camera camera;
     private Collisions collisions;
+    private List<Tile> tiles;
 
     private Integer currentLevel = 1;
     private StateEnum state;
@@ -46,15 +47,32 @@ public class MarioGame implements KeyListener {
             throw new RuntimeException(e);
         }
 
-        tileset = TileSetReader.readTileset("./resources/levels/level1/default-tileset.tsj");
+        tiles = new ArrayList<>();
+
+        tileset = TileSetReader.readTileset("./resources/levels/level1/default-tileset3.tsj");
         mapDescriptor = MapReader.readMap("./resources/levels/level1/map1.tmj");
 
+        var tileLayer = mapDescriptor.mapLayers.stream().filter(ml -> ml.type.equals("tilelayer")).findFirst().orElse(null);
+        if (tileLayer != null) {
+            for (int row = 0; row < tileLayer.height; row++) {
+                for (int col = 0; col < tileLayer.width; col++) {
+                    int tileIndex = tileLayer.data.get(row * tileLayer.width + col);
+                    if (tileIndex == 0)
+                        continue;
+
+                    tileIndex--;
+
+                    Vector2 position = new Vector2(col * mapDescriptor.tileWidth, row * mapDescriptor.tileHeight);
+
+                    Tile tile = new Tile(position, tileset.get(tileIndex), mapDescriptor.tileWidth, mapDescriptor.tileHeight);
+                    tiles.add(tile);
+                }
+            }
+        }
 
         collisions = new Collisions();
-        mario = new Player(sprites, new Vector2(100, 100), 67, 71, collisions);
-        fakeMario = new Player(sprites, new Vector2(300, 100), 120, 120, collisions);
+        mario = new Player(sprites, new Vector2(100, 960 - 142), 64, 64, collisions);
         collisions.addMovingCollider(mario);
-        collisions.addMovingCollider(fakeMario);
 
 
         frame = new MarioFrame("TU/e Mario");
@@ -62,7 +80,7 @@ public class MarioGame implements KeyListener {
         frame.addKeyListener(this);
 
         camera = new Camera(0, 0, frame.getWidth(), frame.getHeight());
-        camera.lock(mario, frame.getWidth() / 4, frame.getHeight() / 2);
+        camera.lockX(mario, 128 + 32);
 
         layers = new JLayeredPane();
         layers.setBounds(0, 0, this.frame.getWidth(), this.frame.getHeight());
@@ -75,9 +93,12 @@ public class MarioGame implements KeyListener {
         gamePanel.setOpaque(true);
         gamePanel.setBounds(0, 0, frame.getWidth(), frame.getHeight());
 
-
         gamePanel.addEntity(mario);
-        gamePanel.addEntity(fakeMario);
+
+        for (var tile : tiles) {
+            gamePanel.addEntity(tile);
+        }
+
         xLabel = new JLabel();
         yLabel = new JLabel();
         xLabel.setVisible(true);
@@ -93,23 +114,22 @@ public class MarioGame implements KeyListener {
     }
 
     public void run() {
-            Long prevRender = System.nanoTime();
-            state = StateEnum.MENU;
-            Long prevFPSReading = 0L, currentFrames = 0L, lastFPSRender = 0L;
+        Long prevRender = System.nanoTime();
+        state = StateEnum.MENU;
+        Long prevFPSReading = 0L, currentFrames = 0L, lastFPSRender = 0L;
 
-            while (true) {
-                Long elapsed = System.nanoTime() - prevRender;
-                prevRender = System.nanoTime();
+        while (true) {
+            Long elapsed = System.nanoTime() - prevRender;
+            prevRender = System.nanoTime();
 
 
-                if (state == StateEnum.GAME) {
+            if (state == StateEnum.GAME) {
 
-                    //TODO: CHECK FOR COLLISIONS
+                //TODO: CHECK FOR COLLISIONS
 //                    this.collisions.checkCollisions();
 
-                    layers.moveToFront(gamePanel);
-                    mario.move(elapsed);
-                    fakeMario.move(elapsed);
+                layers.moveToFront(gamePanel);
+                mario.move(elapsed);
 
 //                    if (System.nanoTime() - lastFPSRender > 500000000) {
 //                        xLabel.setText("" + currentFrames * 2);
@@ -118,16 +138,16 @@ public class MarioGame implements KeyListener {
 //                    }
 //                    currentFrames++;
 
-                    xLabel.setText("" + mario.getPosition().x);
+                xLabel.setText("" + mario.getPosition().x);
 
-                    camera.updatePosition();
-                    gamePanel.repaint();
-                } else if (state == StateEnum.MENU) {
-                    layers.moveToFront(startMenuPanel);
-                    startMenuPanel.setVisible(true);
-                }
-                frame.requestFocusInWindow();
+                camera.updatePosition();
+                gamePanel.repaint();
+            } else if (state == StateEnum.MENU) {
+                layers.moveToFront(startMenuPanel);
+                startMenuPanel.setVisible(true);
             }
+            frame.requestFocusInWindow();
+        }
     }
 
     @Override
@@ -153,9 +173,6 @@ public class MarioGame implements KeyListener {
                 }
                 case KeyEvent.VK_ESCAPE -> {
                     this.state = StateEnum.MENU;
-                }
-                case KeyEvent.VK_RIGHT -> {
-                    this.camera.setLocation(this.camera.x + 1, this.camera.y);
                 }
             }
         } else if (this.state == StateEnum.MENU) {

@@ -2,19 +2,28 @@ import java.awt.*;
 
 public class Camera extends Rectangle {
     private AbstractEntity lock;
-    private Integer xOffset, yOffset;
+    private Integer offsetY;
 
     public Camera(int x, int y, int width, int height) {
         super(x, y, width, height);
     }
 
-    public void lock(AbstractEntity entity, Integer xOffset, Integer yOffset) {
+    public void lockX(AbstractEntity entity, int offsetY) {
         this.lock = entity;
-        this.xOffset = xOffset;
-        this.yOffset = yOffset;
+        this.offsetY = offsetY;
     }
 
     public void updatePosition() {
-        this.setLocation((int)lock.getPosition().x - xOffset, (int)lock.getPosition().y - yOffset);
+        int newX = this.x;
+
+        if(lock.position.x > this.x + 0.6 * this.width)
+            newX = (int)(lock.position.x - 0.6 * this.width);
+
+        if(lock.position.x < this.x + 0.2 * this.width)
+            newX = (int)(lock.position.x - 0.2 * this.width);
+
+        this.setLocation(newX, offsetY);
     }
+
+
 }

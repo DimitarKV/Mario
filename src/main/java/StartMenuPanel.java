@@ -12,8 +12,9 @@ public class StartMenuPanel extends JPanel {
     private JButton start;
     private JButton levels;
     private JButton exit;
-    private JLabel buttonsPanel;
+    private JPanel buttonsPanel;
     private JPanel titlePanel;
+    private JPanel filler;
 
     public StartMenuPanel(MarioFrame frame) {
         super.setFocusable(true);
@@ -32,7 +33,7 @@ public class StartMenuPanel extends JPanel {
         title = new JLabel();
         title.setText("TU/e Mario");
         title.setBorder(new EmptyBorder(20, 0, 0, 0));
-        title.setFont(mario.deriveFont(50f));
+        title.setFont(mario.deriveFont(80f));
         title.setHorizontalAlignment(SwingConstants.CENTER);
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
 
@@ -42,38 +43,40 @@ public class StartMenuPanel extends JPanel {
         titlePanel.setOpaque(false);
         super.add(titlePanel, BorderLayout.PAGE_START);
 
-        buttonsPanel = new JLabel();
+        buttonsPanel = new JPanel(new GridLayout(3,1, 10,10));
         buttonsPanel.setOpaque(true);
-        buttonsPanel.setSize(500, 400);
-        buttonsPanel.setLayout(new SpringLayout());
-        buttonsPanel.setLocation(960, 350);
-        buttonsPanel.setBackground(Color.orange);
-        super.add(buttonsPanel, BorderLayout.LINE_END);
+        buttonsPanel.setMaximumSize(new Dimension(500,100));
+        buttonsPanel.setPreferredSize(new Dimension(500,0));
+        buttonsPanel.setBackground(Color.red);
+        super.add(buttonsPanel, BorderLayout.EAST);
 
 
 
 
 
-        start = new JButton();
+        start = new JButton("START");
+        start.setBorder(new EmptyBorder(10, 10, 10, 10));
         start.setIcon(new ImageIcon("./resources/ui-elements/img.png"));
-        start.setMaximumSize(new Dimension(5,2));
-        start.setText("START");
+        start.setMaximumSize(new Dimension(500,20));
+        start.setHorizontalTextPosition(SwingConstants.CENTER);
         start.setFont(mario.deriveFont(20f));
-        start.setSize(3,1);
+        start.setPreferredSize(new Dimension(500,20));
         buttonsPanel.add(start);
 
-        /*levels = new JButton();
-        levels.setIcon(new ImageIcon("./resources/ui-elements/img.png"));
-        levels.setText("LEVELS");
-        levels.setFont(mario.deriveFont(20f));
-        levels.setSize(5,2);
+        levels = new JButton("LEVELS");
+        levels.setBorder(new EmptyBorder(10, 10, 10, 10));
+        //levels.setIcon(new ImageIcon("./resources/ui-elements/img.png"));
+        //levels.setText();
+        //levels.setFont(mario.deriveFont(20f));
+        //levels.setSize(5,2);
         buttonsPanel.add(levels);
 
-        exit = new JButton();
-        exit.setIcon(new ImageIcon("./resources/ui-elements/img.png"));
-        exit.setText("EXIT");
-        exit.setFont(mario.deriveFont(20f));
+        exit = new JButton("EXIT");
+        exit.setBorder(new EmptyBorder(10, 10, 10, 10));
+        //exit.setIcon(new ImageIcon("./resources/ui-elements/img.png"));
+        //exit.setText();
+        //exit.setFont(mario.deriveFont(20f));
         exit.setSize(5,2);
-        buttonsPanel.add(exit);*/
+        buttonsPanel.add(exit);
     }
 }
