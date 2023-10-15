@@ -15,16 +15,14 @@ public class Player extends AbstractCollidable {
 
 
     private final double moveSpeed = 0.5, timeUnit = 1000000;
-    private final Integer width, height;
-    private Vector2 position, mainVelocity, left, right;
+    private Vector2 mainVelocity, left, right;
+    private Collisions collisions;
 
-    public Player(Map<PlayerStateEnum, List<BufferedImage>> sprites, Vector2 position, Integer width, Integer height) {
-        super(new HitBox(position, new Vector2(width, height)));
+    public Player(Map<PlayerStateEnum, List<BufferedImage>> sprites, Vector2 position, Integer width, Integer height, Collisions collisions) {
+        super(position, null, width, height, new Vector2(), new Vector2(width, height));
 
         this.sprites = sprites;
         this.position = position;
-        this.width = width;
-        this.height = height;
 
         this.mainVelocity = new Vector2(0, 0);
         this.left = new Vector2();
@@ -32,6 +30,8 @@ public class Player extends AbstractCollidable {
         this.currentState = PlayerStateEnum.STATIONARY_RIGHT;
         this.direction = 1;
         this.spriteIndex = 0;
+
+        this.collisions = collisions;
     }
 
     public Vector2 getTotalVelocity() {
@@ -104,10 +104,40 @@ public class Player extends AbstractCollidable {
 //            this.position = new Vector2(0, this.position.y);
 //        }
 
+
         Vector2 newPosition = this.position.plus(this.getTotalVelocity().times((double) delta / timeUnit));
-        if (newPosition.x != this.position.x)
-            this.direction = (newPosition.x - this.position.x) > 0 ? 1 : -1;
-        this.position = newPosition;
+
+        this.position = new Vector2(this.position.x, newPosition.y);
+        Collidable other = this.collisions.checkCollisions(this);
+        if(other != null) {
+            if(this.getTotalVelocity().y > 0) {
+                this.position = new Vector2(this.position.x, other.getHitBox().getTopLeft().y - this.height);
+                this.mainVelocity = new Vector2(this.mainVelocity.x, 0);
+            } else if(this.getTotalVelocity().y < 0) {
+                this.position = new Vector2(this.position.x, other.getHitBox().getBottomLeft().y);
+                this.mainVelocity = new Vector2(this.mainVelocity.x, 0);
+            }
+        }
+
+        this.position = new Vector2(newPosition.x, this.position.y);
+        other = this.collisions.checkCollisions(this);
+        if(other != null) {
+            if(this.getTotalVelocity().x > 0) {
+                this.position = new Vector2(other.getHitBox().getTopLeft().x - this.width, this.position.y);
+                this.mainVelocity = new Vector2(0, this.mainVelocity.y);
+                this.right = new Vector2();
+            } else if(this.getTotalVelocity().x < 0) {
+                this.position = new Vector2(other.getHitBox().getTopRight().x, this.position.y);
+                this.mainVelocity = new Vector2(0, this.mainVelocity.y);
+                this.left = new Vector2();
+            }
+        }
+
+
+
+//        if (newPosition.x != this.position.x)
+//            this.direction = (newPosition.x - this.position.x) > 0 ? 1 : -1;
+//        this.position = newPosition;
 
         if (canFall()) {
             if (this.right.x > 0)
@@ -131,6 +161,7 @@ public class Player extends AbstractCollidable {
         }
 
         this.spriteIndex = (int) (System.nanoTime() / 50000000 % this.sprites.get(this.currentState).size());
+        this.setImage(this.sprites.get(this.currentState).get(this.spriteIndex));
     }
 
     public BufferedImage getCurrentSprite() {
@@ -170,32 +201,35 @@ public class Player extends AbstractCollidable {
             this.mainVelocity = new Vector2(this.mainVelocity.x, -2 * moveSpeed);
     }
 
-    @Override
-    public void collidedWith(Collidable other, CollisionSide side, Vector2 maxAllowed) {
-        if (side == CollisionSide.UP) {
-            this.position = new Vector2(this.position.x, maxAllowed.y);
-            if (this.mainVelocity.y < 0)
-                this.mainVelocity = new Vector2(this.mainVelocity.x, 0);
-        } else if (side == CollisionSide.DOWN) {
-            this.position = new Vector2(this.position.x, maxAllowed.y - this.height);
-            if (this.mainVelocity.y > 0)
-                this.mainVelocity = new Vector2(this.mainVelocity.x, 0);
-        } else if (side == CollisionSide.RIGHT) {
-            this.position = new Vector2(maxAllowed.x - this.width, this.position.y);
-            if (this.mainVelocity.x > 0) {
-                this.mainVelocity = new Vector2(0, this.mainVelocity.y);
-            }
-            if (this.right.x > 0) {
-                this.right = new Vector2();
-            }
-        } else if (side == CollisionSide.LEFT) {
-            this.position = new Vector2(maxAllowed.x, this.position.y);
-            if (this.mainVelocity.x < 0) {
-                this.mainVelocity = new Vector2(0, this.mainVelocity.y);
-            }
-            if (this.right.x < 0) {
-                this.right = new Vector2();
-            }
-        }
-    }
+//    @Override
+//    public void collidedWith(Collidable other, CollisionSide side, Vector2 maxAllowed) {
+//        if (side == CollisionSide.UP) {
+//            this.position = new Vector2(this.position.x, maxAllowed.y);
+//            if (this.mainVelocity.y < 0)
+//                this.mainVelocity = new Vector2(this.mainVelocity.x, 0);
+//        } else if (side == CollisionSide.DOWN) {
+//            this.position = new Vector2(this.position.x, maxAllowed.y - this.height);
+//            if (this.mainVelocity.y > 0)
+//                this.mainVelocity = new Vector2(this.mainVelocity.x, 0);
+//        } else if (side == CollisionSide.RIGHT) {
+//            this.position = new Vector2(maxAllowed.x - this.width, this.position.y);
+//            if (this.mainVelocity.x > 0) {
+//                this.mainVelocity = new Vector2(0, this.mainVelocity.y);
+//            }
+//            if (this.right.x > 0) {
+//                this.right = new Vector2();
+//            }
+//        } else if (side == CollisionSide.LEFT) {
+//            this.position = new Vector2(maxAllowed.x, this.position.y);
+//            if (this.mainVelocity.x < 0) {
+//                this.mainVelocity = new Vector2(0, this.mainVelocity.y);
+//            }
+//            if (this.right.x < 0) {
+//                this.right = new Vector2();
+//            }
+//        }
+//    }
+
+
+
 }

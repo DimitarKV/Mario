@@ -1,4 +1,5 @@
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -12,6 +13,7 @@ public class StartMenuPanel extends JPanel {
     private JButton levels;
     private JButton exit;
     private JLabel buttonsPanel;
+    private JPanel titlePanel;
 
     public StartMenuPanel(MarioFrame frame) {
         super.setFocusable(true);
@@ -27,25 +29,37 @@ public class StartMenuPanel extends JPanel {
             System.out.println("Wrong font format");
         }
 
+        title = new JLabel();
+        title.setText("TU/e Mario");
+        title.setBorder(new EmptyBorder(20, 0, 0, 0));
+        title.setFont(mario.deriveFont(50f));
+        title.setHorizontalAlignment(SwingConstants.CENTER);
+        title.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        titlePanel = new JPanel(new BorderLayout());
+        titlePanel.setBounds(0, 0 , frame.getWidth(), 500);
+        titlePanel.add(title, BorderLayout.CENTER);
+        titlePanel.setOpaque(false);
+        super.add(titlePanel, BorderLayout.PAGE_START);
+
         buttonsPanel = new JLabel();
         buttonsPanel.setOpaque(true);
         buttonsPanel.setSize(500, 400);
         buttonsPanel.setLayout(new SpringLayout());
         buttonsPanel.setLocation(960, 350);
         buttonsPanel.setBackground(Color.orange);
-        frame.add(buttonsPanel);
+        super.add(buttonsPanel, BorderLayout.LINE_END);
 
-        title = new JLabel();
-        title.setText("TU/e Mario");
-        title.setFont(mario.deriveFont(50f));
-        super.add(title, BorderLayout.PAGE_START);
+
+
+
 
         start = new JButton();
         start.setIcon(new ImageIcon("./resources/ui-elements/img.png"));
         start.setMaximumSize(new Dimension(5,2));
         start.setText("START");
         start.setFont(mario.deriveFont(20f));
-        start.setSize(5,2);
+        start.setSize(3,1);
         buttonsPanel.add(start);
 
         /*levels = new JButton();

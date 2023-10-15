@@ -1,13 +1,11 @@
 package interfaces;
 
-import enums.CollisionSide;
 import types.HitBox;
 import types.Vector2;
 
 public interface Collidable {
-    void collidedWith(Collidable other, CollisionSide side, Vector2 maxAllowed);
-    // TODO: Expand to take types of collidable objects to execute actions based on collision type
     HitBox getHitBox();
+    void setHitBox(Vector2 hitBoxOffset, Vector2 hitBoxDimensions);
 
-    CollisionSide collidesWith(Collidable collidable);
+    boolean collidesWith(Collidable collidable);
 }

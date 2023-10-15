@@ -28,19 +28,19 @@ public class HitBox {
     }
 
     public boolean isPointIn(Vector2 point) {
-        return this.getTopLeft().x <= point.x && this.getTopLeft().y <= point.y && this.getBottomRight().x >= point.x && this.getBottomRight().y >= point.y;
+        var topLeft = this.getTopLeft();
+        var bottomRight = this.getBottomRight();
+
+        return topLeft.x <= point.x && topLeft.y <= point.y && bottomRight.x >= point.x && bottomRight.y >= point.y;
     }
 
-    public CollisionSide collidesWith(HitBox other) {
-        if (other.isPointIn(this.getTopRight()) && other.isPointIn(this.getBottomRight())) {
-            return CollisionSide.RIGHT;
-        } else if (other.isPointIn(this.getBottomLeft()) && other.isPointIn(this.getBottomRight())) {
-            return CollisionSide.DOWN;
-        } else if (other.isPointIn(this.getTopLeft()) && other.isPointIn(this.getBottomLeft())) {
-            return CollisionSide.LEFT;
-        } else if (other.isPointIn(this.getTopLeft()) && other.isPointIn(this.getTopRight())) {
-            return CollisionSide.UP;
+    public boolean collidesWith(HitBox other) {
+        if (other.isPointIn(this.getTopLeft()) ||
+                other.isPointIn(this.getTopRight()) ||
+                other.isPointIn(this.getBottomLeft()) ||
+                other.isPointIn(this.getBottomRight())) {
+            return true;
         }
-        return CollisionSide.NONE;
+        return false;
     }
 }

@@ -9,19 +9,17 @@ import java.util.List;
 
 public class MarioPanel extends JPanel {
 
-    private final List<BufferedImage> tileset;
-    private final List<Integer> mapIndeces;
-    private final List<Player> players;
-//    private final List<>
+    private final List<AbstractEntity> entities;
+    private final Camera camera;
 
 
-    public MarioPanel() {
-        this.tileset = new ArrayList<>();
-        this.mapIndeces = new ArrayList<>();
-        this.players = new ArrayList<>();
+    public MarioPanel(Camera camera) {
+        this.entities = new ArrayList<>();
         super.setFocusable(true);
         super.setVisible(true);
         super.requestFocusInWindow();
+
+        this.camera = camera;
     }
 
     @Override
@@ -29,20 +27,13 @@ public class MarioPanel extends JPanel {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
 
-//        g2d.drawRect(50, 430, 517, 136);
-
-        for (var player :
-                players) {
-            g2d.drawImage(player.getCurrentSprite(), (int)player.getPosition().x, (int)player.getPosition().y, player.getWidth(), player.getHeight(), null);
+        for (var entity : entities) {
+            if(entity.isVisible(camera))
+                g2d.drawImage(entity.image, (int)(entity.getPosition().x - camera.x), (int)(entity.getPosition().y - camera.y), entity.getWidth(), entity.getHeight(), null);
         }
     }
 
-//    public void AddGameObject(GameObject object) {
-//        gameObjects.add(object);
-//        object.index = gameObjects.size() - 1;
-//    }
-
-    public void addPlayer(Player player) {
-        this.players.add(player);
+    public void addEntity(AbstractEntity entity) {
+        this.entities.add(entity);
     }
 }

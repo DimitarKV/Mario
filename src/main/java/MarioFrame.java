@@ -9,6 +9,7 @@ public class MarioFrame extends JFrame {
         super(frameTitle);
         super.setSize(FRAME_WIDTH, FRAME_HEIGHT);
         super.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        super.setResizable(false);
     }
 
 }
