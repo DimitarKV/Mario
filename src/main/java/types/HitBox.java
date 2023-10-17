@@ -2,6 +2,8 @@ package types;
 
 import enums.CollisionSide;
 
+import java.awt.*;
+
 public class HitBox {
     public Vector2 topLeft;
     public Vector2 dimensions;
@@ -27,20 +29,10 @@ public class HitBox {
         return this.topLeft.plus(this.dimensions);
     }
 
-    public boolean isPointIn(Vector2 point) {
-        var topLeft = this.getTopLeft();
-        var bottomRight = this.getBottomRight();
-
-        return topLeft.x < point.x && topLeft.y < point.y && bottomRight.x > point.x && bottomRight.y > point.y;
-    }
-
     public boolean collidesWith(HitBox other) {
-        if (other.isPointIn(this.getTopLeft()) ||
-                other.isPointIn(this.getTopRight()) ||
-                other.isPointIn(this.getBottomLeft()) ||
-                other.isPointIn(this.getBottomRight())) {
-            return true;
-        }
-        return false;
+        Rectangle thisRect = new Rectangle((int)this.getTopLeft().x, (int)this.getTopLeft().y, (int)this.dimensions.x, (int)this.dimensions.y);
+        Rectangle otherRect = new Rectangle((int)other.getTopLeft().x, (int)other.getTopLeft().y, (int)other.dimensions.x, (int)other.dimensions.y);
+
+        return thisRect.intersects(otherRect);
     }
 }
