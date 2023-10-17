@@ -31,7 +31,7 @@ public class HitBox {
         var topLeft = this.getTopLeft();
         var bottomRight = this.getBottomRight();
 
-        return topLeft.x <= point.x && topLeft.y <= point.y && bottomRight.x >= point.x && bottomRight.y >= point.y;
+        return topLeft.x < point.x && topLeft.y < point.y && bottomRight.x > point.x && bottomRight.y > point.y;
     }
 
     public boolean collidesWith(HitBox other) {

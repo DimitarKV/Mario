@@ -1,9 +1,10 @@
-import javax.imageio.ImageIO;
+package game;
+
+import entities.AbstractEntity;
+import entities.Camera;
+
 import javax.swing.*;
 import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,7 +30,7 @@ public class MarioPanel extends JPanel {
 
         for (var entity : entities) {
             if(entity.isVisible(camera))
-                g2d.drawImage(entity.image, (int)(entity.getPosition().x - camera.x), (int)(entity.getPosition().y - camera.y), entity.getWidth(), entity.getHeight(), null);
+                g2d.drawImage(entity.getImage(), (int)(entity.getPosition().x - camera.x), (int)(entity.getPosition().y - camera.y), entity.getWidth(), entity.getHeight(), null);
         }
     }
 

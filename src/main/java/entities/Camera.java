@@ -1,3 +1,7 @@
+package entities;
+
+import entities.AbstractEntity;
+
 import java.awt.*;
 
 public class Camera extends Rectangle {

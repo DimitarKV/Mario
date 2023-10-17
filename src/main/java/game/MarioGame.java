@@ -1,6 +1,8 @@
+package game;
+
+import entities.*;
 import enums.PlayerStateEnum;
 import enums.StateEnum;
-import types.HitBox;
 import types.MapDescriptor;
 import types.Vector2;
 import utils.MapReader;
@@ -34,7 +36,9 @@ public class MarioGame implements KeyListener {
     private JLabel yLabel;
     private List<BufferedImage> tileset;
 
-    public MarioGame() {
+    private boolean displayHitBoxes = true;
+
+    public MarioGame() throws IOException {
         Map<PlayerStateEnum, List<BufferedImage>> sprites = new HashMap<>();
         try {
             sprites.put(PlayerStateEnum.MOVING_LEFT, Arrays.asList(ImageIO.read(new File("./resources/mario/mario_yoshi/ML0.png")), ImageIO.read(new File("./resources/mario/mario_yoshi/ML1.png")), ImageIO.read(new File("./resources/mario/mario_yoshi/ML0.png"))));
@@ -49,8 +53,8 @@ public class MarioGame implements KeyListener {
 
         tiles = new ArrayList<>();
 
-        tileset = TileSetReader.readTileset("./resources/levels/level1/default-tileset3.tsj");
-        mapDescriptor = MapReader.readMap("./resources/levels/level1/map1.tmj");
+        tileset = TileSetReader.readTileset("./resources/levels/level1/tilesetv2.tsj");
+        mapDescriptor = MapReader.readMap("./resources/levels/level1/map1v2.tmj");
 
         var tileLayer = mapDescriptor.mapLayers.stream().filter(ml -> ml.type.equals("tilelayer")).findFirst().orElse(null);
         if (tileLayer != null) {
@@ -69,18 +73,40 @@ public class MarioGame implements KeyListener {
                 }
             }
         }
-
+        frame = new MarioFrame("TU/e Mario");
+        camera = new Camera(0, 0, frame.getWidth(), frame.getHeight());
         collisions = new Collisions();
-        mario = new Player(sprites, new Vector2(100, 960 - 142), 64, 64, collisions);
+        mario = new Player(sprites, new Vector2(400, 960 - 142), 64, 64, collisions);
+        camera.lockX(mario, 128 + 32);
+
+        gamePanel = new MarioPanel(camera);
+
+        BufferedImage barrier = displayHitBoxes ? ImageIO.read(new File("./resources/barrier.png")) : null;
+
+        var objectLayers = mapDescriptor.mapLayers.stream().filter(ml -> ml.type.equals("objectgroup")).toList();
+        for (var objectLayer : objectLayers) {
+            for (var collidableEntity : objectLayer.objects) {
+                BasicCollisionObject object = new BasicCollisionObject(
+                        new Vector2(collidableEntity.x, collidableEntity.y),
+                        barrier,
+                        collidableEntity.width,
+                        collidableEntity.height,
+                        new Vector2(),
+                        new Vector2(collidableEntity.width, collidableEntity.height));
+
+                gamePanel.addEntity(object);
+                collisions.addStationaryCollider(object);
+            }
+        }
+
+
         collisions.addMovingCollider(mario);
 
 
-        frame = new MarioFrame("TU/e Mario");
         frame.setLayout(null);
         frame.addKeyListener(this);
 
-        camera = new Camera(0, 0, frame.getWidth(), frame.getHeight());
-        camera.lockX(mario, 128 + 32);
+
 
         layers = new JLayeredPane();
         layers.setBounds(0, 0, this.frame.getWidth(), this.frame.getHeight());
@@ -89,7 +115,6 @@ public class MarioGame implements KeyListener {
         startMenuPanel.setOpaque(true);
         startMenuPanel.setBounds(0, 0, frame.getWidth(), frame.getHeight());
 
-        gamePanel = new MarioPanel(camera);
         gamePanel.setOpaque(true);
         gamePanel.setBounds(0, 0, frame.getWidth(), frame.getHeight());
 
@@ -139,6 +164,7 @@ public class MarioGame implements KeyListener {
 //                    currentFrames++;
 
                 xLabel.setText("" + mario.getPosition().x);
+                yLabel.setText("" + mario.getPosition().y);
 
                 camera.updatePosition();
                 gamePanel.repaint();

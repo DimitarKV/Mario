@@ -1,3 +1,5 @@
+package entities;
+
 import enums.CollisionSide;
 import interfaces.Collidable;
 import types.HitBox;

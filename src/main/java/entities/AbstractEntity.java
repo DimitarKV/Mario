@@ -1,3 +1,5 @@
+package entities;
+
 import types.Vector2;
 
 import java.awt.image.BufferedImage;
