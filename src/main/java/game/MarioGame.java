@@ -76,8 +76,9 @@ public class MarioGame implements KeyListener {
         frame = new MarioFrame("TU/e Mario");
         camera = new Camera(0, 0, frame.getWidth(), frame.getHeight());
         collisions = new Collisions();
-        mario = new Player(sprites, new Vector2(400, 960 - 142), 64, 64, collisions);
+        mario = new Player(sprites, new Vector2(400, 960 - 64), 64, 64, collisions);
         camera.lockX(mario, 128 + 32);
+        camera.updatePosition();
 
         gamePanel = new MarioPanel(camera);
 
@@ -112,7 +113,7 @@ public class MarioGame implements KeyListener {
         layers.setBounds(0, 0, this.frame.getWidth(), this.frame.getHeight());
 
         startMenuPanel = new StartMenuPanel(frame);
-        startMenuPanel.setOpaque(true);
+        startMenuPanel.setOpaque(false);
         startMenuPanel.setBounds(0, 0, frame.getWidth(), frame.getHeight());
 
         gamePanel.setOpaque(true);

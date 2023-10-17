@@ -21,8 +21,8 @@ public class StartMenuPanel extends JPanel {
 
     public StartMenuPanel(MarioFrame frame) {
         super.setFocusable(true);
-        super.setVisible(true);
-        super.setBackground(Color.green);
+
+        super.setOpaque(false);
         super.setLayout(new BorderLayout(30,40));
 
         try {
@@ -46,11 +46,10 @@ public class StartMenuPanel extends JPanel {
         titlePanel.setOpaque(false);
         super.add(titlePanel, BorderLayout.PAGE_START);
 
-        buttonsPanel = new JPanel(new GridLayout(3,1, 10,10));
-        buttonsPanel.setOpaque(true);
+        buttonsPanel = new JPanel(new GridLayout(9,1, 10,10));
+        buttonsPanel.setOpaque(false);
         buttonsPanel.setMaximumSize(new Dimension(500,100));
-        buttonsPanel.setPreferredSize(new Dimension(500,0));
-        buttonsPanel.setBackground(Color.red);
+        buttonsPanel.setPreferredSize(new Dimension(350,0));
         super.add(buttonsPanel, BorderLayout.EAST);
 
 
@@ -59,27 +58,37 @@ public class StartMenuPanel extends JPanel {
 
         start = new JButton("START");
         start.setBorder(new EmptyBorder(10, 10, 10, 10));
-        start.setIcon(new ImageIcon("./resources/ui-elements/img.png"));
+        start.setOpaque(false);
+        ImageIcon buttonIcon = new ImageIcon("./resources/ui-elements/img.png");
+        Image buttonImage = buttonIcon.getImage();
+        buttonImage = buttonImage.getScaledInstance(350,100, Image.SCALE_SMOOTH);
+        buttonIcon = new ImageIcon(buttonImage);
+        start.setIcon(buttonIcon);
+        start.setBackground(new Color(0,0,0,0));
         start.setMaximumSize(new Dimension(500,20));
         start.setHorizontalTextPosition(SwingConstants.CENTER);
-        start.setFont(mario.deriveFont(20f));
+        start.setFont(mario.deriveFont(40f));
         start.setPreferredSize(new Dimension(500,20));
         buttonsPanel.add(start);
 
         levels = new JButton("LEVELS");
+        levels.setOpaque(false);
+        levels.setBackground(new Color(0,0,0,0));
+        levels.setIcon(buttonIcon);
         levels.setBorder(new EmptyBorder(10, 10, 10, 10));
-        //levels.setIcon(new ImageIcon("./resources/ui-elements/img.png"));
-        //levels.setText();
-        //levels.setFont(mario.deriveFont(20f));
-        //levels.setSize(5,2);
+        levels.setHorizontalTextPosition(SwingConstants.CENTER);
+        levels.setFont(mario.deriveFont(40f));
         buttonsPanel.add(levels);
 
         exit = new JButton("EXIT");
+        exit.setOpaque(false);
+        exit.setBackground(new Color(0,0,0,0));
+        exit.setIcon(buttonIcon);
         exit.setBorder(new EmptyBorder(10, 10, 10, 10));
-        //exit.setIcon(new ImageIcon("./resources/ui-elements/img.png"));
-        //exit.setText();
-        //exit.setFont(mario.deriveFont(20f));
-        exit.setSize(5,2);
+        exit.setHorizontalTextPosition(SwingConstants.CENTER);
+        exit.setFont(mario.deriveFont(40f));
         buttonsPanel.add(exit);
+
+        super.setVisible(true);
     }
 }
