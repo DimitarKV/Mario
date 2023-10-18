@@ -79,67 +79,55 @@ public class Player extends AbstractCollidable {
 
 
     public void move(Long delta) {
+        double gravity = 0.000000003;
+        Vector2 gForce = new Vector2(0, gravity * delta);
+        this.mainVelocity = this.mainVelocity.plus(gForce);
 
         Vector2 newPosition = this.position.plus(this.getTotalVelocity().times((double) delta / timeUnit));
+        Vector2 oldPosition = this.position;
+        translateX(newPosition);
+        correctX(oldPosition);
 
+        translateY(newPosition);
+        correctY(oldPosition);
+
+       this.setImage(this.sprites.get(this.currentState).get(this.spriteIndex));
+    }
+
+    private void translateX(Vector2 newPosition) {
         this.position = new Vector2(newPosition.x, this.position.y);
+    }
+
+    private void translateY(Vector2 newPosition) {
+        this.position = new Vector2(this.position.x, newPosition.y);
+    }
+
+    private void correctX(Vector2 oldPosition) {
         Collidable other = collisions.checkCollisions(this);
         if (other != null){
-           if (this.getTotalVelocity().x > 0) {
-               this.position = new Vector2(other.getHitBox().getTopLeft().x - this.width, this.position.y);
-               this.mainVelocity = new Vector2(0, this.mainVelocity.y);
-               this.right = new Vector2();
-           } else if (this.getTotalVelocity().x < 0) {
-               this.position = new Vector2(other.getHitBox().getTopRight().x, this.position.y);
-               this.mainVelocity = new Vector2(0, this.mainVelocity.y);
-               this.left = new Vector2();
-           }
+            if (this.position.x - oldPosition.x > 0) {
+                this.position = new Vector2(other.getHitBox().getTopLeft().x - this.width, this.position.y);
+                this.mainVelocity = new Vector2(0, this.mainVelocity.y);
+                this.right = new Vector2();
+            } else if (this.position.x - oldPosition.x < 0) {
+                this.position = new Vector2(other.getHitBox().getTopRight().x, this.position.y);
+                this.mainVelocity = new Vector2(0, this.mainVelocity.y);
+                this.left = new Vector2();
+            }
         }
+    }
 
-        this.position = new Vector2(this.position.x, newPosition.y);
-        other = collisions.checkCollisions(this);
+    private void correctY(Vector2 oldPosition) {
+        Collidable other = collisions.checkCollisions(this);
         if (other != null){
-            if (this.getTotalVelocity().y > 0) {
+            if (this.position.y - oldPosition.y > 0) {
                 this.position = new Vector2(this.position.x, other.getHitBox().getTopLeft().y - this.height);
                 this.mainVelocity = new Vector2(this.mainVelocity.x, 0);
-            } else if (this.getTotalVelocity().y < 0) {
+            } else if (this.position.y - oldPosition.y < 0) {
                 this.position = new Vector2(this.position.x, other.getHitBox().getBottomRight().y);
                 this.mainVelocity = new Vector2(this.mainVelocity.x, 0);
             }
         }
-
-
-//        if (newPosition.x != this.position.x)
-//            this.direction = (newPosition.x - this.position.x) > 0 ? 1 : -1;
-//        this.position = newPosition;
-
-//        if (canFall()) {
-//            if (this.right.x > 0)
-//                this.currentState = PlayerStateEnum.AIRBORNE_RIGHT;
-//            else
-//                this.currentState = PlayerStateEnum.AIRBORNE_LEFT;
-//        } else {
-//            if (this.getTotalVelocity().equals(this.mainVelocity)) {
-//                if (this.direction > 0)
-//                    this.currentState = PlayerStateEnum.STATIONARY_RIGHT;
-//                else if (this.direction < 0)
-//                    this.currentState = PlayerStateEnum.STATIONARY_LEFT;
-//                else
-//                    this.currentState = PlayerStateEnum.STATIONARY_RIGHT;
-//            } else {
-//                if (this.right.x > 0)
-//                    this.currentState = PlayerStateEnum.MOVING_RIGHT;
-//                else if (this.left.x < 0)
-//                    this.currentState = PlayerStateEnum.MOVING_LEFT;
-//            }
-//        }
-//
-//        this.spriteIndex = (int) (System.nanoTime() / 50000000 % this.sprites.get(this.currentState).size());
-        this.setImage(this.sprites.get(this.currentState).get(this.spriteIndex));
-
-        double gravity = 0.000000003;
-        Vector2 gForce = new Vector2(0, gravity * delta);
-        this.mainVelocity = this.mainVelocity.plus(gForce);
     }
 
     public BufferedImage getCurrentSprite() {

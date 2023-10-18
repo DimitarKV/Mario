@@ -53,8 +53,8 @@ public class MarioGame implements KeyListener {
 
         tiles = new ArrayList<>();
 
-        mapDescriptor = MapReader.readMap("./resources/levels/level1/map1.tmj");
-        tileset = TileSetReader.readTileset("./resources/levels/level1/default-tileset3.tsj");
+        mapDescriptor = MapReader.readMap("./resources/levels/level1/map1v2.tmj");
+        tileset = TileSetReader.readTileset("./resources/levels/level1/" + mapDescriptor.tileSets.get(0).source);
 
 
         var tileLayer = mapDescriptor.mapLayers.stream().filter(ml -> ml.type.equals("tilelayer")).findFirst().orElse(null);
