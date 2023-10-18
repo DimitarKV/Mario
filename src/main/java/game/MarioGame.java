@@ -36,7 +36,7 @@ public class MarioGame implements KeyListener {
     private JLabel yLabel;
     private List<BufferedImage> tileset;
 
-    private boolean displayHitBoxes = true;
+    private boolean displayHitBoxes = false;
 
     public MarioGame() throws IOException {
         Map<PlayerStateEnum, List<BufferedImage>> sprites = new HashMap<>();
@@ -53,8 +53,9 @@ public class MarioGame implements KeyListener {
 
         tiles = new ArrayList<>();
 
-        tileset = TileSetReader.readTileset("./resources/levels/level1/tilesetv2.tsj");
-        mapDescriptor = MapReader.readMap("./resources/levels/level1/map1v2.tmj");
+        mapDescriptor = MapReader.readMap("./resources/levels/level1/map1.tmj");
+        tileset = TileSetReader.readTileset("./resources/levels/level1/default-tileset3.tsj");
+
 
         var tileLayer = mapDescriptor.mapLayers.stream().filter(ml -> ml.type.equals("tilelayer")).findFirst().orElse(null);
         if (tileLayer != null) {
@@ -94,7 +95,7 @@ public class MarioGame implements KeyListener {
                         new Vector2(),
                         new Vector2(collidableEntity.width, collidableEntity.height));
 
-                gamePanel.addEntity(object);
+                gamePanel.addEntity(object, 3);
                 collisions.addStationaryCollider(object);
             }
         }
@@ -118,10 +119,10 @@ public class MarioGame implements KeyListener {
         gamePanel.setOpaque(true);
         gamePanel.setBounds(0, 0, frame.getWidth(), frame.getHeight());
 
-        gamePanel.addEntity(mario);
+        gamePanel.addEntity(mario, 2);
 
         for (var tile : tiles) {
-            gamePanel.addEntity(tile);
+            gamePanel.addEntity(tile, 1);
         }
 
         xLabel = new JLabel();
