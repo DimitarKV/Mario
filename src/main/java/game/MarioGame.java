@@ -10,6 +10,8 @@ import utils.TileSetReader;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
@@ -18,7 +20,7 @@ import java.io.IOException;
 import java.util.*;
 import java.util.List;
 
-public class MarioGame implements KeyListener {
+public class MarioGame implements KeyListener, ActionListener {
     private final MarioFrame frame;
     private final StartMenuPanel startMenuPanel;
     private final MarioPanel gamePanel;
@@ -114,8 +116,12 @@ public class MarioGame implements KeyListener {
         layers.setBounds(0, 0, this.frame.getWidth(), this.frame.getHeight());
 
         startMenuPanel = new StartMenuPanel(frame);
-        startMenuPanel.setOpaque(false);
+        startMenuPanel.setOpaque(true);
         startMenuPanel.setBounds(0, 0, frame.getWidth(), frame.getHeight());
+        startMenuPanel.getStart().addActionListener(this);
+        startMenuPanel.getLevels().addActionListener(this);
+        startMenuPanel.getExit().addActionListener(this);
+
 
         gamePanel.setOpaque(true);
         gamePanel.setBounds(0, 0, frame.getWidth(), frame.getHeight());
@@ -212,6 +218,9 @@ public class MarioGame implements KeyListener {
         }
     }
 
+    public void setState(StateEnum state) {
+        this.state = state;
+    }
     @Override
     public void keyReleased(KeyEvent e) {
         if (state == StateEnum.GAME) {
@@ -225,6 +234,17 @@ public class MarioGame implements KeyListener {
                 case KeyEvent.VK_SPACE -> {
                 }
             }
+        }
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getActionCommand().equals("Start")){
+            this.setState(StateEnum.GAME);
+        } else if (e.getActionCommand().equals("Levels")){
+
+        } else if (e.getActionCommand().equals("Exit")){
+            System.exit(0);
         }
     }
 }

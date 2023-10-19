@@ -19,6 +19,7 @@ public class MarioPanel extends JPanel {
     public MarioPanel(Camera camera) {
         this.entities = new HashMap<>();
         super.setFocusable(true);
+        super.setBackground(new Color(137, 218, 250));
         super.setVisible(true);
         super.requestFocusInWindow();
 
