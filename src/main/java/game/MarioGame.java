@@ -3,6 +3,7 @@ package game;
 import entities.*;
 import enums.PlayerStateEnum;
 import enums.StateEnum;
+import types.HitBox;
 import types.MapDescriptor;
 import types.Vector2;
 import utils.MapReader;
@@ -78,7 +79,7 @@ public class MarioGame implements KeyListener, ActionListener {
         frame = new MarioFrame("TU/e Mario");
         camera = new Camera(0, 0, frame.getWidth(), frame.getHeight());
         collisions = new Collisions();
-        mario = new Player("./resources/players/yoshi", new Vector2(marioX, marioY), 64, 64, collisions);
+        mario = new Player("./resources/players/yoshi", new Vector2(marioX, marioY),new Vector2(4, 4), new Vector2(52, 60), 64, 64, collisions);
         camera.lockX(mario, 128 + 32);
         camera.updatePosition();
 
@@ -134,9 +135,9 @@ public class MarioGame implements KeyListener, ActionListener {
         xLabel = new JLabel();
         yLabel = new JLabel();
         xLabel.setVisible(true);
-//        yLabel.setVisible(true);
+        yLabel.setVisible(true);
         gamePanel.add(xLabel);
-//        gamePanel.add(yLabel);
+        gamePanel.add(yLabel);
 
         layers.add(gamePanel);
         layers.add(startMenuPanel);
@@ -170,8 +171,8 @@ public class MarioGame implements KeyListener, ActionListener {
 //                    }
 //                    currentFrames++;
 
-                xLabel.setText("" + mario.getState());
-//                yLabel.setText("" + mario.getHitBox().getBottomLeft().y);
+                xLabel.setText("" + mario.getHitBox().getBottomLeft().x);
+                yLabel.setText("" + mario.getHitBox().getBottomLeft().y);
 
                 camera.updatePosition();
                 gamePanel.repaint();

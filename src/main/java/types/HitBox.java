@@ -30,9 +30,27 @@ public class HitBox {
     }
 
     public boolean collidesWith(HitBox other) {
-        Rectangle thisRect = new Rectangle((int)this.getTopLeft().x, (int)this.getTopLeft().y, (int)this.dimensions.x, (int)this.dimensions.y);
-        Rectangle otherRect = new Rectangle((int)other.getTopLeft().x, (int)other.getTopLeft().y, (int)other.dimensions.x, (int)other.dimensions.y);
 
-        return thisRect.intersects(otherRect);
+        double tw = this.dimensions.x;
+        double th = this.dimensions.y;
+        double rw = other.dimensions.x;
+        double rh = other.dimensions.y;
+        if (rw <= 0 || rh <= 0 || tw <= 0 || th <= 0) {
+            return false;
+        }
+        double tx = this.topLeft.x;
+        double ty = this.topLeft.y;
+        double rx = other.topLeft.x;
+        double ry = other.topLeft.y;
+        rw += rx;
+        rh += ry;
+        tw += tx;
+        th += ty;
+        //      overflow || intersect
+        return ((rw < rx || rw > tx) &&
+                (rh < ry || rh > ty) &&
+                (tw < tx || tw > rx) &&
+                (th < ty || th > ry));
+        
     }
 }

@@ -24,8 +24,8 @@ public class Player extends AbstractCollidable {
     private Vector2 mainVelocity, left, right;
     private Collisions collisions;
 
-    public Player(String root, Vector2 position, Integer width, Integer height, Collisions collisions) {
-        super(position, null, width, height, new Vector2(), new Vector2(width, height));
+    public Player(String root, Vector2 position, Vector2 hitBoxOffset, Vector2 hitBoxDimensions, Integer width, Integer height, Collisions collisions) {
+        super(position, null, width, height, hitBoxOffset, hitBoxDimensions);
         this.sprites = new HashMap<>();
         this.position = new Vector2(position.x, position.y - height);
 
@@ -167,13 +167,13 @@ public class Player extends AbstractCollidable {
         Collidable other = collisions.checkCollisions(this);
         if (other != null) {
             if (this.position.x - oldPosition.x > 0) {
-                this.position = new Vector2(other.getHitBox().getTopLeft().x - this.width, this.position.y);
-                this.mainVelocity = new Vector2(0, this.mainVelocity.y);
-                this.right = new Vector2();
+                this.position = new Vector2(other.getHitBox().getTopLeft().x - this.getHitBox().dimensions.x - this.hitBoxOffset.x, this.position.y);
+//                this.mainVelocity = new Vector2(0, this.mainVelocity.y);
+//                this.right = new Vector2();
             } else if (this.position.x - oldPosition.x < 0) {
-                this.position = new Vector2(other.getHitBox().getTopRight().x, this.position.y);
-                this.mainVelocity = new Vector2(0, this.mainVelocity.y);
-                this.left = new Vector2();
+                this.position = new Vector2(other.getHitBox().getTopRight().x - this.hitBoxOffset.x, this.position.y);
+//                this.mainVelocity = new Vector2(0, this.mainVelocity.y);
+//                this.left = new Vector2();
             }
         }
     }
@@ -182,11 +182,11 @@ public class Player extends AbstractCollidable {
         Collidable other = collisions.checkCollisions(this);
         if (other != null) {
             if (this.position.y - oldPosition.y > 0) {
-                this.position = new Vector2(this.position.x, other.getHitBox().getTopLeft().y - this.height);
+                this.position = new Vector2(this.position.x, other.getHitBox().getTopLeft().y - this.hitBoxDimensions.y - this.hitBoxOffset.y);
                 this.mainVelocity = new Vector2(this.mainVelocity.x, 0);
                 this.jump = false;
             } else if (this.position.y - oldPosition.y < 0) {
-                this.position = new Vector2(this.position.x, other.getHitBox().getBottomRight().y);
+                this.position = new Vector2(this.position.x, other.getHitBox().getBottomRight().y - this.hitBoxOffset.y);
                 this.mainVelocity = new Vector2(this.mainVelocity.x, 0);
             }
         }
@@ -225,8 +225,10 @@ public class Player extends AbstractCollidable {
     }
 
     public void jump() {
+        if(jump)
+            return;
         this.jump = true;
-        this.mainVelocity = new Vector2(this.mainVelocity.x, -2.5 * moveSpeed);
+        this.mainVelocity = new Vector2(this.mainVelocity.x, -2.7 * moveSpeed);
     }
 
     public String getState() {
