@@ -78,7 +78,7 @@ public class MarioGame implements KeyListener, ActionListener {
         frame = new MarioFrame("TU/e Mario");
         camera = new Camera(0, 0, frame.getWidth(), frame.getHeight());
         collisions = new Collisions();
-        mario = new Player("./resources/players/mario", new Vector2(marioX, marioY), 64, 64, collisions);
+        mario = new Player("./resources/players/yoshi", new Vector2(marioX, marioY), 64, 64, collisions);
         camera.lockX(mario, 128 + 32);
         camera.updatePosition();
 
@@ -134,9 +134,9 @@ public class MarioGame implements KeyListener, ActionListener {
         xLabel = new JLabel();
         yLabel = new JLabel();
         xLabel.setVisible(true);
-        yLabel.setVisible(true);
+//        yLabel.setVisible(true);
         gamePanel.add(xLabel);
-        gamePanel.add(yLabel);
+//        gamePanel.add(yLabel);
 
         layers.add(gamePanel);
         layers.add(startMenuPanel);
@@ -170,8 +170,8 @@ public class MarioGame implements KeyListener, ActionListener {
 //                    }
 //                    currentFrames++;
 
-                xLabel.setText("" + mario.getPosition().x);
-                yLabel.setText("" + mario.getPosition().y);
+                xLabel.setText("" + mario.getState());
+//                yLabel.setText("" + mario.getHitBox().getBottomLeft().y);
 
                 camera.updatePosition();
                 gamePanel.repaint();
