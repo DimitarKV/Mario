@@ -30,7 +30,6 @@ public class HitBox {
     }
 
     public boolean collidesWith(HitBox other) {
-
         double tw = this.dimensions.x;
         double th = this.dimensions.y;
         double rw = other.dimensions.x;
@@ -51,6 +50,6 @@ public class HitBox {
                 (rh < ry || rh > ty) &&
                 (tw < tx || tw > rx) &&
                 (th < ty || th > ry));
-        
+
     }
 }

@@ -120,6 +120,9 @@ public class Player extends AbstractCollidable {
 
         calculateSprite(newPosition, oldPosition);
 
+        if(this.mainVelocity.y != 0)
+            this.jump = true;
+
         this.setImage(this.sprites.get(this.currentState).get(this.spriteIndex));
     }
 
