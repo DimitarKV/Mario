@@ -3,12 +3,15 @@ package entities;
 import entities.AbstractCollidable;
 import entities.Collisions;
 import enums.PlayerStateEnum;
+import exceptions.CouldNotReadFileException;
 import interfaces.Collidable;
 import types.Vector2;
 
+import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.util.List;
-import java.util.Map;
+import java.io.File;
+import java.io.IOException;
+import java.util.*;
 
 public class Player extends AbstractCollidable {
     private Map<PlayerStateEnum, List<BufferedImage>> sprites;
@@ -20,10 +23,9 @@ public class Player extends AbstractCollidable {
     private Vector2 mainVelocity, left, right;
     private Collisions collisions;
 
-    public Player(Map<PlayerStateEnum, List<BufferedImage>> sprites, Vector2 position, Integer width, Integer height, Collisions collisions) {
+    public Player(String root, Vector2 position, Integer width, Integer height, Collisions collisions) {
         super(position, null, width, height, new Vector2(), new Vector2(width, height));
-
-        this.sprites = sprites;
+        this.sprites = new HashMap<>();
         this.position = position;
 
         this.mainVelocity = new Vector2(0, 0);
@@ -34,6 +36,30 @@ public class Player extends AbstractCollidable {
         this.spriteIndex = 0;
 
         this.collisions = collisions;
+
+        loadSprites(root);
+    }
+
+    private void loadSprites(String root) {
+        try {
+            File rootFolder = new File(root);
+            if(!rootFolder.canRead())
+                throw new CouldNotReadFileException("Could not load sprites at [" + root + "]");
+
+            for (var state : PlayerStateEnum.values()) {
+                sprites.put(state, new ArrayList<>());
+                File stateFolder = rootFolder.toPath().resolve(state.name()).toFile();
+                if(stateFolder.listFiles() == null)
+                    throw new CouldNotReadFileException("Could not resolve [" + stateFolder.getPath() + "]'s children files.");
+                List<File> children = Arrays.stream(stateFolder.listFiles()).toList();
+                Collections.sort(children);
+                for (File child : children) {
+                    sprites.get(state).add(ImageIO.read(child));
+                }
+            }
+        } catch (IOException | RuntimeException e) {
+            throw new CouldNotReadFileException(e.getMessage());
+        }
     }
 
     public Vector2 getTotalVelocity() {

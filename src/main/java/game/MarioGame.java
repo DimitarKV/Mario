@@ -38,25 +38,16 @@ public class MarioGame implements KeyListener, ActionListener {
     private JLabel yLabel;
     private List<BufferedImage> tileset;
 
-    private boolean displayHitBoxes = false;
+    private boolean displayHitBoxes = true;
 
     public MarioGame() throws IOException {
-        Map<PlayerStateEnum, List<BufferedImage>> sprites = new HashMap<>();
-        try {
-            sprites.put(PlayerStateEnum.MOVING_LEFT, Arrays.asList(ImageIO.read(new File("./resources/mario/mario_yoshi/ML0.png")), ImageIO.read(new File("./resources/mario/mario_yoshi/ML1.png")), ImageIO.read(new File("./resources/mario/mario_yoshi/ML0.png"))));
-            sprites.put(PlayerStateEnum.MOVING_RIGHT, Arrays.asList(ImageIO.read(new File("./resources/mario/mario_yoshi/MR0.png")), ImageIO.read(new File("./resources/mario/mario_yoshi/MR1.png")), ImageIO.read(new File("./resources/mario/mario_yoshi/MR0.png"))));
-            sprites.put(PlayerStateEnum.AIRBORNE_LEFT, Arrays.asList(ImageIO.read(new File("./resources/mario/mario_yoshi/J.png"))));
-            sprites.put(PlayerStateEnum.AIRBORNE_RIGHT, Arrays.asList(ImageIO.read(new File("./resources/mario/mario_yoshi/J.png"))));
-            sprites.put(PlayerStateEnum.STATIONARY_LEFT, Arrays.asList(ImageIO.read(new File("./resources/mario/mario_yoshi/ML0.png"))));
-            sprites.put(PlayerStateEnum.STATIONARY_RIGHT, Arrays.asList(ImageIO.read(new File("./resources/mario/mario_yoshi/MR0.png"))));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
 
         tiles = new ArrayList<>();
 
-        mapDescriptor = MapReader.readMap("./resources/levels/level1/map1v2.tmj");
-        tileset = TileSetReader.readTileset("./resources/levels/level1/" + mapDescriptor.tileSets.get(0).source);
+        File map = new File("./resources/levels/1/map.tmj");
+        mapDescriptor = MapReader.readMap(map);
+        String path = map.getParent() + "\\" + mapDescriptor.tileSets.get(0).source;
+        tileset = TileSetReader.readTileset(path);
 
 
         var tileLayer = mapDescriptor.mapLayers.stream().filter(ml -> ml.type.equals("tilelayer")).findFirst().orElse(null);
@@ -76,10 +67,18 @@ public class MarioGame implements KeyListener, ActionListener {
                 }
             }
         }
+        Integer marioX = 400, marioY = 100;
+        var startLayer = mapDescriptor.mapLayers.stream().filter(ml -> ml.name.equals("Start")).findFirst().orElse(null);
+        if(startLayer != null) {
+            marioX = startLayer.objects.get(0).x;
+            marioY = startLayer.objects.get(0).y;
+        }
+
+
         frame = new MarioFrame("TU/e Mario");
         camera = new Camera(0, 0, frame.getWidth(), frame.getHeight());
         collisions = new Collisions();
-        mario = new Player(sprites, new Vector2(400, 960 - 64), 64, 64, collisions);
+        mario = new Player("./resources/players/mario", new Vector2(marioX, marioY), 64, 64, collisions);
         camera.lockX(mario, 128 + 32);
         camera.updatePosition();
 

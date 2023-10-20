@@ -8,8 +8,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 
 public class MapReader {
-    public static MapDescriptor readMap(String filePath) {
-        File mapFile = new File(filePath);
+    public static MapDescriptor readMap(File mapFile) {
         if (!mapFile.canRead())
             return null;
 
