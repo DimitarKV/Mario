@@ -39,12 +39,23 @@ public class MarioPanel extends JPanel {
         }
     }
 
-    public void addEntity(AbstractEntity entity, int layer) {
-        if (!entities.containsKey(layer)) {
-           entities.put(layer, new ArrayList<>());
-           entities.get(layer).add(entity);
+    public void addEntity(AbstractEntity entity) {
+        if (!entities.containsKey(entity.getLayer())) {
+           entities.put(entity.getLayer(), new ArrayList<>());
+           entities.get(entity.getLayer()).add(entity);
            return;
         }
-        entities.get(layer).add(entity);
+        entities.get(entity.getLayer()).add(entity);
+    }
+
+    public void addEntities(List<AbstractEntity> allEntities) {
+        for (var entity :
+                allEntities) {
+            if (!entities.containsKey(entity.getLayer())) {
+                entities.put(entity.getLayer(), new ArrayList<>());
+                entities.get(entity.getLayer()).add(entity);
+            }
+            entities.get(entity.getLayer()).add(entity);
+        }
     }
 }

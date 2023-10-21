@@ -1,8 +1,6 @@
 package entities;
 
-import enums.CollisionSide;
 import interfaces.Collidable;
-import types.Vector2;
 
 import java.util.ArrayList;
 import java.util.List;

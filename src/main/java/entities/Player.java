@@ -1,7 +1,5 @@
 package entities;
 
-import entities.AbstractCollidable;
-import entities.Collisions;
 import enums.PlayerStateEnum;
 import exceptions.CouldNotReadFileException;
 import interfaces.Collidable;
@@ -14,18 +12,16 @@ import java.io.IOException;
 import java.util.*;
 
 public class Player extends AbstractCollidable {
-    private Map<PlayerStateEnum, List<BufferedImage>> sprites;
+    private final Map<PlayerStateEnum, List<BufferedImage>> sprites;
     private PlayerStateEnum currentState;
     private Integer spriteIndex = 0, spriteSpeed = 100, direction = 1;
     private boolean jump = false;
-
-
-    private final double moveSpeed = 0.5, timeUnit = 1000000;
+    private final Collisions collisions;
     private Vector2 mainVelocity, left, right;
-    private Collisions collisions;
+    private final double moveSpeed = 0.5, timeUnit = 1000000, gravity = 0.000000003;
 
-    public Player(String root, Vector2 position, Vector2 hitBoxOffset, Vector2 hitBoxDimensions, Integer width, Integer height, Collisions collisions) {
-        super(position, null, width, height, hitBoxOffset, hitBoxDimensions);
+    public Player(String root, Vector2 hitBoxOffset, Vector2 hitBoxDimensions, Integer width, Integer height, Collisions collisions) {
+        super(new Vector2(0, 0), null, width, height, hitBoxOffset, hitBoxDimensions);
         this.sprites = new HashMap<>();
         this.position = new Vector2(position.x, position.y - height);
 
@@ -52,7 +48,6 @@ public class Player extends AbstractCollidable {
                 if (stateFolder.listFiles() == null)
                     throw new CouldNotReadFileException("Could not resolve [" + stateFolder.getPath() + "]'s children files.");
                 List<File> children = new ArrayList<>(Arrays.stream(stateFolder.listFiles()).toList());
-//                Collections.sort(children);
                 children.sort(Comparator.comparing(File::getName));
                 for (File child : children) {
                     sprites.get(state).add(ImageIO.read(child));
@@ -67,51 +62,13 @@ public class Player extends AbstractCollidable {
         return this.mainVelocity.plus(this.left).plus(this.right);
     }
 
-    public Vector2 bottomLeft() {
-        return new Vector2(this.position.x, this.position.y + this.height);
-    }
-
-    public Vector2 bottomRight() {
-        return new Vector2(this.position.x + this.width, this.position.y + this.height);
-    }
-
-    public Vector2 topRight() {
-        return new Vector2(this.position.x + this.width, this.position.y);
-    }
-
-    public Vector2 topLeft() {
-        return new Vector2(this.position.x, this.position.y);
-    }
-
-    private boolean canFall() {
-        return this.position.y < 960 - this.height;
-    }
-
-    private boolean canMoveRight() {
-        return this.position.x < 960 - this.width;
-    }
-
-    private boolean canMoveUp() {
-        return this.position.y > 130;
-    }
-
-    private boolean canMoveLeft() {
-        return this.position.x > 0;
-    }
-
-    /*TODO
-     * COLLISION IDEA
-     * Implement collision class with a func to pass two objects to and determine whether they collide
-     */
-
-
     public void move(Long delta) {
-        double gravity = 0.000000003;
         Vector2 gForce = new Vector2(0, gravity * delta);
         this.mainVelocity = this.mainVelocity.plus(gForce);
 
         Vector2 newPosition = this.position.plus(this.getTotalVelocity().times((double) delta / timeUnit));
         Vector2 oldPosition = this.position;
+
         translateX(newPosition);
         correctX(oldPosition);
 
@@ -171,12 +128,9 @@ public class Player extends AbstractCollidable {
         if (other != null) {
             if (this.position.x - oldPosition.x > 0) {
                 this.position = new Vector2(other.getHitBox().getTopLeft().x - this.getHitBox().dimensions.x - this.hitBoxOffset.x, this.position.y);
-//                this.mainVelocity = new Vector2(0, this.mainVelocity.y);
-//                this.right = new Vector2();
+
             } else if (this.position.x - oldPosition.x < 0) {
                 this.position = new Vector2(other.getHitBox().getTopRight().x - this.hitBoxOffset.x, this.position.y);
-//                this.mainVelocity = new Vector2(0, this.mainVelocity.y);
-//                this.left = new Vector2();
             }
         }
     }
@@ -195,10 +149,6 @@ public class Player extends AbstractCollidable {
         }
     }
 
-    public BufferedImage getCurrentSprite() {
-        return sprites.get(currentState).get(spriteIndex);
-    }
-
     public void walkLeft() {
         this.left = new Vector2(-moveSpeed, 0);
     }
@@ -215,26 +165,10 @@ public class Player extends AbstractCollidable {
         this.right = new Vector2();
     }
 
-    public Vector2 getPosition() {
-        return this.position;
-    }
-
-    public Integer getWidth() {
-        return this.width;
-    }
-
-    public Integer getHeight() {
-        return this.height;
-    }
-
     public void jump() {
         if(jump)
             return;
         this.jump = true;
         this.mainVelocity = new Vector2(this.mainVelocity.x, -2.7 * moveSpeed);
-    }
-
-    public String getState() {
-        return this.currentState.name();
     }
 }
