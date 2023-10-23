@@ -1,13 +1,8 @@
 package game;
 
-import enums.StateEnum;
-import game.MarioFrame;
-
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 
@@ -15,25 +10,24 @@ import java.io.IOException;
 public class StartMenuPanel extends JPanel {
     private Font mario;
     private JLabel title;
-
-
-
     private JButton start;
     private JButton levels;
     private JButton exit;
     private JPanel buttonsPanel;
     private JPanel titlePanel;
     private JLabel filler;
-    private JLabel filler1;
+    private JLabel frameTiles;
     private MarioFrame frame;
-    private MarioGame game;
+    private ImageIcon buttonIcon;
+    private Icon frameIcon;
     public StartMenuPanel(MarioFrame frame) throws IOException {
         super.setFocusable(true);
         super.setOpaque(true);
         super.setLayout(new BorderLayout(30,40));
-        super.setBackground(new Color(0,0,0,70));
+        super.setBackground(new Color(0,0,0,150));
         this.frame = frame;
 
+        //Font
         try {
             mario = Font.createFont(Font.TRUETYPE_FONT, new File("./resources/fonts/SuperMario256.ttf"));
         } catch (IOException e) {
@@ -42,6 +36,28 @@ public class StartMenuPanel extends JPanel {
             System.out.println("Wrong font format");
         }
 
+        //Images
+        buttonIcon = new ImageIcon("./resources/ui-elements/img.png");
+        Image buttonImage = buttonIcon.getImage();
+        buttonImage = buttonImage.getScaledInstance(350,100, Image.SCALE_SMOOTH);
+        buttonIcon = new ImageIcon(buttonImage);
+
+        try{
+            frameIcon = new ImageIcon(".resources/ui-elements/framePixel.gif");
+        }catch(Exception e){
+            System.out.println("no image");
+        }
+
+        /*Image frameImage = frameIcon.getImage();
+        frameImage = frameImage.getScaledInstance(frame.getWidth(),frame.getHeight(), Image.SCALE_SMOOTH);
+        frameIcon = new ImageIcon(frameImage);*/
+
+        frameTiles = new JLabel("",frameIcon,JLabel.CENTER);
+        frameTiles.setBounds(668, 43, 46, 14);
+        super.add(frameTiles);
+
+
+        //Title panel
         title = new JLabel();
         title.setText("TU/e Mario");
         title.setForeground(new Color(255,255,255));
@@ -56,26 +72,16 @@ public class StartMenuPanel extends JPanel {
         titlePanel.setOpaque(false);
         super.add(titlePanel, BorderLayout.PAGE_START);
 
+        //Button panel
         buttonsPanel = new JPanel(new GridLayout(7,1, 20,20));
         buttonsPanel.setOpaque(false);
         buttonsPanel.setMaximumSize(new Dimension(1000,100));
         buttonsPanel.setPreferredSize(new Dimension(450,0));
         super.add(buttonsPanel, BorderLayout.EAST);
 
-
-        ImageIcon buttonIcon = new ImageIcon("./resources/ui-elements/img.png");
-        Image buttonImage = buttonIcon.getImage();
-        buttonImage = buttonImage.getScaledInstance(350,100, Image.SCALE_SMOOTH);
-        buttonIcon = new ImageIcon(buttonImage);
-
         filler = new JLabel();
-        filler1 = new JLabel();
-
         buttonsPanel.add(filler);
-        //buttonsPanel.add(filler1);
         buttonsPanel.setBorder(new EmptyBorder(0, 0, 0, 100));
-
-
 
         start = new JButton("START");
         start.setBorder(new EmptyBorder(10, 10, 10, 10));

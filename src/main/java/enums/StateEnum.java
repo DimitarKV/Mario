@@ -1,6 +1,7 @@
 package enums;
 
 public enum StateEnum {
-    MENU,
+    START_MENU,
+    LEVELS,
     GAME
 }
