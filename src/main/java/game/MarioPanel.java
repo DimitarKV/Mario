@@ -5,6 +5,7 @@ import entities.Camera;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -31,7 +32,7 @@ public class MarioPanel extends JPanel {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
 
-        for (var layer : entities.keySet()) {
+        for (var layer : entities.keySet().stream().sorted().toList()) {
             for (var entity : entities.get(layer)) {
                 if(entity.isVisible(camera))
                     g2d.drawImage(entity.getImage(), (int)(entity.getPosition().x - camera.x), (int)(entity.getPosition().y - camera.y), entity.getWidth(), entity.getHeight(), null);

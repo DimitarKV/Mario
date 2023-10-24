@@ -66,18 +66,31 @@ public class Collisions {
 //    }
 
     public Collidable checkCollisions(Collidable collidable) {
+        if(!collidable.isCollidable())
+            return null;
+
         for (var other :
                 this.moving) {
-            if(collidable == other)
+            if(collidable == other || !other.isCollidable())
                 continue;
-            if(collidable.collidesWith(other))
+
+            if(collidable.collidesWith(other)) {
+                collidable.collidedWith(other);
+                other.collidedWith(collidable);
                 return other;
+            }
         }
 
         for (var other :
                 this.stationary) {
-            if(collidable.collidesWith(other))
+            if(!other.isCollidable())
+                continue;
+
+            if(collidable.collidesWith(other)){
+                collidable.collidedWith(other);
+                other.collidedWith(collidable);
                 return other;
+            }
         }
 
         return null;

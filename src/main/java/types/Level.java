@@ -18,8 +18,7 @@ public class Level {
     private final Player player;
     private final Camera camera;
 
-
-    public Level(int level, Rectangle cameraPos) {
+    public Level(int level, String playerName, Rectangle cameraPos) {
         File mapFile = new File("./resources/levels/" + level + "/map.tmj");
         this.map = MapReader.readMap(mapFile);
 
@@ -29,7 +28,7 @@ public class Level {
         this.entities = new ArrayList<>();
         this.collisions = new Collisions();
 
-        this.player = new Player("./resources/players/yoshi", new Vector2(4, 4), new Vector2(52, 60), 64, 64, this.collisions);
+        this.player = new Player("./resources/players/" + playerName, new Vector2(4, 4), new Vector2(52, 60), 64, 64, this.collisions);
         this.player.setLayer(1);
         this.collisions.addMovingCollider(this.player);
         this.entities.add(player);
@@ -70,17 +69,42 @@ public class Level {
 
         var objectLayers = map.mapLayers.stream().filter(ml -> ml.type.equals("objectgroup")).toList();
         for (var objectLayer : objectLayers) {
-            for (var collidableEntity : objectLayer.objects) {
-                BasicCollisionObject object = new BasicCollisionObject(
-                        new Vector2(collidableEntity.x, collidableEntity.y),
-                        null,
-                        collidableEntity.width,
-                        collidableEntity.height,
-                        new Vector2(),
-                        new Vector2(collidableEntity.width, collidableEntity.height));
+            if(objectLayer.name.equals("Money")) {
+                for (var collidableEntity : objectLayer.objects) {
+                    BufferedImage imageOptional = tileset.get(collidableEntity.GId - 1);
 
-                entities.add(object);
-                this.collisions.addStationaryCollider(object);
+                    Coin coin = new Coin(
+                            new Vector2(collidableEntity.x, collidableEntity.y),
+                            imageOptional,
+                            collidableEntity.width,
+                            collidableEntity.height,
+                            new Vector2(),
+                            new Vector2(collidableEntity.width, collidableEntity.height), 1);
+
+                    coin.setLayer(3);
+                    entities.add(coin);
+                    this.collisions.addStationaryCollider(coin);
+                }
+            }
+
+            else {
+                for (var collidableEntity : objectLayer.objects) {
+                    BufferedImage imageOptional = null;
+
+                    if(collidableEntity.GId != null && collidableEntity.GId != 0)
+                        imageOptional = tileset.get(collidableEntity.GId - 1);
+
+                    BasicCollisionObject object = new BasicCollisionObject(
+                            new Vector2(collidableEntity.x, collidableEntity.y),
+                            imageOptional,
+                            collidableEntity.width,
+                            collidableEntity.height,
+                            new Vector2(),
+                            new Vector2(collidableEntity.width, collidableEntity.height));
+
+                    entities.add(object);
+                    this.collisions.addStationaryCollider(object);
+                }
             }
         }
 

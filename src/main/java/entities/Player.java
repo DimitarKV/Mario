@@ -171,4 +171,12 @@ public class Player extends AbstractCollidable {
         this.jump = true;
         this.mainVelocity = new Vector2(this.mainVelocity.x, -2.7 * moveSpeed);
     }
+
+    @Override
+    public void collidedWith(Collidable other) {
+        if (other instanceof Coin) {
+           var coin = (Coin)other;
+           System.out.println(coin.getValue());
+        }
+    }
 }

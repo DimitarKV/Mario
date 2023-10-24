@@ -23,7 +23,7 @@ public class MarioGame implements KeyListener, ActionListener {
     public MarioGame() throws IOException {
         this.frame = new MarioFrame("TU/e Mario");
         this.state = StateEnum.MENU;
-        this.level = new Level(currentLevel, new Rectangle(0, 0, this.frame.getWidth(), this.frame.getHeight()));
+        this.level = new Level(currentLevel, "yoshi",new Rectangle(0, 0, this.frame.getWidth(), this.frame.getHeight()));
 
         this.gamePanel = new MarioPanel(this.level.getCamera());
         this.gamePanel.addEntities(this.level.getEntities());
