@@ -2,6 +2,7 @@ package game;
 
 import enums.StateEnum;
 import types.Level;
+import types.Sound;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -27,10 +28,7 @@ public class MarioGame implements KeyListener, ActionListener, ChangeListener {
     private Integer currentLevel = 1;
     private Level level;
     private StateEnum state;
-    private FloatControl floatControl;
-    private AudioInputStream themeSong;
-    private AudioInputStream jumpSound;
-    private Clip clip;
+    private Sound sound;
 
     public MarioGame() throws IOException {
         this.frame = new MarioFrame("TU/e Mario");
@@ -57,6 +55,8 @@ public class MarioGame implements KeyListener, ActionListener, ChangeListener {
         this.levelsMenuPanel.getLevel2().addActionListener(this);
         this.levelsMenuPanel.getLevel3().addActionListener(this);
         this.levelsMenuPanel.getSoundSlider().addChangeListener(this);
+
+        this.sound = new Sound();
 
         this.gamePanel.setOpaque(true);
         this.gamePanel.setBounds(0, 0, this.frame.getWidth(), this.frame.getHeight());
@@ -111,14 +111,6 @@ public class MarioGame implements KeyListener, ActionListener, ChangeListener {
                 }
                 case KeyEvent.VK_W, KeyEvent.VK_SPACE -> {
                     this.level.jump();
-                    try{
-                        this.jumpSound = AudioSystem.getAudioInputStream(new File("./resources/sounds/jump.wav"));
-                        clip = AudioSystem.getClip();
-                        clip.open(jumpSound);
-                        clip.start();
-                    }catch(Exception ex){
-                        System.out.println("No sound found");
-                    }
                 }
                 case KeyEvent.VK_ESCAPE -> {
                     this.state = StateEnum.LEVELS;
@@ -157,30 +149,18 @@ public class MarioGame implements KeyListener, ActionListener, ChangeListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getActionCommand().equals("Start")) {
             this.setState(StateEnum.GAME);
-            try{
-                this.themeSong = AudioSystem.getAudioInputStream(new File("./resources/sounds/themeSong.wav"));
-                //floatControl = (FloatControl)clip.getControl(FloatControl.Type.MASTER_GAIN);
-                clip = AudioSystem.getClip();
-                clip.open(themeSong);
-                clip.start();
-                clip.loop(Clip.LOOP_CONTINUOUSLY);
-            }catch(Exception ex){
-                System.out.println("No sound found");
-            }
+            sound.setFile("themeSong");
+            sound.play("themeSong");
+            sound.loop("themeSong");
         } else if (e.getActionCommand().equals("Levels")) {
             this.setState(StateEnum.LEVELS);
         } else if (e.getActionCommand().equals("Exit")) {
             System.exit(0);
         } else if (e.getActionCommand().equals("Level1")) {
             this.setState(StateEnum.GAME);
-            try{
-                this.themeSong = AudioSystem.getAudioInputStream(new File("./resources/sounds/themeSong.wav"));
-                clip = AudioSystem.getClip();
-                clip.open(themeSong);
-                clip.start();
-            }catch(Exception ex){
-                System.out.println("No sound found");
-            }
+            sound.setFile("themeSong");
+            sound.play("themeSong");
+            sound.loop("themeSong");
         }
     }
 

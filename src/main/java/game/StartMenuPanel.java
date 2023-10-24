@@ -19,7 +19,7 @@ public class StartMenuPanel extends JPanel {
     private JLabel frameTiles;
     private MarioFrame frame;
     private ImageIcon buttonIcon;
-    private Icon frameIcon;
+    private ImageIcon frameIcon;
     public StartMenuPanel(MarioFrame frame) throws IOException {
         super.setFocusable(true);
         super.setOpaque(true);
@@ -42,19 +42,14 @@ public class StartMenuPanel extends JPanel {
         buttonImage = buttonImage.getScaledInstance(350,100, Image.SCALE_SMOOTH);
         buttonIcon = new ImageIcon(buttonImage);
 
-        try{
-            frameIcon = new ImageIcon(".resources/ui-elements/framePixel.gif");
-        }catch(Exception e){
-            System.out.println("no image");
-        }
+        frameIcon = new ImageIcon("./resources/ui-elements/framePixel.gif");
+        Image frameImage = frameIcon.getImage();
+        frameImage = frameImage.getScaledInstance(frame.getWidth(),40, Image.SCALE_DEFAULT);
+        frameIcon = new ImageIcon(frameImage);
 
-        /*Image frameImage = frameIcon.getImage();
-        frameImage = frameImage.getScaledInstance(frame.getWidth(),frame.getHeight(), Image.SCALE_SMOOTH);
-        frameIcon = new ImageIcon(frameImage);*/
-
-        frameTiles = new JLabel("",frameIcon,JLabel.CENTER);
-        frameTiles.setBounds(668, 43, 46, 14);
-        super.add(frameTiles);
+        frameTiles = new JLabel();
+        frameTiles.setIcon(frameIcon);
+        super.add(frameTiles, BorderLayout.BEFORE_FIRST_LINE);
 
 
         //Title panel
@@ -70,7 +65,7 @@ public class StartMenuPanel extends JPanel {
         titlePanel.setBounds(0, 0 , frame.getWidth(), 500);
         titlePanel.add(title, BorderLayout.CENTER);
         titlePanel.setOpaque(false);
-        super.add(titlePanel, BorderLayout.PAGE_START);
+        super.add(titlePanel, BorderLayout.NORTH);
 
         //Button panel
         buttonsPanel = new JPanel(new GridLayout(7,1, 20,20));

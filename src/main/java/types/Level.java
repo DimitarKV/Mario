@@ -18,7 +18,6 @@ public class Level {
     private final Player player;
     private final Camera camera;
 
-
     public Level(int level, Rectangle cameraPos) {
         File mapFile = new File("./resources/levels/" + level + "/map.tmj");
         this.map = MapReader.readMap(mapFile);
