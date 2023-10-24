@@ -3,9 +3,11 @@ package entities;
 import enums.PlayerStateEnum;
 import exceptions.CouldNotReadFileException;
 import interfaces.Collidable;
+import types.Sound;
 import types.Vector2;
 
 import javax.imageio.ImageIO;
+import javax.sound.sampled.AudioSystem;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -19,6 +21,7 @@ public class Player extends AbstractCollidable {
     private final Collisions collisions;
     private Vector2 mainVelocity, left, right;
     private final double moveSpeed = 0.5, timeUnit = 1000000, gravity = 0.000000003;
+    private Sound sound;
 
     public Player(String root, Vector2 hitBoxOffset, Vector2 hitBoxDimensions, Integer width, Integer height, Collisions collisions) {
         super(new Vector2(0, 0), null, width, height, hitBoxOffset, hitBoxDimensions);
@@ -32,6 +35,8 @@ public class Player extends AbstractCollidable {
         this.spriteIndex = 0;
 
         this.collisions = collisions;
+
+        this.sound = new Sound();
 
         loadSprites(root);
     }
@@ -170,6 +175,8 @@ public class Player extends AbstractCollidable {
             return;
         this.jump = true;
         this.mainVelocity = new Vector2(this.mainVelocity.x, -2.7 * moveSpeed);
+        sound.setFile("jump");
+        sound.play("jump");
     }
 
     @Override
