@@ -72,6 +72,9 @@ public class Player extends AbstractCollidable {
         Vector2 gForce = new Vector2(0, gravity * delta);
         this.mainVelocity = this.mainVelocity.plus(gForce);
 
+        if(jumpPressed)
+            jump();
+
         Vector2 newPosition = this.position.plus(this.getTotalVelocity().times((double) delta / timeUnit));
         Vector2 oldPosition = this.position;
 
@@ -171,13 +174,23 @@ public class Player extends AbstractCollidable {
         this.right = new Vector2();
     }
 
-    public void jump() {
+    private void jump() {
         if(jump)
             return;
         this.jump = true;
         this.mainVelocity = new Vector2(this.mainVelocity.x, -2.7 * moveSpeed);
-//        sound.setFile("jump");
-//        sound.play("jump");
+        sound.setFile("jump");
+        sound.play("jump");
+    }
+
+
+    boolean jumpPressed = false;
+    public void queueJump() {
+        jumpPressed = true;
+    }
+
+    public void dequeueJump() {
+        jumpPressed = false;
     }
 
     @Override

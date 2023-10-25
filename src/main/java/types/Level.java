@@ -149,7 +149,11 @@ public class Level {
     }
 
     public void jump() {
-        this.player.jump();
+        this.player.queueJump();
+    }
+
+    public void deJump() {
+        this.player.dequeueJump();
     }
 
     public void stopWalkLeft() {
