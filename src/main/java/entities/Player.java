@@ -13,13 +13,14 @@ import javax.sound.sampled.AudioSystem;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.sql.Struct;
 import java.util.*;
 
 public class Player extends AbstractCollidable implements Updatable {
     private final Map<PlayerStateEnum, List<BufferedImage>> sprites;
     private PlayerStateEnum currentState;
     private Integer spriteIndex = 0, spriteSpeed = 100, direction = 1, coinsCount = 0;
-    private boolean jump = false, won = false;
+    private boolean jump = false, won = false, died = false;
     private final Collisions collisions;
     private Vector2 mainVelocity, left, right;
     private final double moveSpeed = 0.5, timeUnit = 1000000, gravity = 0.000000003;
@@ -210,6 +211,8 @@ public class Player extends AbstractCollidable implements Updatable {
             coinsCount++;
         } else if (other instanceof GameOverEntity) {
             won = true;
+        } else if (other instanceof DieEntity) {
+            died = true;
         }
     }
 
@@ -219,5 +222,9 @@ public class Player extends AbstractCollidable implements Updatable {
 
     public boolean isWon() {
         return this.won;
+    }
+
+    public boolean isDead() {
+        return this.died;
     }
 }

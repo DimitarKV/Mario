@@ -21,7 +21,7 @@ public class Level {
     private final Camera camera;
     private Integer coinsCount = 0;
     private final List<Updatable> updatables;
-    private boolean end = false;
+    private boolean won = false, dead = false;
 
     public Level(int level, String playerName, Rectangle cameraPos) {
         File mapFile = new File("./resources/levels/" + level + "/map.tmj");
@@ -75,16 +75,16 @@ public class Level {
 
         var objectLayers = map.mapLayers.stream().filter(ml -> ml.type.equals("objectgroup")).toList();
         for (var objectLayer : objectLayers) {
-            if (objectLayer.name.equals("Money")) {
-                for (var collidableEntity : objectLayer.objects) {
-                    BufferedImage imageOptional = null;
-                    if (collidableEntity.GId != null && collidableEntity.GId != 0)
-                        imageOptional = tileset.get(collidableEntity.GId - 1);
+            for (var collidableEntity : objectLayer.objects) {
+                BufferedImage imageOptional = null;
+                if (collidableEntity.GId != null && collidableEntity.GId != 0)
+                    imageOptional = tileset.get(collidableEntity.GId - 1);
 
-                    Origin origin = Origin.TOP_LEFT;
-                    if (collidableEntity.GId != null)
-                        origin = Origin.BOTTOM_LEFT;
+                Origin origin = Origin.TOP_LEFT;
+                if (collidableEntity.GId != null)
+                    origin = Origin.BOTTOM_LEFT;
 
+                if (objectLayer.name.equals("Money")) {
                     Coin coin = new Coin(
                             new Vector2(collidableEntity.x, collidableEntity.y),
                             origin,
@@ -99,39 +99,33 @@ public class Level {
                     updatables.add(coin);
                     entities.add(coin);
                     this.collisions.addStationaryCollider(coin);
+                } else if (objectLayer.name.equals("Win")) {
+                    GameOverEntity gameOverEntity = new GameOverEntity(
+                            new Vector2(collidableEntity.x, collidableEntity.y),
+                            origin,
+                            imageOptional,
+                            collidableEntity.width,
+                            collidableEntity.height,
+                            new Vector2(),
+                            new Vector2(collidableEntity.width, collidableEntity.height));
+
+                    entities.add(gameOverEntity);
+                    this.collisions.addStationaryCollider(gameOverEntity);
+                } else if(objectLayer.name.equals("Die")) {
+                    DieEntity dieEntity = new DieEntity(
+                            new Vector2(collidableEntity.x, collidableEntity.y),
+                            origin,
+                            imageOptional,
+                            collidableEntity.width,
+                            collidableEntity.height,
+                            new Vector2(),
+                            new Vector2(collidableEntity.width, collidableEntity.height)
+                    );
+
+                    entities.add(dieEntity);
+                    this.collisions.addStationaryCollider(dieEntity);
                 }
-            } else if (objectLayer.name.equals("Win")) {
-                var collidableEntity = objectLayer.objects.get(0);
-
-                BufferedImage imageOptional = null;
-                if (collidableEntity.GId != null && collidableEntity.GId != 0)
-                    imageOptional = tileset.get(collidableEntity.GId - 1);
-
-                Origin origin = Origin.TOP_LEFT;
-                if (collidableEntity.GId != null)
-                    origin = Origin.BOTTOM_LEFT;
-
-                GameOverEntity gameOverEntity = new GameOverEntity(
-                        new Vector2(collidableEntity.x, collidableEntity.y),
-                        origin,
-                        imageOptional,
-                        collidableEntity.width,
-                        collidableEntity.height,
-                        new Vector2(),
-                        new Vector2(collidableEntity.width, collidableEntity.height));
-
-                entities.add(gameOverEntity);
-                this.collisions.addStationaryCollider(gameOverEntity);
-            } else {
-                for (var collidableEntity : objectLayer.objects) {
-                    BufferedImage imageOptional = null;
-                    Origin origin = Origin.TOP_LEFT;
-                    if (collidableEntity.GId != null)
-                        origin = Origin.BOTTOM_LEFT;
-
-                    if (collidableEntity.GId != null && collidableEntity.GId != 0)
-                        imageOptional = tileset.get(collidableEntity.GId - 1);
-
+                else {
                     BasicCollisionObject object = new BasicCollisionObject(
                             new Vector2(collidableEntity.x, collidableEntity.y),
                             origin,
@@ -144,9 +138,10 @@ public class Level {
                     entities.add(object);
                     this.collisions.addStationaryCollider(object);
                 }
-            }
-        }
 
+            }
+
+        }
     }
 
     public List<AbstractEntity> getEntities() {
@@ -162,8 +157,10 @@ public class Level {
     }
 
     public void update(Long delta) {
-        if(this.player.isWon()) {
-            this.end = true;
+        if (this.player.isWon()) {
+            this.won = true;
+        } else if(this.player.isDead()) {
+            this.dead = true;
         }
         this.player.move(delta);
         this.camera.updatePosition();
@@ -200,7 +197,10 @@ public class Level {
         return this.player.getCoinsCount();
     }
 
-    public boolean isEnd() {
-        return this.end;
+    public boolean isWon() {
+        return this.won;
+    }
+    public boolean isDead() {
+        return this.dead;
     }
 }
