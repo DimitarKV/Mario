@@ -19,7 +19,7 @@ public class Player extends AbstractCollidable implements Updatable {
     private final Map<PlayerStateEnum, List<BufferedImage>> sprites;
     private PlayerStateEnum currentState;
     private Integer spriteIndex = 0, spriteSpeed = 100, direction = 1, coinsCount = 0;
-    private boolean jump = false;
+    private boolean jump = false, won = false;
     private final Collisions collisions;
     private Vector2 mainVelocity, left, right;
     private final double moveSpeed = 0.5, timeUnit = 1000000, gravity = 0.000000003;
@@ -208,10 +208,16 @@ public class Player extends AbstractCollidable implements Updatable {
     public void collidedWith(Collidable other) {
         if(other instanceof Coin) {
             coinsCount++;
+        } else if (other instanceof GameOverEntity) {
+            won = true;
         }
     }
 
     public Integer getCoinsCount() {
         return coinsCount;
+    }
+
+    public boolean isWon() {
+        return this.won;
     }
 }
