@@ -48,7 +48,7 @@
          "name":"entities.Tile Layer 1",
          "opacity":1,
          "type":"tilelayer",
-         "visible":true,
+         "visible":false,
          "width":220,
          "x":0,
          "y":0
@@ -1281,7 +1281,7 @@
                 }],
          "opacity":1,
          "type":"objectgroup",
-         "visible":true,
+         "visible":false,
          "x":0,
          "y":0
         }, 
@@ -1808,7 +1808,7 @@
                 }],
          "opacity":1,
          "type":"objectgroup",
-         "visible":true,
+         "visible":false,
          "x":0,
          "y":0
         }, 
@@ -1819,24 +1819,24 @@
          "objects":[
                 {
                  "height":0,
-                 "id":243,
+                 "id":249,
                  "name":"",
                  "point":true,
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":0,
-                 "x":12544,
-                 "y":704
+                 "x":576,
+                 "y":960
                 }],
          "opacity":1,
          "type":"objectgroup",
-         "visible":true,
+         "visible":false,
          "x":0,
          "y":0
         }],
  "nextlayerid":18,
- "nextobjectid":249,
+ "nextobjectid":252,
  "orientation":"orthogonal",
  "renderorder":"left-down",
  "tiledversion":"1.10.2",

@@ -4,6 +4,7 @@ import enums.Origin;
 import enums.PlayerStateEnum;
 import exceptions.CouldNotReadFileException;
 import interfaces.Collidable;
+import interfaces.Updatable;
 import types.Sound;
 import types.Vector2;
 
@@ -14,7 +15,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.*;
 
-public class Player extends AbstractCollidable {
+public class Player extends AbstractCollidable implements Updatable {
     private final Map<PlayerStateEnum, List<BufferedImage>> sprites;
     private PlayerStateEnum currentState;
     private Integer spriteIndex = 0, spriteSpeed = 100, direction = 1;
@@ -68,6 +69,7 @@ public class Player extends AbstractCollidable {
         return this.mainVelocity.plus(this.left).plus(this.right);
     }
 
+    @Override
     public void move(Long delta) {
         Vector2 gForce = new Vector2(0, gravity * delta);
         this.mainVelocity = this.mainVelocity.plus(gForce);
@@ -204,9 +206,6 @@ public class Player extends AbstractCollidable {
 
     @Override
     public void collidedWith(Collidable other) {
-        if (other instanceof Coin) {
-            var coin = (Coin) other;
-            System.out.println(coin.getValue());
-        }
+
     }
 }

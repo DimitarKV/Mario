@@ -2,6 +2,7 @@ package types;
 
 import entities.*;
 import enums.Origin;
+import interfaces.Updatable;
 import utils.MapReader;
 import utils.TileSetReader;
 
@@ -19,6 +20,8 @@ public class Level {
     private final Player player;
     private final Camera camera;
 
+    private final List<Updatable> updatables;
+
     public Level(int level, String playerName, Rectangle cameraPos) {
         File mapFile = new File("./resources/levels/" + level + "/map.tmj");
         this.map = MapReader.readMap(mapFile);
@@ -28,6 +31,7 @@ public class Level {
 
         this.entities = new ArrayList<>();
         this.collisions = new Collisions();
+        this.updatables = new ArrayList<>();
 
         Integer pX = 400, pY = 100;
         var startLayer = map.mapLayers.stream().filter(ml -> ml.name.equals("Start")).findFirst().orElse(null);
@@ -87,11 +91,12 @@ public class Level {
                             imageOptional,
                             collidableEntity.width,
                             collidableEntity.height,
-                            new Vector2(),
-                            new Vector2(collidableEntity.width, collidableEntity.height), 1);
-                    coin.setLayer(3);
+                            new Vector2(5, 5),
+                            new Vector2(collidableEntity.width - 10, collidableEntity.height - 5), 1);
+                    coin.setLayer(0);
                     coin.setSolid(false);
 
+                    updatables.add(coin);
                     entities.add(coin);
                     this.collisions.addStationaryCollider(coin);
                 }
@@ -139,6 +144,9 @@ public class Level {
     public void update(Long delta) {
         this.player.move(delta);
         this.camera.updatePosition();
+        for (var updatable : updatables) {
+            updatable.move(delta);
+        }
     }
 
     public void walkLeft() {
