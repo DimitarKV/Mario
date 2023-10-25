@@ -19,7 +19,7 @@ public class Level {
     private final Collisions collisions;
     private final Player player;
     private final Camera camera;
-
+    private Integer coinsCount = 0;
     private final List<Updatable> updatables;
 
     public Level(int level, String playerName, Rectangle cameraPos) {
@@ -171,5 +171,9 @@ public class Level {
 
     public void stopWalkRight() {
         this.player.stopWalkRight();
+    }
+
+    public Integer getCoinsCount() {
+        return this.player.getCoinsCount();
     }
 }

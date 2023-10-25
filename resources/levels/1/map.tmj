@@ -78,53 +78,6 @@
         }, 
         {
          "draworder":"topdown",
-         "id":4,
-         "name":"GrowMush",
-         "objects":[
-                {
-                 "gid":258,
-                 "height":64,
-                 "id":156,
-                 "name":"",
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":64,
-                 "x":1344,
-                 "y":768
-                }, 
-                {
-                 "gid":258,
-                 "height":64,
-                 "id":157,
-                 "name":"",
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":64,
-                 "x":7040,
-                 "y":512
-                }, 
-                {
-                 "gid":258,
-                 "height":64,
-                 "id":158,
-                 "name":"",
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":64,
-                 "x":5120,
-                 "y":768
-                }],
-         "opacity":1,
-         "type":"objectgroup",
-         "visible":false,
-         "x":0,
-         "y":0
-        }, 
-        {
-         "draworder":"topdown",
          "id":5,
          "name":"Money",
          "objects":[
@@ -1808,7 +1761,7 @@
                 }],
          "opacity":1,
          "type":"objectgroup",
-         "visible":false,
+         "visible":true,
          "x":0,
          "y":0
         }, 
@@ -1836,7 +1789,7 @@
          "y":0
         }],
  "nextlayerid":18,
- "nextobjectid":252,
+ "nextobjectid":257,
  "orientation":"orthogonal",
  "renderorder":"left-down",
  "tiledversion":"1.10.2",
@@ -1845,6 +1798,10 @@
         {
          "firstgid":1,
          "source":"tileset.tsj"
+        }, 
+        {
+         "firstgid":784,
+         "source":"default-tileset3.tsj"
         }],
  "tilewidth":64,
  "type":"map",

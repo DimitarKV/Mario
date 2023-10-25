@@ -23,7 +23,6 @@ public class Coin extends AbstractCollidable implements Updatable {
     @Override
     public void collidedWith(Collidable other) {
         if(other instanceof Player) {
-            System.out.println("BRO HEEELP, YOSHI TOOK MEEEE !!!!! ");
             this.setCollidable(false);
             this.animation = true;
             this.setLayer(10);

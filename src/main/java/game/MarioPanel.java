@@ -55,6 +55,9 @@ public class MarioPanel extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
+
+        coins.setText("Coins: " + coinCounter);
+
         Graphics2D g2d = (Graphics2D) g;
 
         entities.sort(Comparator.comparing(AbstractEntity::getLayer));
@@ -75,5 +78,9 @@ public class MarioPanel extends JPanel {
 
     public void addEntities(List<AbstractEntity> allEntities) {
         entities.addAll(allEntities);
+    }
+
+    public void setCoinCounter(Integer coinCounter) {
+        this.coinCounter = coinCounter;
     }
 }

@@ -77,6 +77,7 @@ public class MarioGame implements KeyListener, ActionListener, ChangeListener {
             if (state == StateEnum.GAME) {
                 layers.moveToFront(gamePanel);
                 level.update(delta);
+                gamePanel.setCoinCounter(level.getCoinsCount());
                 gamePanel.repaint();
             } else if (state == StateEnum.LEVELS) {
                 layers.moveToFront(levelsMenuPanel);

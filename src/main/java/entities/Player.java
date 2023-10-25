@@ -18,7 +18,7 @@ import java.util.*;
 public class Player extends AbstractCollidable implements Updatable {
     private final Map<PlayerStateEnum, List<BufferedImage>> sprites;
     private PlayerStateEnum currentState;
-    private Integer spriteIndex = 0, spriteSpeed = 100, direction = 1;
+    private Integer spriteIndex = 0, spriteSpeed = 100, direction = 1, coinsCount = 0;
     private boolean jump = false;
     private final Collisions collisions;
     private Vector2 mainVelocity, left, right;
@@ -206,6 +206,12 @@ public class Player extends AbstractCollidable implements Updatable {
 
     @Override
     public void collidedWith(Collidable other) {
+        if(other instanceof Coin) {
+            coinsCount++;
+        }
+    }
 
+    public Integer getCoinsCount() {
+        return coinsCount;
     }
 }
