@@ -2,6 +2,7 @@ package game;
 
 import entities.AbstractEntity;
 import entities.Camera;
+import enums.Origin;
 
 import javax.swing.*;
 import java.awt.*;
@@ -34,8 +35,12 @@ public class MarioPanel extends JPanel {
 
         for (var layer : entities.keySet().stream().sorted().toList()) {
             for (var entity : entities.get(layer)) {
-                if(entity.isVisible(camera))
-                    g2d.drawImage(entity.getImage(), (int)(entity.getPosition().x - camera.x), (int)(entity.getPosition().y - camera.y), entity.getWidth(), entity.getHeight(), null);
+                if(entity.isVisible(camera)){
+                    int xPos = (int)(entity.getPosition().x - camera.x);
+                    int yPos = (int)(entity.getPosition().y - camera.y);
+
+                    g2d.drawImage(entity.getImage(), xPos, yPos, entity.getWidth(), entity.getHeight(), null);
+                }
             }
         }
     }

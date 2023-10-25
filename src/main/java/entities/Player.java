@@ -1,5 +1,6 @@
 package entities;
 
+import enums.Origin;
 import enums.PlayerStateEnum;
 import exceptions.CouldNotReadFileException;
 import interfaces.Collidable;
@@ -23,8 +24,8 @@ public class Player extends AbstractCollidable {
     private final double moveSpeed = 0.5, timeUnit = 1000000, gravity = 0.000000003;
     private Sound sound;
 
-    public Player(String root, Vector2 hitBoxOffset, Vector2 hitBoxDimensions, Integer width, Integer height, Collisions collisions) {
-        super(new Vector2(0, 0), null, width, height, hitBoxOffset, hitBoxDimensions);
+    public Player(String root, Vector2 position, Origin origin, Vector2 hitBoxOffset, Vector2 hitBoxDimensions, Integer width, Integer height, Collisions collisions) {
+        super(position, origin, null, width, height, hitBoxOffset, hitBoxDimensions);
         this.sprites = new HashMap<>();
         this.position = new Vector2(position.x, position.y - height);
 
@@ -175,8 +176,8 @@ public class Player extends AbstractCollidable {
             return;
         this.jump = true;
         this.mainVelocity = new Vector2(this.mainVelocity.x, -2.7 * moveSpeed);
-        sound.setFile("jump");
-        sound.play("jump");
+//        sound.setFile("jump");
+//        sound.play("jump");
     }
 
     @Override

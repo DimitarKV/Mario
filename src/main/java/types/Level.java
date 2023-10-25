@@ -1,6 +1,7 @@
 package types;
 
 import entities.*;
+import enums.Origin;
 import utils.MapReader;
 import utils.TileSetReader;
 
@@ -28,7 +29,14 @@ public class Level {
         this.entities = new ArrayList<>();
         this.collisions = new Collisions();
 
-        this.player = new Player("./resources/players/" + playerName, new Vector2(4, 4), new Vector2(52, 60), 64, 64, this.collisions);
+        Integer pX = 400, pY = 100;
+        var startLayer = map.mapLayers.stream().filter(ml -> ml.name.equals("Start")).findFirst().orElse(null);
+        if(startLayer != null) {
+            pX = startLayer.objects.get(0).x;
+            pY = startLayer.objects.get(0).y;
+        }
+
+        this.player = new Player("./resources/players/" + playerName, new Vector2(pX, pY), Origin.BOTTOM_LEFT, new Vector2(4, 4), new Vector2(52, 60), 64, 64, this.collisions);
         this.player.setLayer(1);
         this.collisions.addMovingCollider(this.player);
         this.entities.add(player);
@@ -37,13 +45,7 @@ public class Level {
         this.camera.lockX(this.player, 128 + 32);
         this.camera.updatePosition();
 
-        Integer pX = 400, pY = 100;
-        var startLayer = map.mapLayers.stream().filter(ml -> ml.name.equals("Start")).findFirst().orElse(null);
-        if(startLayer != null) {
-            pX = startLayer.objects.get(0).x;
-            pY = startLayer.objects.get(0).y;
-        }
-        this.player.setBottomLeft(new Vector2(pX, pY));
+
 
         var tileLayers = map.mapLayers.stream().filter(ml -> ml.type.equals("tilelayer")).toList();
         if (tileLayers != null) {
@@ -71,10 +73,17 @@ public class Level {
         for (var objectLayer : objectLayers) {
             if(objectLayer.name.equals("Money")) {
                 for (var collidableEntity : objectLayer.objects) {
-                    BufferedImage imageOptional = tileset.get(collidableEntity.GId - 1);
+                    BufferedImage imageOptional = null;
+                    if(collidableEntity.GId != null && collidableEntity.GId != 0)
+                        imageOptional = tileset.get(collidableEntity.GId - 1);
+
+                    Origin origin = Origin.TOP_LEFT;
+                    if(collidableEntity.GId != null)
+                        origin = Origin.BOTTOM_LEFT;
 
                     Coin coin = new Coin(
                             new Vector2(collidableEntity.x, collidableEntity.y),
+                            origin,
                             imageOptional,
                             collidableEntity.width,
                             collidableEntity.height,
@@ -90,12 +99,16 @@ public class Level {
             else {
                 for (var collidableEntity : objectLayer.objects) {
                     BufferedImage imageOptional = null;
+                    Origin origin = Origin.TOP_LEFT;
+                    if(collidableEntity.GId != null)
+                        origin = Origin.BOTTOM_LEFT;
 
                     if(collidableEntity.GId != null && collidableEntity.GId != 0)
                         imageOptional = tileset.get(collidableEntity.GId - 1);
 
                     BasicCollisionObject object = new BasicCollisionObject(
                             new Vector2(collidableEntity.x, collidableEntity.y),
+                            origin,
                             imageOptional,
                             collidableEntity.width,
                             collidableEntity.height,

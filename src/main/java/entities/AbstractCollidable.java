@@ -1,5 +1,6 @@
 package entities;
 
+import enums.Origin;
 import interfaces.Collidable;
 import types.HitBox;
 import types.Vector2;
@@ -11,8 +12,8 @@ public abstract class AbstractCollidable extends AbstractEntity implements Colli
     protected Vector2 hitBoxDimensions;
     protected boolean isCollidable;
 
-    public AbstractCollidable(Vector2 position, BufferedImage image, Integer width, Integer height, Vector2 hitBoxOffset, Vector2 hitBoxDimensions) {
-        super(position, image, width, height);
+    public AbstractCollidable(Vector2 position, Origin origin, BufferedImage image, Integer width, Integer height, Vector2 hitBoxOffset, Vector2 hitBoxDimensions) {
+        super(position, origin, image, width, height);
         this.hitBoxOffset = hitBoxOffset;
         this.hitBoxDimensions = hitBoxDimensions;
         this.isCollidable = true;

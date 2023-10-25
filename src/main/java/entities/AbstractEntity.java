@@ -1,5 +1,6 @@
 package entities;
 
+import enums.Origin;
 import types.Vector2;
 
 import java.awt.image.BufferedImage;
@@ -9,8 +10,11 @@ public abstract class AbstractEntity {
     protected BufferedImage image;
     protected Integer width, height, layer = 0;
 
-    public AbstractEntity(Vector2 position, BufferedImage image, Integer width, Integer height) {
-        this.position = position;
+    public AbstractEntity(Vector2 position, Origin origin, BufferedImage image, Integer width, Integer height) {
+        if(origin == Origin.TOP_LEFT)
+            this.position = position;
+        else if(origin == Origin.BOTTOM_LEFT)
+            this.position = position.minus(new Vector2(0, height));
         this.image = image;
         this.width = width;
         this.height = height;
