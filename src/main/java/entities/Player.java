@@ -4,6 +4,7 @@ import enums.Origin;
 import enums.PlayerStateEnum;
 import exceptions.CouldNotReadFileException;
 import interfaces.Collidable;
+import interfaces.Updatable;
 import types.Sound;
 import types.Vector2;
 
@@ -14,7 +15,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.*;
 
-public class Player extends AbstractCollidable {
+public class Player extends AbstractCollidable implements Updatable {
     private final Map<PlayerStateEnum, List<BufferedImage>> sprites;
     private PlayerStateEnum currentState;
     private Integer spriteIndex = 0, spriteSpeed = 100, direction = 1;
@@ -68,11 +69,12 @@ public class Player extends AbstractCollidable {
         return this.mainVelocity.plus(this.left).plus(this.right);
     }
 
+    @Override
     public void move(Long delta) {
         Vector2 gForce = new Vector2(0, gravity * delta);
         this.mainVelocity = this.mainVelocity.plus(gForce);
 
-        if(jumpPressed)
+        if (jumpPressed)
             jump();
 
         Vector2 newPosition = this.position.plus(this.getTotalVelocity().times((double) delta / timeUnit));
@@ -86,7 +88,7 @@ public class Player extends AbstractCollidable {
 
         calculateSprite(newPosition, oldPosition);
 
-        if(this.mainVelocity.y != 0)
+        if (this.mainVelocity.y != 0)
             this.jump = true;
 
         this.setImage(this.sprites.get(this.currentState).get(this.spriteIndex));
@@ -133,8 +135,12 @@ public class Player extends AbstractCollidable {
     }
 
     private void correctX(Vector2 oldPosition) {
-        Collidable other = collisions.checkCollisions(this);
-        if (other != null) {
+        List<Collidable> collidedWith = collisions.checkCollisions(this);
+
+        for (var other : collidedWith) {
+            if (!other.isSolid())
+                continue;
+
             if (this.position.x - oldPosition.x > 0) {
                 this.position = new Vector2(other.getHitBox().getTopLeft().x - this.getHitBox().dimensions.x - this.hitBoxOffset.x, this.position.y);
 
@@ -145,8 +151,12 @@ public class Player extends AbstractCollidable {
     }
 
     private void correctY(Vector2 oldPosition) {
-        Collidable other = collisions.checkCollisions(this);
-        if (other != null) {
+        List<Collidable> collidedWith = collisions.checkCollisions(this);
+
+        for (var other : collidedWith) {
+            if (!other.isSolid())
+                continue;
+
             if (this.position.y - oldPosition.y > 0) {
                 this.position = new Vector2(this.position.x, other.getHitBox().getTopLeft().y - this.hitBoxDimensions.y - this.hitBoxOffset.y);
                 this.mainVelocity = new Vector2(this.mainVelocity.x, 0);
@@ -175,7 +185,7 @@ public class Player extends AbstractCollidable {
     }
 
     private void jump() {
-        if(jump)
+        if (jump)
             return;
         this.jump = true;
         this.mainVelocity = new Vector2(this.mainVelocity.x, -2.7 * moveSpeed);
@@ -185,6 +195,7 @@ public class Player extends AbstractCollidable {
 
 
     boolean jumpPressed = false;
+
     public void queueJump() {
         jumpPressed = true;
     }
@@ -195,9 +206,6 @@ public class Player extends AbstractCollidable {
 
     @Override
     public void collidedWith(Collidable other) {
-        if (other instanceof Coin) {
-           var coin = (Coin)other;
-           System.out.println(coin.getValue());
-        }
+
     }
 }

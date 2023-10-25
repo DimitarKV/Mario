@@ -65,7 +65,9 @@ public class Collisions {
 //        }
 //    }
 
-    public Collidable checkCollisions(Collidable collidable) {
+    public List<Collidable> checkCollisions(Collidable collidable) {
+        List<Collidable> collisions = new ArrayList<>();
+
         if(!collidable.isCollidable())
             return null;
 
@@ -77,7 +79,7 @@ public class Collisions {
             if(collidable.collidesWith(other)) {
                 collidable.collidedWith(other);
                 other.collidedWith(collidable);
-                return other;
+                collisions.add(other);
             }
         }
 
@@ -89,11 +91,11 @@ public class Collisions {
             if(collidable.collidesWith(other)){
                 collidable.collidedWith(other);
                 other.collidedWith(collidable);
-                return other;
+                collisions.add(other);
             }
         }
 
-        return null;
+        return collisions;
     }
 
    // public Vector2 collidesWith() {
