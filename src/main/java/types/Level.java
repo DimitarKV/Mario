@@ -89,8 +89,9 @@ public class Level {
                             collidableEntity.height,
                             new Vector2(),
                             new Vector2(collidableEntity.width, collidableEntity.height), 1);
-
                     coin.setLayer(3);
+                    coin.setSolid(false);
+
                     entities.add(coin);
                     this.collisions.addStationaryCollider(coin);
                 }
