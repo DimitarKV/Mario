@@ -3,6 +3,7 @@ package game;
 import entities.AbstractEntity;
 import entities.Camera;
 import enums.Origin;
+import types.MarioFont;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -21,20 +22,14 @@ public class MarioPanel extends JPanel {
     private final Camera camera;
     private JLabel coins;
     private int coinCounter;
-    private Font mario;
+    private MarioFont mario;
 
 
     public MarioPanel(Camera camera) {
         this.entities = new ArrayList<>();
         super.setLayout(new BorderLayout());
 
-        try {
-            mario = Font.createFont(Font.TRUETYPE_FONT, new File("./resources/fonts/SuperMario256.ttf"));
-        } catch (IOException e) {
-            System.out.println("No font found");
-        } catch (FontFormatException e) {
-            System.out.println("Wrong font format");
-        }
+        mario = new MarioFont();
 
         coins = new JLabel();
         coins.setText("Coins: " + coinCounter);

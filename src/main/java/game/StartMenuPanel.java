@@ -1,5 +1,7 @@
 package game;
 
+import types.MarioFont;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
@@ -9,7 +11,7 @@ import java.io.IOException;
 
 public class StartMenuPanel extends JPanel {
     private JLayeredPane layers;
-    private Font mario;
+    private MarioFont mario;
     private JLabel title;
     private JButton start;
     private JButton levels;
@@ -31,13 +33,7 @@ public class StartMenuPanel extends JPanel {
         layers = new JLayeredPane();
 
         //Font
-        try {
-            mario = Font.createFont(Font.TRUETYPE_FONT, new File("./resources/fonts/SuperMario256.ttf"));
-        } catch (IOException e) {
-            System.out.println("No font found");
-        } catch (FontFormatException e) {
-            System.out.println("Wrong font format");
-        }
+        mario = new MarioFont();
 
         //Images
         buttonIcon = new ImageIcon("./resources/ui-elements/img.png");

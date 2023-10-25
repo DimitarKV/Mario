@@ -173,7 +173,11 @@ public class MarioGame implements KeyListener, ActionListener, ChangeListener {
 
     @Override
     public void stateChanged(ChangeEvent e) {
-        sound.setCurrentVolume(levelsMenuPanel.getSoundSlider().getValue());
-        sound.getFloatControl().setValue(levelsMenuPanel.getSoundSlider().getValue());
+        if(this.state == StateEnum.LEVELS){
+            sound.setCurrentVolume(levelsMenuPanel.getSoundSlider().getValue());
+            sound.getFloatControl().setValue(levelsMenuPanel.getSoundSlider().getValue());
+        } else {
+            return;
+        }
     }
 }
