@@ -95,20 +95,13 @@ public class LevelsMenuPanel extends JPanel {
         soundTitle.setHorizontalAlignment(SwingConstants.CENTER);
         soundTitle.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        soundSlider = new JSlider(0,100,50);
+        soundSlider = new JSlider(-80,6,-30);
         soundSlider.setBackground(new Color(0,0,0,0));
         soundSlider.setMaximumSize(new Dimension(600,300));
         soundSlider.setPreferredSize(new Dimension(400,200));
-        soundSlider.setPaintTicks(true);
-        soundSlider.setMinorTickSpacing(10);
-        soundSlider.setPaintTrack(true);
-        soundSlider.setMajorTickSpacing(25);
-        soundSlider.setPaintLabels(true);
-        soundSlider.setFont(mario.deriveFont(10f));
-        soundSlider.setForeground(new Color(255,255,255));
 
         soundPanel = new JPanel(new BorderLayout());
-        soundPanel.setBounds(0, 0 , frame.getWidth(), 400);
+        soundPanel.setBounds(0, 0 , 700, 400);
         soundPanel.add(soundTitle, BorderLayout.NORTH);
         soundPanel.add(soundSlider, BorderLayout.CENTER);
         soundPanel.setOpaque(false);

@@ -8,6 +8,7 @@ import java.io.IOException;
 
 
 public class StartMenuPanel extends JPanel {
+    private JLayeredPane layers;
     private Font mario;
     private JLabel title;
     private JButton start;
@@ -16,7 +17,8 @@ public class StartMenuPanel extends JPanel {
     private JPanel buttonsPanel;
     private JPanel titlePanel;
     private JLabel filler;
-    private JLabel frameTiles;
+    private JLabel frameImg;
+    private JPanel frameTiles;
     private MarioFrame frame;
     private ImageIcon buttonIcon;
     private ImageIcon frameIcon;
@@ -26,6 +28,7 @@ public class StartMenuPanel extends JPanel {
         super.setLayout(new BorderLayout(30,40));
         super.setBackground(new Color(0,0,0,150));
         this.frame = frame;
+        layers = new JLayeredPane();
 
         //Font
         try {
@@ -42,15 +45,16 @@ public class StartMenuPanel extends JPanel {
         buttonImage = buttonImage.getScaledInstance(350,100, Image.SCALE_SMOOTH);
         buttonIcon = new ImageIcon(buttonImage);
 
-        frameIcon = new ImageIcon("./resources/ui-elements/framePixel.gif");
+        frameIcon = new ImageIcon("./resources/ui-elements/frame.png");
         Image frameImage = frameIcon.getImage();
-        frameImage = frameImage.getScaledInstance(frame.getWidth(),40, Image.SCALE_DEFAULT);
+        frameImage = frameImage.getScaledInstance(frame.getWidth(),40, Image.SCALE_SMOOTH);
         frameIcon = new ImageIcon(frameImage);
 
-        frameTiles = new JLabel();
-        frameTiles.setIcon(frameIcon);
-        super.add(frameTiles, BorderLayout.BEFORE_FIRST_LINE);
-
+        frameImg = new JLabel();
+        frameImg.setIcon(frameIcon);
+        frameTiles = new JPanel();
+        frameTiles.setPreferredSize(new Dimension(frame.getWidth(), frame.getHeight()));
+        frameTiles.add(frameImg);
 
         //Title panel
         title = new JLabel();
@@ -110,6 +114,8 @@ public class StartMenuPanel extends JPanel {
         exit.setActionCommand("Exit");
         buttonsPanel.add(exit);
 
+        layers.add(this);
+        layers.add(frameTiles);
         super.setVisible(true);
     }
     public JButton getStart() {

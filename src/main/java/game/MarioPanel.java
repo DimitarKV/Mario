@@ -5,8 +5,11 @@ import entities.Camera;
 import enums.Origin;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -16,10 +19,31 @@ public class MarioPanel extends JPanel {
 
     private final Map<Integer, List<AbstractEntity>> entities;
     private final Camera camera;
+    private JLabel coins;
+    private int coinCounter;
+    private Font mario;
 
 
     public MarioPanel(Camera camera) {
         this.entities = new HashMap<>();
+
+        super.setLayout(new BorderLayout());
+
+        try {
+            mario = Font.createFont(Font.TRUETYPE_FONT, new File("./resources/fonts/SuperMario256.ttf"));
+        } catch (IOException e) {
+            System.out.println("No font found");
+        } catch (FontFormatException e) {
+            System.out.println("Wrong font format");
+        }
+
+        coins = new JLabel();
+        coins.setText("Coins: " + coinCounter);
+        coins.setForeground(new Color(255,255,255));
+        coins.setBorder(new EmptyBorder(20, 20, 0, 0));
+        coins.setFont(mario.deriveFont(40f));
+        super.add(coins, BorderLayout.PAGE_START);
+
         super.setFocusable(true);
         super.setBackground(new Color(137, 218, 250));
         super.setVisible(true);

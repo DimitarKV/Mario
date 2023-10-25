@@ -5,20 +5,19 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.FloatControl;
 import java.io.File;
-import java.util.TreeMap;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Sound {
     private Clip clip;
-    private float previousVolume;
     private float currentVolume;
     private FloatControl floatControl;
     private AudioInputStream audio;
-    private TreeMap<String,File> sounds;
-
+    private Map<String,File> sounds;
+    private static Sound instance = null;
     public Sound(){
-        previousVolume = 0;
         currentVolume = 0;
-        sounds = new TreeMap<>();
+        sounds = new HashMap<>();
         sounds.put("themeSong",new File("./resources/sounds/themeSong.wav"));
         sounds.put("jump", new File("./resources/sounds/jump.wav"));
     }
@@ -33,6 +32,9 @@ public class Sound {
         }
     }
     public void play(String fileKey){
+        if(clip.isActive()){
+            clip.flush();
+        }
         clip.start();
     }
 
@@ -40,4 +42,18 @@ public class Sound {
         clip.loop(Clip.LOOP_CONTINUOUSLY);
     }
 
+    public FloatControl getFloatControl() {
+        return floatControl;
+    }
+
+    public void setCurrentVolume(float currentVolume) {
+        this.currentVolume = currentVolume;
+    }
+
+    public static Sound getInstance() {
+        if (instance == null){
+            Sound.instance = new Sound();
+        }
+        return instance;
+    }
 }
