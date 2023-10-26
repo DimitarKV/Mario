@@ -31,11 +31,17 @@ public class Sound {
             System.out.println("Audio error");
         }
     }
-    public void play(String fileKey){
-        if(clip.isActive()){
-            clip.flush();
-        }
+
+    public AudioInputStream getAudio() {
+        return audio;
+    }
+
+    public void play(String fileKey) {
         clip.start();
+    }
+
+    public void stop(String fileKey) {
+        clip.stop();
     }
 
     public void loop(String fileKey){

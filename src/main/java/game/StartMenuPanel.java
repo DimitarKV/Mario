@@ -25,6 +25,7 @@ public class StartMenuPanel extends JPanel {
     private MarioFrame frame;
     private ImageIcon buttonIcon;
     private BufferedImage frameBackground;
+
     public StartMenuPanel(MarioFrame frame) throws IOException {
         super.setFocusable(true);
         super.setOpaque(true);
@@ -33,7 +34,6 @@ public class StartMenuPanel extends JPanel {
         this.frame = frame;
 
         frameBackground = ImageIO.read(new File("./resources/ui-elements/frame.png"));
-
 
         //Font
         mario = new MarioFont();
@@ -44,16 +44,14 @@ public class StartMenuPanel extends JPanel {
         buttonImage = buttonImage.getScaledInstance(350, 100, Image.SCALE_SMOOTH);
         buttonIcon = new ImageIcon(buttonImage);
 
-
-
         //Title panel
         title = new JLabel();
         title.setText("TU/e Yoshi");
         title.setForeground(new Color(255, 255, 255));
-        title.setBorder(new EmptyBorder(100, 0, 0, 0));
-        title.setFont(mario.deriveFont(80f));
+        title.setBorder(new EmptyBorder(0, 0, 200, 0));
+        title.setFont(mario.deriveFont(100f));
         title.setHorizontalAlignment(SwingConstants.CENTER);
-        title.setAlignmentX(Component.CENTER_ALIGNMENT);
+        title.setAlignmentY(Component.TOP_ALIGNMENT);
 
         titlePanel = new JPanel(new BorderLayout());
         titlePanel.setBounds(0, 0, frame.getWidth(), 500);
@@ -65,12 +63,12 @@ public class StartMenuPanel extends JPanel {
         buttonsPanel = new JPanel(new GridLayout(7, 1, 20, 20));
         buttonsPanel.setOpaque(false);
         buttonsPanel.setMaximumSize(new Dimension(1000, 100));
-        buttonsPanel.setPreferredSize(new Dimension(450, 0));
+        buttonsPanel.setPreferredSize(new Dimension(550, 0));
         super.add(buttonsPanel, BorderLayout.EAST);
 
         filler = new JLabel();
         buttonsPanel.add(filler);
-        buttonsPanel.setBorder(new EmptyBorder(0, 0, 0, 100));
+        buttonsPanel.setBorder(new EmptyBorder(200, 0, 0, 200));
 
         start = new JButton("START");
         start.setBorder(new EmptyBorder(10, 10, 10, 10));
