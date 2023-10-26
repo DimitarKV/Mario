@@ -28,8 +28,8 @@ public class StartMenuPanel extends JPanel {
     public StartMenuPanel(MarioFrame frame) throws IOException {
         super.setFocusable(true);
         super.setOpaque(true);
-        super.setLayout(new BorderLayout(30,40));
-        super.setBackground(new Color(0,0,0,150));
+        super.setLayout(new BorderLayout(30, 40));
+        super.setBackground(new Color(0, 0, 0, 150));
         this.frame = frame;
 
         frameBackground = ImageIO.read(new File("./resources/ui-elements/frame.png"));
@@ -41,31 +41,31 @@ public class StartMenuPanel extends JPanel {
         //Images
         buttonIcon = new ImageIcon("./resources/ui-elements/img.png");
         Image buttonImage = buttonIcon.getImage();
-        buttonImage = buttonImage.getScaledInstance(350,100, Image.SCALE_SMOOTH);
+        buttonImage = buttonImage.getScaledInstance(350, 100, Image.SCALE_SMOOTH);
         buttonIcon = new ImageIcon(buttonImage);
 
 
 
         //Title panel
         title = new JLabel();
-        title.setText("TU/e Mario");
-        title.setForeground(new Color(255,255,255));
+        title.setText("TU/e Yoshi");
+        title.setForeground(new Color(255, 255, 255));
         title.setBorder(new EmptyBorder(100, 0, 0, 0));
         title.setFont(mario.deriveFont(80f));
         title.setHorizontalAlignment(SwingConstants.CENTER);
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         titlePanel = new JPanel(new BorderLayout());
-        titlePanel.setBounds(0, 0 , frame.getWidth(), 500);
+        titlePanel.setBounds(0, 0, frame.getWidth(), 500);
         titlePanel.add(title, BorderLayout.CENTER);
         titlePanel.setOpaque(false);
-        super.add(titlePanel, BorderLayout.NORTH);
+        super.add(titlePanel, BorderLayout.CENTER);
 
         //Button panel
-        buttonsPanel = new JPanel(new GridLayout(7,1, 20,20));
+        buttonsPanel = new JPanel(new GridLayout(7, 1, 20, 20));
         buttonsPanel.setOpaque(false);
-        buttonsPanel.setMaximumSize(new Dimension(1000,100));
-        buttonsPanel.setPreferredSize(new Dimension(450,0));
+        buttonsPanel.setMaximumSize(new Dimension(1000, 100));
+        buttonsPanel.setPreferredSize(new Dimension(450, 0));
         super.add(buttonsPanel, BorderLayout.EAST);
 
         filler = new JLabel();
@@ -76,17 +76,17 @@ public class StartMenuPanel extends JPanel {
         start.setBorder(new EmptyBorder(10, 10, 10, 10));
         start.setOpaque(false);
         start.setIcon(buttonIcon);
-        start.setBackground(new Color(0,0,0,0));
-        start.setMaximumSize(new Dimension(500,20));
+        start.setBackground(new Color(0, 0, 0, 0));
+        start.setMaximumSize(new Dimension(500, 20));
         start.setHorizontalTextPosition(SwingConstants.CENTER);
         start.setFont(mario.deriveFont(40f));
-        start.setPreferredSize(new Dimension(500,20));
+        start.setPreferredSize(new Dimension(500, 20));
         start.setActionCommand("Start");
         buttonsPanel.add(start);
 
         levels = new JButton("LEVELS");
         levels.setOpaque(false);
-        levels.setBackground(new Color(0,0,0,0));
+        levels.setBackground(new Color(0, 0, 0, 0));
         levels.setIcon(buttonIcon);
         levels.setBorder(new EmptyBorder(10, 10, 10, 10));
         levels.setHorizontalTextPosition(SwingConstants.CENTER);
@@ -96,7 +96,7 @@ public class StartMenuPanel extends JPanel {
 
         exit = new JButton("EXIT");
         exit.setOpaque(false);
-        exit.setBackground(new Color(0,0,0,0));
+        exit.setBackground(new Color(0, 0, 0, 0));
         exit.setIcon(buttonIcon);
         exit.setBorder(new EmptyBorder(10, 10, 10, 10));
         exit.setHorizontalTextPosition(SwingConstants.CENTER);
@@ -121,6 +121,6 @@ public class StartMenuPanel extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        g.drawImage(frameBackground, 0 ,0, this.getWidth()-10, this.getHeight()-35,null);
+        g.drawImage(frameBackground, 0 , 0, this.getWidth() - 10, this.getHeight() - 35, null);
     }
 }

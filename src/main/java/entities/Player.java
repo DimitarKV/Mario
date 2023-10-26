@@ -96,9 +96,9 @@ public class Player extends AbstractCollidable implements Updatable {
     }
 
     private void calculateSprite(Vector2 newPosition, Vector2 oldPosition) {
-        if (newPosition.equals(oldPosition))
+        if (newPosition.equals(oldPosition)) {
             return;
-
+        }
         if (this.getTotalVelocity().x != 0)
             this.direction = this.getTotalVelocity().x > 0 ? 1 : -1;
         if (jump) {
@@ -207,7 +207,7 @@ public class Player extends AbstractCollidable implements Updatable {
 
     @Override
     public void collidedWith(Collidable other) {
-        if(other instanceof Coin) {
+        if (other instanceof Coin) {
             coinsCount++;
         } else if (other instanceof GameOverEntity) {
             won = true;

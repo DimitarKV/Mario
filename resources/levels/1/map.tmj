@@ -1786,11 +1786,8 @@
         {
          "firstgid":1,
          "source":"tileset.tsj"
-        }, 
-        {
-         "firstgid":784,
-         "source":"default-tileset3.tsj"
-        }],
+        }
+        ],
  "tilewidth":64,
  "type":"map",
  "version":"1.10",
