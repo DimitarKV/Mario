@@ -2,15 +2,16 @@ package game;
 
 import types.MarioFont;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
 
 public class StartMenuPanel extends JPanel {
-    private JLayeredPane layers;
     private MarioFont mario;
     private JLabel title;
     private JButton start;
@@ -23,14 +24,16 @@ public class StartMenuPanel extends JPanel {
     private JPanel frameTiles;
     private MarioFrame frame;
     private ImageIcon buttonIcon;
-    private ImageIcon frameIcon;
+    private BufferedImage frameBackground;
     public StartMenuPanel(MarioFrame frame) throws IOException {
         super.setFocusable(true);
         super.setOpaque(true);
         super.setLayout(new BorderLayout(30,40));
         super.setBackground(new Color(0,0,0,150));
         this.frame = frame;
-        layers = new JLayeredPane();
+
+        frameBackground = ImageIO.read(new File("./resources/ui-elements/frame.png"));
+
 
         //Font
         mario = new MarioFont();
@@ -41,16 +44,7 @@ public class StartMenuPanel extends JPanel {
         buttonImage = buttonImage.getScaledInstance(350,100, Image.SCALE_SMOOTH);
         buttonIcon = new ImageIcon(buttonImage);
 
-        frameIcon = new ImageIcon("./resources/ui-elements/frame.png");
-        Image frameImage = frameIcon.getImage();
-        frameImage = frameImage.getScaledInstance(frame.getWidth(),40, Image.SCALE_SMOOTH);
-        frameIcon = new ImageIcon(frameImage);
 
-        frameImg = new JLabel();
-        frameImg.setIcon(frameIcon);
-        frameTiles = new JPanel();
-        frameTiles.setPreferredSize(new Dimension(frame.getWidth(), frame.getHeight()));
-        frameTiles.add(frameImg);
 
         //Title panel
         title = new JLabel();
@@ -110,8 +104,6 @@ public class StartMenuPanel extends JPanel {
         exit.setActionCommand("Exit");
         buttonsPanel.add(exit);
 
-        layers.add(this);
-        layers.add(frameTiles);
         super.setVisible(true);
     }
     public JButton getStart() {
@@ -124,5 +116,11 @@ public class StartMenuPanel extends JPanel {
 
     public JButton getExit() {
         return exit;
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        g.drawImage(frameBackground, 0 ,0, this.getWidth()-10, this.getHeight()-35,null);
     }
 }
