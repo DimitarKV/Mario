@@ -167,6 +167,7 @@ public class MarioGame implements KeyListener, ActionListener, ChangeListener {
                     this.level.deJump();
                 }
                 case KeyEvent.VK_SPACE -> {
+                    this.level.deJump();
                 }
             }
         }
