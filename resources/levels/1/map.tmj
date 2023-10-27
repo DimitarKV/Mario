@@ -48,7 +48,7 @@
          "name":"entities.Tile Layer 1",
          "opacity":1,
          "type":"tilelayer",
-         "visible":false,
+         "visible":true,
          "width":220,
          "x":0,
          "y":0
@@ -1767,12 +1767,12 @@
                  "type":"",
                  "visible":true,
                  "width":0,
-                 "x":576,
+                 "x":640,
                  "y":960
                 }],
          "opacity":1,
          "type":"objectgroup",
-         "visible":false,
+         "visible":true,
          "x":0,
          "y":0
         }],
@@ -1785,9 +1785,8 @@
  "tilesets":[
         {
          "firstgid":1,
-         "source":"tileset.tsj"
-        }
-        ],
+         "source":"..\/..\/tilesets\/tileset.tsj"
+        }],
  "tilewidth":64,
  "type":"map",
  "version":"1.10",
