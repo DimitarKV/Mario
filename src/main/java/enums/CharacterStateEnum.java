@@ -6,5 +6,6 @@ public enum CharacterStateEnum {
     STATIONARY_RIGHT,
     MOVING_RIGHT,
     AIRBORNE_LEFT,
-    AIRBORNE_RIGHT
+    AIRBORNE_RIGHT,
+    DEAD
 }

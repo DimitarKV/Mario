@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.util.*;
 
 public class Player extends AbstractCharacter {
-    private boolean won = false, died = false;
+    private boolean won = false;
     private Sound sound;
 
     public Player(String spriteRoot, Vector2 position, Origin origin, Vector2 hitBoxOffset, Vector2 hitBoxDimensions, Integer width, Integer height, Collisions collisions) {
@@ -40,7 +40,13 @@ public class Player extends AbstractCharacter {
         } else if (other instanceof GameOverEntity) {
             won = true;
         } else if (other instanceof DieEntity) {
-            died = true;
+            dead = true;
+        } else if (other instanceof Enemy) {
+            if (this.getHitBox().getBottomLeft().y > other.getHitBox().getTopLeft().y + (other.getHitBox().dimensions.y / 4)) {
+                this.dead = true;
+            } else {
+                this.coinsCount += 69;
+            }
         }
     }
 
@@ -53,6 +59,6 @@ public class Player extends AbstractCharacter {
     }
 
     public boolean isDead() {
-        return this.died;
+        return this.dead;
     }
 }

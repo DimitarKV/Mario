@@ -41,7 +41,7 @@ public class Level {
             pY = startLayer.objects.get(0).y;
         }
 
-        this.player = new Player("./resources/players/" + playerName, new Vector2(pX, pY), Origin.BOTTOM_LEFT, new Vector2(4, 4), new Vector2(52, 60), 64, 64, this.collisions);
+        this.player = new Player("./resources/characters/" + playerName, new Vector2(pX, pY), Origin.BOTTOM_LEFT, new Vector2(4, 4), new Vector2(52, 60), 64, 64, this.collisions);
         this.player.setLayer(1);
         this.collisions.addMovingCollider(this.player);
         this.entities.add(player);
@@ -111,7 +111,7 @@ public class Level {
 
                     entities.add(gameOverEntity);
                     this.collisions.addStationaryCollider(gameOverEntity);
-                } else if(objectLayer.name.equals("Die")) {
+                } else if (objectLayer.name.equals("Die")) {
                     DieEntity dieEntity = new DieEntity(
                             new Vector2(collidableEntity.x, collidableEntity.y),
                             origin,
@@ -124,8 +124,13 @@ public class Level {
 
                     entities.add(dieEntity);
                     this.collisions.addStationaryCollider(dieEntity);
-                }
-                else {
+                } else if (objectLayer.name.equals("Enemy")) {
+                    Enemy enemy = new Enemy("./resources/characters/enemy", camera, new Vector2(collidableEntity.x, collidableEntity.y), Origin.BOTTOM_LEFT, 64, 64, new Vector2(), new Vector2(64, 64), collisions);
+                    enemy.walkLeft();
+                    updatables.add(enemy);
+                    entities.add(enemy);
+                    this.collisions.addMovingCollider(enemy);
+                } else {
                     BasicCollisionObject object = new BasicCollisionObject(
                             new Vector2(collidableEntity.x, collidableEntity.y),
                             origin,
@@ -159,7 +164,7 @@ public class Level {
     public void update(Long delta) {
         if (this.player.isWon()) {
             this.won = true;
-        } else if(this.player.isDead()) {
+        } else if (this.player.isDead()) {
             this.dead = true;
         }
         this.player.move(delta);
@@ -200,6 +205,7 @@ public class Level {
     public boolean isWon() {
         return this.won;
     }
+
     public boolean isDead() {
         return this.dead;
     }

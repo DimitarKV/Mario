@@ -17,10 +17,10 @@ public abstract class AbstractCharacter extends AbstractCollidable implements Up
     protected final Map<CharacterStateEnum, List<BufferedImage>> sprites = new HashMap<>();
     protected CharacterStateEnum currentState = CharacterStateEnum.STATIONARY_RIGHT;
     protected Integer spriteIndex = 0, spriteSpeed = 100, direction = 1, coinsCount = 0;
-    protected boolean jumpPressed = false, jump = false;
+    protected boolean jumpPressed = false, jump = false, dead = false;
     protected final Collisions collisions;
     protected Vector2 mainVelocity = new Vector2(), left = new Vector2(), right = new Vector2();
-    protected final double moveSpeed = 0.5, timeUnit = 1000000, gravity = 0.000000003;
+    protected double moveSpeed = 0.5, timeUnit = 1000000, gravity = 0.000000003;
 
     public AbstractCharacter(String spriteRoot, Vector2 position, Origin origin, BufferedImage image, Integer width, Integer height, Vector2 hitBoxOffset, Vector2 hitBoxDimensions, Collisions collisions) {
         super(position, origin, image, width, height, hitBoxOffset, hitBoxDimensions);
@@ -29,7 +29,7 @@ public abstract class AbstractCharacter extends AbstractCollidable implements Up
         loadSprites(spriteRoot);
     }
 
-    private void loadSprites(String root) {
+    protected void loadSprites(String root) {
         try {
             File rootFolder = new File(root);
             if (!rootFolder.canRead())
@@ -38,8 +38,9 @@ public abstract class AbstractCharacter extends AbstractCollidable implements Up
             for (var state : CharacterStateEnum.values()) {
                 sprites.put(state, new ArrayList<>());
                 File stateFolder = rootFolder.toPath().resolve(state.name()).toFile();
-                if (stateFolder.listFiles() == null)
-                    throw new CouldNotReadFileException("Could not resolve [" + stateFolder.getPath() + "]'s children files.");
+                if (stateFolder.listFiles() == null) {
+                    continue;
+                }
                 List<File> children = new ArrayList<>(Arrays.stream(stateFolder.listFiles()).toList());
                 children.sort(Comparator.comparing(File::getName));
                 for (File child : children) {
@@ -51,7 +52,7 @@ public abstract class AbstractCharacter extends AbstractCollidable implements Up
         }
     }
 
-    private void calculateSprite(Vector2 newPosition, Vector2 oldPosition) {
+    protected void calculateSprite(Vector2 newPosition, Vector2 oldPosition) {
         if (newPosition.equals(oldPosition)) {
             return;
         }
@@ -83,15 +84,15 @@ public abstract class AbstractCharacter extends AbstractCollidable implements Up
         this.spriteIndex = (int) ((System.currentTimeMillis() / this.spriteSpeed) % this.sprites.get(this.currentState).size());
     }
 
-    private void translateX(Vector2 newPosition) {
+    protected void translateX(Vector2 newPosition) {
         this.position = new Vector2(newPosition.x, this.position.y);
     }
 
-    private void translateY(Vector2 newPosition) {
+    protected void translateY(Vector2 newPosition) {
         this.position = new Vector2(this.position.x, newPosition.y);
     }
 
-    private void correctX(Vector2 oldPosition) {
+    protected void correctX(Vector2 oldPosition) {
         List<Collidable> collidedWith = collisions.checkCollisions(this);
 
         for (var other : collidedWith) {
@@ -107,7 +108,7 @@ public abstract class AbstractCharacter extends AbstractCollidable implements Up
         }
     }
 
-    private void correctY(Vector2 oldPosition) {
+    protected void correctY(Vector2 oldPosition) {
         List<Collidable> collidedWith = collisions.checkCollisions(this);
 
         for (var other : collidedWith) {
@@ -127,6 +128,9 @@ public abstract class AbstractCharacter extends AbstractCollidable implements Up
 
     @Override
     public void move(Long delta) {
+        if(dead)
+            return;
+
         Vector2 gForce = new Vector2(0, gravity * delta);
         this.mainVelocity = this.mainVelocity.plus(gForce);
 
@@ -184,5 +188,11 @@ public abstract class AbstractCharacter extends AbstractCollidable implements Up
 
     public void dequeueJump() {
         jumpPressed = false;
+    }
+
+    @Override
+    public void collidedWith(Collidable other) {
+        if (other instanceof DieEntity)
+            this.dead = true;
     }
 }

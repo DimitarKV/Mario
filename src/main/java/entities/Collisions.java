@@ -69,7 +69,7 @@ public class Collisions {
         List<Collidable> collisions = new ArrayList<>();
 
         if(!collidable.isCollidable())
-            return null;
+            return collisions;
 
         for (var other :
                 this.moving) {
