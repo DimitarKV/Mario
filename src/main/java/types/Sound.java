@@ -19,10 +19,11 @@ public class Sound {
     public Sound() {
         currentVolume = 0;
         sounds = new HashMap<>();
-        sounds.put("themeSong",new File("./resources/sounds/themeSong.wav"));
+        sounds.put("themeSong", new File("./resources/sounds/themeSong.wav"));
         sounds.put("jump", new File("./resources/sounds/jump.wav"));
         sounds.put("die", new File("./resources/sounds/die.wav"));
         sounds.put("win", new File("./resources/sounds/win.wav"));
+        sounds.put("coin", new File("./resources/sounds/coin.wav"));
     }
 
     public void setFile(String fileKey) {
