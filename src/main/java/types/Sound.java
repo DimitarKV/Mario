@@ -15,19 +15,23 @@ public class Sound {
     private AudioInputStream audio;
     private Map<String,File> sounds;
     private static Sound instance = null;
-    public Sound(){
+
+    public Sound() {
         currentVolume = 0;
         sounds = new HashMap<>();
         sounds.put("themeSong",new File("./resources/sounds/themeSong.wav"));
         sounds.put("jump", new File("./resources/sounds/jump.wav"));
+        sounds.put("die", new File("./resources/sounds/die.wav"));
+        sounds.put("win", new File("./resources/sounds/win.wav"));
     }
-    public void setFile(String fileKey){
-        try{
+
+    public void setFile(String fileKey) {
+        try {
             audio = AudioSystem.getAudioInputStream(sounds.get(fileKey));
             clip = AudioSystem.getClip();
             clip.open(audio);
-            floatControl = (FloatControl)clip.getControl(FloatControl.Type.MASTER_GAIN);
-        } catch (Exception e){
+            floatControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+        } catch (Exception e) {
             System.out.println("Audio error");
         }
     }
@@ -44,7 +48,7 @@ public class Sound {
         clip.stop();
     }
 
-    public void loop(String fileKey){
+    public void loop(String fileKey) {
         clip.loop(Clip.LOOP_CONTINUOUSLY);
     }
 
@@ -57,7 +61,7 @@ public class Sound {
     }
 
     public static Sound getInstance() {
-        if (instance == null){
+        if (instance == null) {
             Sound.instance = new Sound();
         }
         return instance;

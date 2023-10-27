@@ -10,13 +10,11 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-
-public class StartMenuPanel extends JPanel {
+public class WinPanel extends JPanel {
     private MarioFont mario;
     private JLabel title;
-    private JButton start;
+    private JButton nextLevel;
     private JButton levels;
-    private JButton exit;
     private JPanel buttonsPanel;
     private JPanel titlePanel;
     private JLabel filler;
@@ -24,7 +22,7 @@ public class StartMenuPanel extends JPanel {
     private ImageIcon buttonIcon;
     private BufferedImage frameBackground;
 
-    public StartMenuPanel(MarioFrame frame) throws IOException {
+    public WinPanel(MarioFrame frame) throws IOException {
         super.setFocusable(true);
         super.setOpaque(true);
         super.setLayout(new BorderLayout(30, 40));
@@ -44,9 +42,9 @@ public class StartMenuPanel extends JPanel {
 
         //Title panel
         title = new JLabel();
-        title.setText("TU/e Yoshi");
+        title.setText("You won!");
         title.setForeground(new Color(255, 255, 255));
-        title.setBorder(new EmptyBorder(0, 0, 200, 0));
+        title.setBorder(new EmptyBorder(300, 0, 0, 0));
         title.setFont(mario.deriveFont(100f));
         title.setHorizontalAlignment(SwingConstants.CENTER);
         title.setAlignmentY(Component.TOP_ALIGNMENT);
@@ -55,30 +53,28 @@ public class StartMenuPanel extends JPanel {
         titlePanel.setBounds(0, 0, frame.getWidth(), 500);
         titlePanel.add(title, BorderLayout.CENTER);
         titlePanel.setOpaque(false);
-        super.add(titlePanel, BorderLayout.CENTER);
+        super.add(titlePanel, BorderLayout.NORTH);
 
         //Button panel
-        buttonsPanel = new JPanel(new GridLayout(7, 1, 20, 20));
+        buttonsPanel = new JPanel(new GridLayout(1, 2, 20, 20));
         buttonsPanel.setOpaque(false);
         buttonsPanel.setMaximumSize(new Dimension(1000, 100));
         buttonsPanel.setPreferredSize(new Dimension(550, 0));
-        super.add(buttonsPanel, BorderLayout.EAST);
+        super.add(buttonsPanel, BorderLayout.CENTER);
 
-        filler = new JLabel();
-        buttonsPanel.add(filler);
-        buttonsPanel.setBorder(new EmptyBorder(200, 0, 0, 200));
+        buttonsPanel.setBorder(new EmptyBorder(0, 0, 0, 0));
 
-        start = new JButton("START");
-        start.setBorder(new EmptyBorder(10, 10, 10, 10));
-        start.setOpaque(false);
-        start.setIcon(buttonIcon);
-        start.setBackground(new Color(0, 0, 0, 0));
-        start.setMaximumSize(new Dimension(500, 20));
-        start.setHorizontalTextPosition(SwingConstants.CENTER);
-        start.setFont(mario.deriveFont(40f));
-        start.setPreferredSize(new Dimension(500, 20));
-        start.setActionCommand("Start");
-        buttonsPanel.add(start);
+        nextLevel = new JButton("NEXT LEVEL");
+        nextLevel.setBorder(new EmptyBorder(10, 10, 10, 10));
+        nextLevel.setOpaque(false);
+        nextLevel.setIcon(buttonIcon);
+        nextLevel.setBackground(new Color(0, 0, 0, 0));
+        nextLevel.setMaximumSize(new Dimension(500, 20));
+        nextLevel.setHorizontalTextPosition(SwingConstants.CENTER);
+        nextLevel.setFont(mario.deriveFont(40f));
+        nextLevel.setPreferredSize(new Dimension(500, 20));
+        nextLevel.setActionCommand("NextLevel");
+        buttonsPanel.add(nextLevel);
 
         levels = new JButton("LEVELS");
         levels.setOpaque(false);
@@ -90,28 +86,14 @@ public class StartMenuPanel extends JPanel {
         levels.setActionCommand("Levels");
         buttonsPanel.add(levels);
 
-        exit = new JButton("EXIT");
-        exit.setOpaque(false);
-        exit.setBackground(new Color(0, 0, 0, 0));
-        exit.setIcon(buttonIcon);
-        exit.setBorder(new EmptyBorder(10, 10, 10, 10));
-        exit.setHorizontalTextPosition(SwingConstants.CENTER);
-        exit.setFont(mario.deriveFont(40f));
-        exit.setActionCommand("Exit");
-        buttonsPanel.add(exit);
-
         super.setVisible(true);
     }
-    public JButton getStart() {
-        return start;
+    public JButton getNextLevel() {
+        return nextLevel;
     }
 
     public JButton getLevels() {
         return levels;
-    }
-
-    public JButton getExit() {
-        return exit;
     }
 
     @Override

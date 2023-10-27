@@ -27,7 +27,7 @@ public class Level {
         File mapFile = new File("./resources/levels/" + level + "/map.tmj");
         this.map = MapReader.readMap(mapFile);
 
-        String tilesetPath = mapFile.getParent() + "\\" + this.map.tileSets.get(0).source;
+        String tilesetPath = mapFile.getParent() + "/" + this.map.tileSets.get(0).source;
         this.tileset = TileSetReader.readTileset(tilesetPath);
 
         this.entities = new ArrayList<>();
