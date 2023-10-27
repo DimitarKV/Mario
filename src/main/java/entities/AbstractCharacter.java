@@ -17,7 +17,7 @@ public abstract class AbstractCharacter extends AbstractCollidable implements Up
     protected final Map<CharacterStateEnum, List<BufferedImage>> sprites = new HashMap<>();
     protected CharacterStateEnum currentState = CharacterStateEnum.STATIONARY_RIGHT;
     protected Integer spriteIndex = 0, spriteSpeed = 100, direction = 1, coinsCount = 0;
-    protected boolean jumpPressed = false, jump = false, dead = false;
+    protected boolean jumpPressed = false, jumpOnce = false, jump = false, dead = false;
     protected final Collisions collisions;
     protected Vector2 mainVelocity = new Vector2(), left = new Vector2(), right = new Vector2();
     protected double moveSpeed = 0.5, timeUnit = 1000000, gravity = 0.000000003;
@@ -174,10 +174,19 @@ public abstract class AbstractCharacter extends AbstractCollidable implements Up
         return this.mainVelocity.plus(this.left).plus(this.right);
     }
 
+    protected void jumpOnce() {
+        this.jumpOnce = true;
+        this.queueJump();
+    }
+
     protected boolean jump() {
-        if (jump)
+        if (jump && !this.jumpOnce)
             return false;
         this.jump = true;
+        if (this.jumpOnce) {
+            dequeueJump();
+            this.jumpOnce = false;
+        }
         this.mainVelocity = new Vector2(this.mainVelocity.x, -2.7 * moveSpeed);
         return true;
     }

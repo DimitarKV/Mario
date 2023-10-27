@@ -46,6 +46,7 @@ public class Player extends AbstractCharacter {
                 this.dead = true;
             } else {
                 this.coinsCount += 69;
+                this.jumpOnce();
             }
         }
     }

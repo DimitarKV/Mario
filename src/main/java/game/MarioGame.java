@@ -83,7 +83,6 @@ public class MarioGame implements KeyListener, ActionListener, ChangeListener {
 
         this.sound = new Sound();
 
-
         this.layers.add(this.startMenuPanel);
         this.layers.add(this.levelsMenuPanel);
         this.layers.add(this.diePanel);
