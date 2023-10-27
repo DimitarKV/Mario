@@ -19,13 +19,13 @@ import java.util.List;
 public class MarioPanel extends JPanel {
 
     private final List<AbstractEntity> entities;
-    private final Camera camera;
+    private Camera camera;
     private JLabel coins;
     private int coinCounter;
     private MarioFont mario;
 
 
-    public MarioPanel(Camera camera) {
+    public MarioPanel() {
         this.entities = new ArrayList<>();
         super.setLayout(new BorderLayout());
 
@@ -44,6 +44,9 @@ public class MarioPanel extends JPanel {
         super.setVisible(true);
         super.requestFocusInWindow();
 
+    }
+
+    public void setCamera(Camera camera) {
         this.camera = camera;
     }
 

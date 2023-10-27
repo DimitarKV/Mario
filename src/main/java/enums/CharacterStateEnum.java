@@ -1,6 +1,6 @@
 package enums;
 
-public enum PlayerStateEnum {
+public enum CharacterStateEnum {
     MOVING_LEFT,
     STATIONARY_LEFT,
     STATIONARY_RIGHT,

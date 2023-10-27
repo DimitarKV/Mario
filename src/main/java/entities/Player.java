@@ -1,7 +1,7 @@
 package entities;
 
 import enums.Origin;
-import enums.PlayerStateEnum;
+import enums.CharacterStateEnum;
 import exceptions.CouldNotReadFileException;
 import interfaces.Collidable;
 import interfaces.Updatable;
@@ -9,16 +9,14 @@ import types.Sound;
 import types.Vector2;
 
 import javax.imageio.ImageIO;
-import javax.sound.sampled.AudioSystem;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.sql.Struct;
 import java.util.*;
 
 public class Player extends AbstractCollidable implements Updatable {
-    private final Map<PlayerStateEnum, List<BufferedImage>> sprites;
-    private PlayerStateEnum currentState;
+    private final Map<CharacterStateEnum, List<BufferedImage>> sprites;
+    private CharacterStateEnum currentState;
     private Integer spriteIndex = 0, spriteSpeed = 100, direction = 1, coinsCount = 0;
     private boolean jump = false, won = false, died = false;
     private final Collisions collisions;
@@ -34,7 +32,7 @@ public class Player extends AbstractCollidable implements Updatable {
         this.mainVelocity = new Vector2(0, 0);
         this.left = new Vector2();
         this.right = new Vector2();
-        this.currentState = PlayerStateEnum.MOVING_RIGHT;
+        this.currentState = CharacterStateEnum.MOVING_RIGHT;
         this.spriteIndex = 0;
 
         this.collisions = collisions;
@@ -50,7 +48,7 @@ public class Player extends AbstractCollidable implements Updatable {
             if (!rootFolder.canRead())
                 throw new CouldNotReadFileException("Could not load sprites at [" + root + "]");
 
-            for (var state : PlayerStateEnum.values()) {
+            for (var state : CharacterStateEnum.values()) {
                 sprites.put(state, new ArrayList<>());
                 File stateFolder = rootFolder.toPath().resolve(state.name()).toFile();
                 if (stateFolder.listFiles() == null)
@@ -103,23 +101,23 @@ public class Player extends AbstractCollidable implements Updatable {
             this.direction = this.getTotalVelocity().x > 0 ? 1 : -1;
         if (jump) {
             if (this.direction > 0)
-                this.currentState = PlayerStateEnum.AIRBORNE_RIGHT;
+                this.currentState = CharacterStateEnum.AIRBORNE_RIGHT;
             else
-                this.currentState = PlayerStateEnum.AIRBORNE_LEFT;
+                this.currentState = CharacterStateEnum.AIRBORNE_LEFT;
         } else {
             if (this.getTotalVelocity().x == 0) {
 
                 if (this.direction > 0)
-                    this.currentState = PlayerStateEnum.STATIONARY_RIGHT;
+                    this.currentState = CharacterStateEnum.STATIONARY_RIGHT;
                 else
-                    this.currentState = PlayerStateEnum.STATIONARY_LEFT;
+                    this.currentState = CharacterStateEnum.STATIONARY_LEFT;
 
             } else {
 
                 if (this.direction > 0)
-                    this.currentState = PlayerStateEnum.MOVING_RIGHT;
+                    this.currentState = CharacterStateEnum.MOVING_RIGHT;
                 else
-                    this.currentState = PlayerStateEnum.MOVING_LEFT;
+                    this.currentState = CharacterStateEnum.MOVING_LEFT;
             }
         }
 
