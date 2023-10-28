@@ -34,7 +34,7 @@ public class MarioGame implements KeyListener, ActionListener, ChangeListener {
         }
 
         this.gamePanel = new MarioPanel();
-        this.level = new Level(currentLevel, "yoshi", new Rectangle(0, 0, this.frame.getWidth(), this.frame.getHeight()));
+        this.level = new Level(levelNumber, "yoshi", new Rectangle(0, 0, this.frame.getWidth(), this.frame.getHeight()));
         this.gamePanel.setCamera(this.level.getCamera());
         this.gamePanel.addEntities(this.level.getEntities());
         this.gamePanel.setOpaque(true);
@@ -230,8 +230,9 @@ public class MarioGame implements KeyListener, ActionListener, ChangeListener {
                 this.setState(StateEnum.LEVELS);
             } else if (e.getActionCommand().equals("Exit")) {
                 System.exit(0);
-            } else if (e.getActionCommand().equals("Level1")) {
-                this.startLevel(1);
+            } else if (e.getActionCommand().equals("Level" + levelsMenuPanel.getLevelNumber())) {
+                currentLevel = levelsMenuPanel.getLevelNumber();
+                this.startLevel(currentLevel);
                 this.setState(StateEnum.GAME);
                 sound.setFile("themeSong");
                 sound.play("themeSong");
@@ -247,7 +248,7 @@ public class MarioGame implements KeyListener, ActionListener, ChangeListener {
             } else if (e.getActionCommand().equals("Mute")) {
                 sound.setCurrentVolume(-80f);
             } else if (e.getActionCommand().equals("Restart")) {
-                this.startLevel(1);
+                this.startLevel(currentLevel);
                 this.setState(StateEnum.GAME);
                 sound.setFile("themeSong");
                 sound.play("themeSong");

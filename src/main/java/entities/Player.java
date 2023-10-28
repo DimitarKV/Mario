@@ -45,6 +45,8 @@ public class Player extends AbstractCharacter {
             if (this.getHitBox().getBottomLeft().y > other.getHitBox().getTopLeft().y + (other.getHitBox().dimensions.y / 4)) {
                 this.dead = true;
             } else {
+                sound.setFile("kick");
+                sound.play("kick");
                 this.coinsCount += 69;
                 this.jumpOnce();
             }

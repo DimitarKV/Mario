@@ -18,6 +18,7 @@ public class LevelsMenuPanel extends JPanel {
     private JButton level1;
     private JButton level2;
     private JButton level3;
+    private int levelNumber;
     private JPanel levelButtonsPanel;
     private JPanel titlePanel;
     private JPanel soundTitlePanel;
@@ -94,7 +95,7 @@ public class LevelsMenuPanel extends JPanel {
         level2.setBorder(new EmptyBorder(10, 10, 0, 10));
         level2.setHorizontalTextPosition(SwingConstants.CENTER);
         level2.setFont(mario.deriveFont(40f));
-        level2.setActionCommand("Soon");
+        level2.setActionCommand("Level2");
         levelButtonsPanel.add(level2);
 
         level3 = new JButton("Level 3");
@@ -104,7 +105,7 @@ public class LevelsMenuPanel extends JPanel {
         level3.setBorder(new EmptyBorder(10, 10, 0, 10));
         level3.setHorizontalTextPosition(SwingConstants.CENTER);
         level3.setFont(mario.deriveFont(40f));
-        level3.setActionCommand("Soon");
+        level3.setActionCommand("Level3");
         levelButtonsPanel.add(level3);
 
         //Sound panel
@@ -214,14 +215,17 @@ public class LevelsMenuPanel extends JPanel {
     }
 
     public JButton getLevel1() {
+        setLevelNumber(1);
         return level1;
     }
 
     public JButton getLevel2() {
+        setLevelNumber(2);
         return level2;
     }
 
     public JButton getLevel3() {
+        setLevelNumber(3);
         return level3;
     }
 
@@ -239,6 +243,14 @@ public class LevelsMenuPanel extends JPanel {
 
     public JButton getMute() {
         return mute;
+    }
+
+    public void setLevelNumber(int levelNumber) {
+        this.levelNumber = levelNumber;
+    }
+
+    public int getLevelNumber() {
+        return levelNumber;
     }
 
     @Override

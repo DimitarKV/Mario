@@ -24,6 +24,7 @@ public class Sound {
         sounds.put("die", new File("./resources/sounds/die.wav"));
         sounds.put("win", new File("./resources/sounds/win.wav"));
         sounds.put("coin", new File("./resources/sounds/coin.wav"));
+        sounds.put("kick", new File("./resources/sounds/kick.wav"));
     }
 
     public void setFile(String fileKey) {
