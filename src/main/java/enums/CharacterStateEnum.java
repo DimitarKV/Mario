@@ -1,5 +1,8 @@
 package enums;
 
+/**
+ * An enumerator describing the different motion states of the entities.
+ */
 public enum CharacterStateEnum {
     MOVING_LEFT,
     STATIONARY_LEFT,

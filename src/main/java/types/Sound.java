@@ -8,14 +8,20 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.FloatControl;
 
+/**
+ * Contains a number of different sounds used in the game and handles their loading.
+ */
 public class Sound {
     private Clip clip;
     private float currentVolume;
     private FloatControl floatControl;
     private AudioInputStream audio;
-    private Map<String,File> sounds;
+    private Map<String, File> sounds;
     private static Sound instance = null;
 
+    /**
+     * Constructor for the game sound.
+     */
     public Sound() {
         currentVolume = 0;
         sounds = new HashMap<>();
@@ -27,6 +33,10 @@ public class Sound {
         sounds.put("kick", new File("./resources/sounds/kick.wav"));
     }
 
+    /**
+     * Sets a file to the clip that is to be played.
+     * @param fileKey a reference to the file of a sound
+     */
     public void setFile(String fileKey) {
         try {
             audio = AudioSystem.getAudioInputStream(sounds.get(fileKey));
@@ -60,12 +70,5 @@ public class Sound {
 
     public void setCurrentVolume(float currentVolume) {
         this.currentVolume = currentVolume;
-    }
-
-    public static Sound getInstance() {
-        if (instance == null) {
-            Sound.instance = new Sound();
-        }
-        return instance;
     }
 }

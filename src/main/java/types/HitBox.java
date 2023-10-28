@@ -1,9 +1,17 @@
 package types;
 
+/**
+ * A class representing the hit box of an entity (i.e. its physical borders in the app world).
+ */
 public class HitBox {
     public Vector2 topLeft;
     public Vector2 dimensions;
 
+    /**
+     * A full constructor.
+     * @param topLeft of the hit box
+     * @param dimensions of the hit box
+     */
     public HitBox(Vector2 topLeft, Vector2 dimensions) {
         this.topLeft = topLeft;
         this.dimensions = dimensions;
@@ -25,6 +33,11 @@ public class HitBox {
         return this.topLeft.plus(this.dimensions);
     }
 
+    /**
+     * Determines whether the current hit box collides with the other.
+     * @param other hit box
+     * @return whether they collide
+     */
     public boolean collidesWith(HitBox other) {
         double tw = this.dimensions.x;
         double th = this.dimensions.y;
@@ -42,10 +55,10 @@ public class HitBox {
         tw += tx;
         th += ty;
         //      overflow || intersect
-        return ((rw < rx || rw > tx) &&
-                (rh < ry || rh > ty) &&
-                (tw < tx || tw > rx) &&
-                (th < ty || th > ry));
+        return ((rw < rx || rw > tx)
+                && (rh < ry || rh > ty)
+                && (tw < tx || tw > rx)
+                && (th < ty || th > ry));
 
     }
 }

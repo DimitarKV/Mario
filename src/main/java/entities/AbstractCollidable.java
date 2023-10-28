@@ -2,18 +2,33 @@ package entities;
 
 import enums.Origin;
 import interfaces.Collidable;
+import java.awt.image.BufferedImage;
 import types.HitBox;
 import types.Vector2;
 
-import java.awt.image.BufferedImage;
-
+/**
+ * An abstract class representing an entity which can be rendered but can also have some physical
+ * interaction with the surrounding world such as solidity.
+ */
 public abstract class AbstractCollidable extends AbstractEntity implements Collidable {
     protected Vector2 hitBoxOffset;
     protected Vector2 hitBoxDimensions;
     protected boolean isCollidable;
     protected boolean isSolid;
 
-    public AbstractCollidable(Vector2 position, Origin origin, BufferedImage image, Integer width, Integer height, Vector2 hitBoxOffset, Vector2 hitBoxDimensions) {
+    /**
+     * A Full constructor.
+     * @param position of the object
+     * @param origin of the supplied position
+     * @param image of the object
+     * @param width of the object
+     * @param height of the object
+     * @param hitBoxOffset with respect to top left corner
+     * @param hitBoxDimensions of the hit box
+     */
+    public AbstractCollidable(Vector2 position, Origin origin, BufferedImage image,
+                              Integer width, Integer height, Vector2 hitBoxOffset,
+                              Vector2 hitBoxDimensions) {
         super(position, origin, image, width, height);
         this.isSolid = true;
         this.hitBoxOffset = hitBoxOffset;

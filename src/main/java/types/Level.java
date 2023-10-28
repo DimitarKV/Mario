@@ -53,7 +53,15 @@ public class Level {
             pY = startLayer.objects.get(0).y;
         }
 
-        this.player = new Player("./resources/characters/" + playerName, new Vector2(pX, pY), Origin.BOTTOM_LEFT, new Vector2(4, 4), new Vector2(52, 60), 64, 64, this.collisions);
+        this.player = new Player(
+                "./resources/characters/" + playerName,
+                new Vector2(pX, pY),
+                Origin.BOTTOM_LEFT,
+                new Vector2(4, 4),
+                new Vector2(52, 60),
+                64,
+                64,
+                this.collisions);
         this.player.setLayer(1);
         this.collisions.addMovingCollider(this.player);
         this.entities.add(player);
@@ -91,12 +99,14 @@ public class Level {
         for (var objectLayer : objectLayers) {
             for (var collidableEntity : objectLayer.objects) {
                 BufferedImage imageOptional = null;
-                if (collidableEntity.gid != null && collidableEntity.gid != 0)
+                if (collidableEntity.gid != null && collidableEntity.gid != 0) {
                     imageOptional = tileset.get(collidableEntity.gid - 1);
+                }
 
                 Origin origin = Origin.TOP_LEFT;
-                if (collidableEntity.gid != null)
+                if (collidableEntity.gid != null) {
                     origin = Origin.BOTTOM_LEFT;
+                }
 
                 if (objectLayer.name.equals("Money")) {
                     Coin coin = new Coin(
@@ -106,7 +116,8 @@ public class Level {
                             collidableEntity.width,
                             collidableEntity.height,
                             new Vector2(5, 5),
-                            new Vector2(collidableEntity.width - 10, collidableEntity.height - 5), 1);
+                            new Vector2(collidableEntity.width - 10, collidableEntity.height - 5),
+                            1);
                     coin.setLayer(0);
                     coin.setSolid(false);
 
@@ -139,7 +150,16 @@ public class Level {
                     entities.add(dieEntity);
                     this.collisions.addStationaryCollider(dieEntity);
                 } else if (objectLayer.name.equals("Enemy")) {
-                    Enemy enemy = new Enemy("./resources/characters/enemy", camera, new Vector2(collidableEntity.x, collidableEntity.y), Origin.BOTTOM_LEFT, 64, 64, new Vector2(), new Vector2(64, 64), collisions);
+                    Enemy enemy = new Enemy(
+                            "./resources/characters/enemy",
+                            camera,
+                            new Vector2(collidableEntity.x, collidableEntity.y),
+                            Origin.BOTTOM_LEFT,
+                            64,
+                            64,
+                            new Vector2(),
+                            new Vector2(64, 64),
+                            collisions);
                     enemy.walkLeft();
                     updatables.add(enemy);
                     entities.add(enemy);
@@ -175,6 +195,11 @@ public class Level {
         return this.camera;
     }
 
+    /**
+     * The main frame calculation method.
+     *
+     * @param delta parameter representing the time between the current and the last frame.
+     */
     public void update(Long delta) {
         if (this.player.isWon()) {
             this.won = true;

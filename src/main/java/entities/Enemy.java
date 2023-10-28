@@ -5,14 +5,30 @@ import enums.Origin;
 import interfaces.Collidable;
 import types.Vector2;
 
-import java.awt.image.BufferedImage;
-
+/**
+ * A class for the enemy.
+ */
 public class Enemy extends AbstractCharacter {
     private Camera camera;
     private double deadUpVelocity = 1;
 
-    public Enemy(String spriteRoot, Camera camera, Vector2 position, Origin origin, Integer width, Integer height, Vector2 hitBoxOffset, Vector2 hitBoxDimensions, Collisions collisions) {
-        super(spriteRoot, position, origin, null, width, height, hitBoxOffset, hitBoxDimensions, collisions);
+    /**
+     * Constructor for the enemy.
+     * @param spriteRoot of the enemy
+     * @param camera to use for in frame determination
+     * @param position of the enemy
+     * @param origin of the supplied position
+     * @param width of the rendered image
+     * @param height of the rendered image
+     * @param hitBoxOffset of the enemy based on top left corner
+     * @param hitBoxDimensions of the hit box
+     * @param collisions to use for collision detection
+     */
+    public Enemy(String spriteRoot, Camera camera, Vector2 position,
+                 Origin origin, Integer width, Integer height, Vector2 hitBoxOffset,
+                 Vector2 hitBoxDimensions, Collisions collisions) {
+        super(spriteRoot, position, origin, null, width, height,
+                hitBoxOffset, hitBoxDimensions, collisions);
         this.camera = camera;
         this.moveSpeed = 0.3;
     }
@@ -23,10 +39,11 @@ public class Enemy extends AbstractCharacter {
             Vector2 gForce = new Vector2(0, gravity * delta);
             this.mainVelocity = this.mainVelocity.plus(gForce);
 
-            if (jumpPressed)
+            if (jumpPressed) {
                 jump();
-
-            Vector2 newPosition = this.position.plus(this.getTotalVelocity().times((double) delta / timeUnit));
+            }
+            Vector2 newPosition = this.position.plus(this.getTotalVelocity()
+                    .times((double) delta / timeUnit));
             Vector2 oldPosition = this.position;
 
             translateX(newPosition);
@@ -37,12 +54,10 @@ public class Enemy extends AbstractCharacter {
 
             calculateSprite(newPosition, oldPosition);
 
-            if (this.mainVelocity.y != 0)
+            if (this.mainVelocity.y != 0) {
                 this.jump = true;
-
+            }
             this.setImage(this.sprites.get(this.currentState).get(this.spriteIndex));
-
-
         }
     }
 
@@ -59,7 +74,8 @@ public class Enemy extends AbstractCharacter {
     public void collidedWith(Collidable other) {
         super.collidedWith(other);
         if (other instanceof Player) {
-            if (other.getHitBox().getBottomLeft().y < this.getHitBox().getTopLeft().y + this.getHitBox().dimensions.y / 4) {
+            if (other.getHitBox().getBottomLeft().y < this.getHitBox().getTopLeft().y
+                    + this.getHitBox().dimensions.y / 4) {
                 this.dead = true;
                 this.setCollidable(false);
                 this.mainVelocity = new Vector2(0, -this.deadUpVelocity);

@@ -1,21 +1,22 @@
 package entities;
 
 import interfaces.Collidable;
-
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The main class that deals with collisions in the app.
+ */
 public class Collisions {
     private List<Collidable> moving;
     private List<Collidable> stationary;
 
+    /**
+     * An empty constructor which just initializes inner containers.
+     */
     public Collisions() {
         this.moving = new ArrayList<>();
         this.stationary = new ArrayList<>();
-    }
-    public Collisions(List<Collidable> moving, List<Collidable> stationary) {
-        this.moving = moving;
-        this.stationary = stationary;
     }
 
     public void addMovingCollider(Collidable collider) {
@@ -26,57 +27,23 @@ public class Collisions {
         this.stationary.add(collidable);
     }
 
-//    public void checkCollisions() {
-//        for (var movingCollider : this.moving) {
-//
-//            for (var otherMovingCollider : this.moving) {
-//                if (movingCollider == otherMovingCollider)
-//                    continue;
-//
-//                CollisionSide side = movingCollider.collidesWith(otherMovingCollider);
-//                if(side != CollisionSide.NONE){
-//                    if(side == CollisionSide.RIGHT) {
-//                        movingCollider.collidedWith(otherMovingCollider, side, otherMovingCollider.getHitBox().getTopLeft());
-//                    } else if (side == CollisionSide.DOWN) {
-//                        movingCollider.collidedWith(otherMovingCollider, side, otherMovingCollider.getHitBox().getTopLeft());
-//                    } else if (side == CollisionSide.LEFT) {
-//                        movingCollider.collidedWith(otherMovingCollider, side, otherMovingCollider.getHitBox().getBottomRight());
-//                    } else if (side == CollisionSide.UP) {
-//                        movingCollider.collidedWith(otherMovingCollider, side, otherMovingCollider.getHitBox().getBottomRight());
-//                    }
-//                }
-//            }
-//
-//            for (var stationaryCollider: this.stationary) {
-//                CollisionSide side = movingCollider.collidesWith(stationaryCollider);
-//
-//                if(side != CollisionSide.NONE){
-//                    if(side == CollisionSide.RIGHT) {
-//                        movingCollider.collidedWith(stationaryCollider, side, stationaryCollider.getHitBox().getTopLeft());
-//                    } else if (side == CollisionSide.DOWN) {
-//                        movingCollider.collidedWith(stationaryCollider, side, stationaryCollider.getHitBox().getTopLeft());
-//                    } else if (side == CollisionSide.LEFT) {
-//                        movingCollider.collidedWith(stationaryCollider, side, stationaryCollider.getHitBox().getBottomRight());
-//                    } else if (side == CollisionSide.UP) {
-//                        movingCollider.collidedWith(stationaryCollider, side, stationaryCollider.getHitBox().getBottomRight());
-//                    }
-//                }
-//            }
-//        }
-//    }
-
+    /**
+     * check whether the specified collidable collides with anything else in the world.
+     * @param collidable to check
+     * @return a list of other collidables which are hit. If none, then list is empty.
+     */
     public List<Collidable> checkCollisions(Collidable collidable) {
         List<Collidable> collisions = new ArrayList<>();
 
-        if(!collidable.isCollidable())
+        if (!collidable.isCollidable()) {
             return collisions;
-
+        }
         for (var other :
                 this.moving) {
-            if(collidable == other || !other.isCollidable())
+            if (collidable == other || !other.isCollidable()) {
                 continue;
-
-            if(collidable.collidesWith(other)) {
+            }
+            if (collidable.collidesWith(other)) {
                 collidable.collidedWith(other);
                 other.collidedWith(collidable);
                 collisions.add(other);
@@ -85,10 +52,10 @@ public class Collisions {
 
         for (var other :
                 this.stationary) {
-            if(!other.isCollidable())
+            if (!other.isCollidable()) {
                 continue;
-
-            if (collidable.collidesWith(other)){
+            }
+            if (collidable.collidesWith(other)) {
                 collidable.collidedWith(other);
                 other.collidedWith(collidable);
                 collisions.add(other);
@@ -98,12 +65,24 @@ public class Collisions {
         return collisions;
     }
 
+    /**
+     * Notify the two collidables that they have hit each other on the x-axis.
+     * @param first collidable
+     * @param second collidable
+     */
     public void notifyXCollision(Collidable first, Collidable second) {
         first.xCollision(second);
         second.xCollision(first);
     }
 
-    // public Vector2 collidesWith() {
+    /**
+     * Notify the two collidables that they have hit each other on the y-axis.
+     * @param first collidable
+     * @param second collidable
+     */
+    public void notifyYCollision(AbstractCharacter first, Collidable second) {
+        first.yCollision(second);
+        second.yCollision(first);
+    }
 
-   // }
 }

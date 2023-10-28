@@ -1,25 +1,32 @@
 package entities;
 
 import enums.Origin;
-import enums.CharacterStateEnum;
-import exceptions.CouldNotReadFileException;
 import interfaces.Collidable;
-import interfaces.Updatable;
 import types.Sound;
 import types.Vector2;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.util.*;
-
+/**
+ * A class for the player.
+ */
 public class Player extends AbstractCharacter {
     private boolean won = false;
     private Sound sound;
 
-    public Player(String spriteRoot, Vector2 position, Origin origin, Vector2 hitBoxOffset, Vector2 hitBoxDimensions, Integer width, Integer height, Collisions collisions) {
-        super(spriteRoot, position, origin, null, width, height, hitBoxOffset, hitBoxDimensions, collisions);
+    /**
+     * Constructor for the player.
+     * @param spriteRoot of the player
+     * @param position of the player
+     * @param origin of the specified position
+     * @param hitBoxOffset with respect to top left
+     * @param hitBoxDimensions of the hit box of the player
+     * @param width of the rendered image
+     * @param height of the rendered image
+     * @param collisions detects collision
+     */
+    public Player(String spriteRoot, Vector2 position, Origin origin, Vector2 hitBoxOffset,
+                  Vector2 hitBoxDimensions, Integer width, Integer height, Collisions collisions) {
+        super(spriteRoot, position, origin, null, width, height,
+                hitBoxOffset, hitBoxDimensions, collisions);
         this.sound = new Sound();
     }
 
@@ -42,7 +49,8 @@ public class Player extends AbstractCharacter {
         } else if (other instanceof DieEntity) {
             dead = true;
         } else if (other instanceof Enemy) {
-            if (this.getHitBox().getBottomLeft().y > other.getHitBox().getTopLeft().y + (other.getHitBox().dimensions.y / 4)) {
+            if (this.getHitBox().getBottomLeft().y > other.getHitBox().getTopLeft().y
+                    + (other.getHitBox().dimensions.y / 4)) {
                 this.dead = true;
             } else {
                 sound.setFile("kick");

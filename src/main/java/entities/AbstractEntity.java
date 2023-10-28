@@ -1,30 +1,37 @@
 package entities;
 
 import enums.Origin;
+import java.awt.image.BufferedImage;
 import types.Vector2;
 
-import java.awt.image.BufferedImage;
-
+/**
+ * An abstract class representing any entity that can be rendered.
+ */
 public abstract class AbstractEntity {
     protected Vector2 position;
     protected BufferedImage image;
-    protected Integer width, height, layer = 0;
+    protected Integer width = 0;
+    protected Integer height = 0;
+    protected Integer layer = 0;
 
-    public AbstractEntity(Vector2 position, Origin origin, BufferedImage image, Integer width, Integer height) {
-        if(origin == Origin.TOP_LEFT)
+    /**
+     * Full constructor.
+     * @param position of the entity
+     * @param origin of the specified position
+     * @param image of the entity
+     * @param width of the entity
+     * @param height of the entity
+     */
+    public AbstractEntity(Vector2 position, Origin origin,
+                          BufferedImage image, Integer width, Integer height) {
+        if (origin == Origin.TOP_LEFT) {
             this.position = position;
-        else if(origin == Origin.BOTTOM_LEFT)
+        } else if (origin == Origin.BOTTOM_LEFT) {
             this.position = position.minus(new Vector2(0, height));
+        }
         this.image = image;
         this.width = width;
         this.height = height;
-    }
-    public AbstractEntity(Vector2 position, BufferedImage image, Integer width, Integer height, Integer layer) {
-        this.position = position;
-        this.image = image;
-        this.width = width;
-        this.height = height;
-        this.layer = layer;
     }
 
     public Vector2 getPosition() {
@@ -57,6 +64,11 @@ public abstract class AbstractEntity {
         this.layer = layer;
     }
 
+    /**
+     * A method for checking whether the entity is visible by the specified camera.
+     * @param camera to use for check
+     * @return whether the camera sees the entity
+     */
     public boolean isVisible(Camera camera) {
         return camera.contains(this.position.x, this.position.y)
                 || camera.contains(this.position.x + width, this.position.y)

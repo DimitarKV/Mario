@@ -4,12 +4,19 @@ import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 
+/**
+ * Loads custom font.
+ */
 public class MarioFont {
     private Font mario;
 
-    public MarioFont(){
+    /**
+     * Constructor for the game font.
+     */
+    public MarioFont() {
         try {
-            mario = java.awt.Font.createFont(java.awt.Font.TRUETYPE_FONT, new File("./resources/fonts/SuperMario256.ttf"));
+            mario = java.awt.Font.createFont(java.awt.Font.TRUETYPE_FONT,
+                    new File("./resources/fonts/SuperMario256.ttf"));
         } catch (IOException e) {
             System.out.println("No font found");
         } catch (FontFormatException e) {
@@ -20,7 +27,6 @@ public class MarioFont {
     public Font getMario() {
         return mario;
     }
-
 
     public Font deriveFont(float v) {
         return mario.deriveFont(v);
