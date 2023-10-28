@@ -18,7 +18,6 @@ public class LevelsMenuPanel extends JPanel {
     private JButton level1;
     private JButton level2;
     private JButton level3;
-    private int levelNumber;
     private JPanel levelButtonsPanel;
     private JPanel titlePanel;
     private JPanel soundTitlePanel;
@@ -214,21 +213,6 @@ public class LevelsMenuPanel extends JPanel {
         super.setVisible(true);
     }
 
-    public JButton getLevel1() {
-        setLevelNumber(1);
-        return level1;
-    }
-
-    public JButton getLevel2() {
-        setLevelNumber(2);
-        return level2;
-    }
-
-    public JButton getLevel3() {
-        setLevelNumber(3);
-        return level3;
-    }
-
     public JButton getResume() {
         return resume;
     }
@@ -245,12 +229,16 @@ public class LevelsMenuPanel extends JPanel {
         return mute;
     }
 
-    public void setLevelNumber(int levelNumber) {
-        this.levelNumber = levelNumber;
+    public JButton getLevel1() {
+        return level1;
     }
 
-    public int getLevelNumber() {
-        return levelNumber;
+    public JButton getLevel2() {
+        return level2;
+    }
+
+    public JButton getLevel3() {
+        return level3;
     }
 
     @Override
