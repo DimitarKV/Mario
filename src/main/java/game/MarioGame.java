@@ -230,22 +230,10 @@ public class MarioGame implements KeyListener, ActionListener, ChangeListener {
                 this.setState(StateEnum.LEVELS);
             } else if (e.getActionCommand().equals("Exit")) {
                 System.exit(0);
-            } else if (e.getActionCommand().equals("Level1")) {
-                currentLevel = 1;
-                this.startLevel(currentLevel);
-                this.setState(StateEnum.GAME);
-                sound.setFile("themeSong");
-                sound.play("themeSong");
-                sound.loop("themeSong");
-            } else if (e.getActionCommand().equals("Level2")) {
-                currentLevel = 2;
-                this.startLevel(currentLevel);
-                this.setState(StateEnum.GAME);
-                sound.setFile("themeSong");
-                sound.play("themeSong");
-                sound.loop("themeSong");
-            } else if (e.getActionCommand().equals("Level3")) {
-                currentLevel = 3;
+            } else if (e.getActionCommand().startsWith("Level")) {
+                var command = e.getActionCommand();
+                int number = Integer.parseInt(command.replace("Level", ""));
+                currentLevel = number;
                 this.startLevel(currentLevel);
                 this.setState(StateEnum.GAME);
                 sound.setFile("themeSong");
