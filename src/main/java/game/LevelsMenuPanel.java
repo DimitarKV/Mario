@@ -1,16 +1,17 @@
 package game;
 
-import types.MarioFont;
-
-import javax.imageio.ImageIO;
-import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-import javax.swing.plaf.SliderUI;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import javax.imageio.ImageIO;
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import types.MarioFont;
 
+/**
+ * Menu panel containing sound settings, additional instructions and list of levels.
+ */
 public class LevelsMenuPanel extends JPanel {
     private MarioFont mario;
     private JLabel levelTitle;
@@ -36,6 +37,9 @@ public class LevelsMenuPanel extends JPanel {
     private MarioFrame frame;
     private BufferedImage frameBackground;
 
+    /**
+     * Constructor for the menu panel.
+     */
     public LevelsMenuPanel(MarioFrame frame) throws IOException {
         super.setFocusable(true);
         super.setOpaque(true);
@@ -43,8 +47,10 @@ public class LevelsMenuPanel extends JPanel {
         super.setBackground(new Color(0, 0, 0, 200));
         this.frame = frame;
 
+        //Tiles frame
         frameBackground = ImageIO.read(new File("./resources/ui-elements/frame.png"));
 
+        //Font
         mario = new MarioFont();
 
         //Level panel
@@ -74,14 +80,14 @@ public class LevelsMenuPanel extends JPanel {
 
         ImageIcon buttonIcon = new ImageIcon("./resources/ui-elements/img.png");
         Image buttonImage = buttonIcon.getImage();
-        buttonImage = buttonImage.getScaledInstance(350,100, Image.SCALE_SMOOTH);
+        buttonImage = buttonImage.getScaledInstance(350, 100, Image.SCALE_SMOOTH);
         buttonIcon = new ImageIcon(buttonImage);
 
         level1 = new JButton("Level 1");
         level1.setBorder(new EmptyBorder(10, 10, 0, 10));
         level1.setOpaque(false);
         level1.setIcon(buttonIcon);
-        level1.setBackground(new Color(0,0,0,0));
+        level1.setBackground(new Color(0, 0, 0, 0));
         level1.setHorizontalTextPosition(SwingConstants.CENTER);
         level1.setFont(mario.deriveFont(40f));
         level1.setActionCommand("Level1");
@@ -89,7 +95,7 @@ public class LevelsMenuPanel extends JPanel {
 
         level2 = new JButton("Level 2");
         level2.setOpaque(false);
-        level2.setBackground(new Color(0,0,0,0));
+        level2.setBackground(new Color(0, 0, 0, 0));
         level2.setIcon(buttonIcon);
         level2.setBorder(new EmptyBorder(10, 10, 0, 10));
         level2.setHorizontalTextPosition(SwingConstants.CENTER);
@@ -110,13 +116,13 @@ public class LevelsMenuPanel extends JPanel {
         //Sound panel
         soundTitle = new JLabel();
         soundTitle.setText("Sound");
-        soundTitle.setForeground(new Color(255,255,255));
+        soundTitle.setForeground(new Color(255, 255, 255));
         soundTitle.setBorder(new EmptyBorder(50, 40, 0, 0));
         soundTitle.setFont(mario.deriveFont(60f));
         soundTitle.setHorizontalAlignment(SwingConstants.CENTER);
         soundTitle.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        soundPanel = new JPanel(new GridLayout(3,1));
+        soundPanel = new JPanel(new GridLayout(3, 1));
 
         soundTitlePanel = new JPanel(new BorderLayout());
         soundTitlePanel.setBounds(0, 0, soundPanel.getWidth(), 300);

@@ -42,6 +42,9 @@ public class MarioGame implements KeyListener, ActionListener, ChangeListener {
         this.layers.add(this.gamePanel);
     }
 
+    /**
+     * Constructor for the win state panel.
+     */
     public MarioGame() throws IOException {
         this.frame = new MarioFrame("TU/e Mario");
         this.state = StateEnum.START_MENU;
@@ -261,6 +264,7 @@ public class MarioGame implements KeyListener, ActionListener, ChangeListener {
                 }
             } else if (e.getActionCommand().equals("Mute")) {
                 sound.setCurrentVolume(-80f);
+                sound.getFloatControl().setValue(-80f);
             } else if (e.getActionCommand().equals("Restart")) {
                 this.startLevel(currentLevel);
                 this.setState(StateEnum.GAME);

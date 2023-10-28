@@ -2,20 +2,18 @@ package game;
 
 import entities.AbstractEntity;
 import entities.Camera;
-import enums.Origin;
-import types.MarioFont;
-
+import java.awt.*;
+import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.*;
-import java.util.List;
+import types.MarioFont;
 
+/**
+ * The game panel which adds the player and the enemies to their initial positions
+ * and sets the camera object.
+ */
 public class MarioPanel extends JPanel {
 
     private final List<AbstractEntity> entities;
@@ -24,7 +22,9 @@ public class MarioPanel extends JPanel {
     private int coinCounter;
     private MarioFont mario;
 
-
+    /**
+     * Constructor for the game panel.
+     */
     public MarioPanel() {
         this.entities = new ArrayList<>();
         super.setLayout(new BorderLayout());
@@ -33,17 +33,15 @@ public class MarioPanel extends JPanel {
 
         coins = new JLabel();
         coins.setText("Coins: " + coinCounter);
-        coins.setForeground(new Color(255,255,255));
+        coins.setForeground(new Color(255, 255, 255));
         coins.setBorder(new EmptyBorder(20, 20, 0, 0));
         coins.setFont(mario.deriveFont(40f));
         super.add(coins, BorderLayout.PAGE_START);
-
 
         super.setFocusable(true);
         super.setBackground(new Color(137, 218, 250));
         super.setVisible(true);
         super.requestFocusInWindow();
-
     }
 
     public void setCamera(Camera camera) {
@@ -65,7 +63,8 @@ public class MarioPanel extends JPanel {
                 int xPos = (int) (entity.getPosition().x - camera.x);
                 int yPos = (int) (entity.getPosition().y - camera.y);
 
-                g2d.drawImage(entity.getImage(), xPos, yPos, entity.getWidth(), entity.getHeight(), null);
+                g2d.drawImage(entity.getImage(), xPos, yPos, entity.getWidth(),
+                        entity.getHeight(), null);
             }
         }
     }

@@ -1,16 +1,17 @@
 package game;
 
-import types.MarioFont;
-
-import javax.imageio.ImageIO;
-import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import javax.imageio.ImageIO;
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import types.MarioFont;
 
-
+/**
+ * Start menu panel.
+ */
 public class StartMenuPanel extends JPanel {
     private MarioFont mario;
     private JLabel title;
@@ -24,6 +25,9 @@ public class StartMenuPanel extends JPanel {
     private ImageIcon buttonIcon;
     private BufferedImage frameBackground;
 
+    /**
+     * Constructor for the start menu.
+     */
     public StartMenuPanel(MarioFrame frame) throws IOException {
         super.setFocusable(true);
         super.setOpaque(true);
@@ -31,6 +35,7 @@ public class StartMenuPanel extends JPanel {
         super.setBackground(new Color(0, 0, 0, 150));
         this.frame = frame;
 
+        //Tiles frame
         frameBackground = ImageIO.read(new File("./resources/ui-elements/frame.png"));
 
         //Font
@@ -102,6 +107,7 @@ public class StartMenuPanel extends JPanel {
 
         super.setVisible(true);
     }
+
     public JButton getStart() {
         return start;
     }
@@ -117,6 +123,6 @@ public class StartMenuPanel extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        g.drawImage(frameBackground, 0 , 0, this.getWidth() - 10, this.getHeight() - 35, null);
+        g.drawImage(frameBackground, 0, 0, this.getWidth() - 10, this.getHeight() - 35, null);
     }
 }

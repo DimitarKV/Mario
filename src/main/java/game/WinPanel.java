@@ -1,15 +1,17 @@
 package game;
 
-import types.MarioFont;
-
-import javax.imageio.ImageIO;
-import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import javax.imageio.ImageIO;
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import types.MarioFont;
 
+/**
+ * A panel for the win state of the game.
+ */
 public class WinPanel extends JPanel {
     private MarioFont mario;
     private JLabel title;
@@ -17,11 +19,13 @@ public class WinPanel extends JPanel {
     private JButton levels;
     private JPanel buttonsPanel;
     private JPanel titlePanel;
-    private JLabel filler;
     private MarioFrame frame;
     private ImageIcon buttonIcon;
     private BufferedImage frameBackground;
 
+    /**
+     * Constructor for the win state panel.
+     */
     public WinPanel(MarioFrame frame) throws IOException {
         super.setFocusable(true);
         super.setOpaque(true);
@@ -29,6 +33,7 @@ public class WinPanel extends JPanel {
         super.setBackground(new Color(0, 0, 0, 150));
         this.frame = frame;
 
+        //Tiles frame
         frameBackground = ImageIO.read(new File("./resources/ui-elements/frame.png"));
 
         //Font
@@ -88,6 +93,7 @@ public class WinPanel extends JPanel {
 
         super.setVisible(true);
     }
+
     public JButton getNextLevel() {
         return nextLevel;
     }
@@ -99,6 +105,6 @@ public class WinPanel extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        g.drawImage(frameBackground, 0 , 0, this.getWidth() - 10, this.getHeight() - 35, null);
+        g.drawImage(frameBackground, 0, 0, this.getWidth() - 10, this.getHeight() - 35, null);
     }
 }
