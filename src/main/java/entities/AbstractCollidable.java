@@ -35,6 +35,12 @@ public abstract class AbstractCollidable extends AbstractEntity implements Colli
     public void collidedWith(Collidable other) {}
 
     @Override
+    public void xCollision(Collidable other) {}
+
+    @Override
+    public void yCollision(Collidable other) {}
+
+    @Override
     public boolean isCollidable() {
         return isCollidable;
     }

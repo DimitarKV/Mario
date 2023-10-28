@@ -58,11 +58,24 @@ public class Enemy extends AbstractCharacter {
     public void collidedWith(Collidable other) {
         super.collidedWith(other);
         if (other instanceof Player) {
-           if (other.getHitBox().getBottomLeft().y < this.getHitBox().getTopLeft().y + this.getHitBox().dimensions.y / 4) {
-               this.dead = true;
-               this.setCollidable(false);
-               this.mainVelocity = new Vector2(0, -this.deadUpVelocity);
-           }
+            if (other.getHitBox().getBottomLeft().y < this.getHitBox().getTopLeft().y + this.getHitBox().dimensions.y / 4) {
+                this.dead = true;
+                this.setCollidable(false);
+                this.mainVelocity = new Vector2(0, -this.deadUpVelocity);
+            }
+        }
+    }
+
+    @Override
+    public void xCollision(Collidable other) {
+        super.xCollision(other);
+
+        if (this.getTotalVelocity().x > 0) {
+            this.stopWalkRight();
+            this.walkLeft();
+        } else if (this.getTotalVelocity().x < 0) {
+            this.stopWalkLeft();
+            this.walkRight();
         }
     }
 }

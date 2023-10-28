@@ -88,7 +88,7 @@ public class Collisions {
             if(!other.isCollidable())
                 continue;
 
-            if(collidable.collidesWith(other)){
+            if (collidable.collidesWith(other)){
                 collidable.collidedWith(other);
                 other.collidedWith(collidable);
                 collisions.add(other);
@@ -98,7 +98,12 @@ public class Collisions {
         return collisions;
     }
 
-   // public Vector2 collidesWith() {
+    public void notifyXCollision(Collidable first, Collidable second) {
+        first.xCollision(second);
+        second.xCollision(first);
+    }
+
+    // public Vector2 collidesWith() {
 
    // }
 }

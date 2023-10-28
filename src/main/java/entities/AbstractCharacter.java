@@ -106,6 +106,10 @@ public abstract class AbstractCharacter extends AbstractCollidable implements Up
                 this.position = new Vector2(other.getHitBox().getTopRight().x - this.hitBoxOffset.x, this.position.y);
             }
         }
+
+        for (var collisionElement : collidedWith) {
+            collisions.notifyXCollision(this, collisionElement);
+        }
     }
 
     protected void correctY(Vector2 oldPosition) {
@@ -124,6 +128,10 @@ public abstract class AbstractCharacter extends AbstractCollidable implements Up
                 this.mainVelocity = new Vector2(this.mainVelocity.x, 0);
             }
         }
+
+//        for (var collisionElement : collidedWith) {
+//            collisions.notifyColliders(this, collisionElement);
+//        }
     }
 
     @Override

@@ -10,4 +10,6 @@ public interface Collidable {
     boolean isSolid();
     boolean collidesWith(Collidable collidable);
     void collidedWith(Collidable other);
+    void xCollision(Collidable other);
+    void yCollision(Collidable other);
 }
