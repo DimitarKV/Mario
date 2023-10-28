@@ -108,7 +108,8 @@ public abstract class AbstractCharacter extends AbstractCollidable implements Up
         }
 
         for (var collisionElement : collidedWith) {
-            collisions.notifyXCollision(this, collisionElement);
+            if (collisionElement.isSolid())
+                collisions.notifyXCollision(this, collisionElement);
         }
     }
 
@@ -211,5 +212,10 @@ public abstract class AbstractCharacter extends AbstractCollidable implements Up
     public void collidedWith(Collidable other) {
         if (other instanceof DieEntity)
             this.dead = true;
+    }
+
+    @Override
+    public boolean isActive() {
+        return !this.dead;
     }
 }

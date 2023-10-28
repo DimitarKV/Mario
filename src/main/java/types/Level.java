@@ -169,7 +169,16 @@ public class Level {
         }
         this.player.move(delta);
         this.camera.updatePosition();
+
+        for (int i = 0; i < updatables.size(); i++) {
+            var updatable = updatables.get(i);
+            if (!updatable.isActive()) {
+                updatables.remove(updatable);
+                entities.remove((AbstractEntity) updatable);
+            }
+        }
         for (var updatable : updatables) {
+
             updatable.move(delta);
         }
     }

@@ -110,7 +110,7 @@ public class MarioGame implements KeyListener, ActionListener, ChangeListener {
                     sound.stop("themeSong");
                     sound.setFile("win");
                     sound.play("win");
-                } else if(level.isDead()) {
+                } else if (level.isDead()) {
                     this.state = StateEnum.DIE;
                     sound.stop("themeSong");
                     sound.setFile("die");
@@ -230,8 +230,22 @@ public class MarioGame implements KeyListener, ActionListener, ChangeListener {
                 this.setState(StateEnum.LEVELS);
             } else if (e.getActionCommand().equals("Exit")) {
                 System.exit(0);
-            } else if (e.getActionCommand().equals("Level" + levelsMenuPanel.getLevelNumber())) {
-                currentLevel = levelsMenuPanel.getLevelNumber();
+            } else if (e.getActionCommand().equals("Level1")) {
+                currentLevel = 1;
+                this.startLevel(currentLevel);
+                this.setState(StateEnum.GAME);
+                sound.setFile("themeSong");
+                sound.play("themeSong");
+                sound.loop("themeSong");
+            } else if (e.getActionCommand().equals("Level2")) {
+                currentLevel = 2;
+                this.startLevel(currentLevel);
+                this.setState(StateEnum.GAME);
+                sound.setFile("themeSong");
+                sound.play("themeSong");
+                sound.loop("themeSong");
+            } else if (e.getActionCommand().equals("Level3")) {
+                currentLevel = 3;
                 this.startLevel(currentLevel);
                 this.setState(StateEnum.GAME);
                 sound.setFile("themeSong");
@@ -249,6 +263,15 @@ public class MarioGame implements KeyListener, ActionListener, ChangeListener {
                 sound.setCurrentVolume(-80f);
             } else if (e.getActionCommand().equals("Restart")) {
                 this.startLevel(currentLevel);
+                this.setState(StateEnum.GAME);
+                sound.setFile("themeSong");
+                sound.play("themeSong");
+                sound.loop("themeSong");
+            } else if (e.getActionCommand().equals("NextLevel")) {
+                this.currentLevel++;
+                if(this.currentLevel > 3)
+                    this.currentLevel = 1;
+                this.startLevel(this.currentLevel);
                 this.setState(StateEnum.GAME);
                 sound.setFile("themeSong");
                 sound.play("themeSong");

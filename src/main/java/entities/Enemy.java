@@ -51,6 +51,7 @@ public class Enemy extends AbstractCharacter {
         super.calculateSprite(newPosition, oldPosition);
         if (this.dead) {
             this.currentState = CharacterStateEnum.DEAD;
+            this.spriteIndex = 0;
         }
     }
 
@@ -63,6 +64,11 @@ public class Enemy extends AbstractCharacter {
                 this.setCollidable(false);
                 this.mainVelocity = new Vector2(0, -this.deadUpVelocity);
             }
+        } else if (other instanceof DieEntity) {
+            this.dead = true;
+            this.position = new Vector2(this.position.x, 3000);
+            this.setCollidable(false);
+            this.setSolid(false);
         }
     }
 
@@ -77,5 +83,10 @@ public class Enemy extends AbstractCharacter {
             this.stopWalkLeft();
             this.walkRight();
         }
+    }
+
+    @Override
+    public boolean isActive() {
+        return this.position.y < 2000;
     }
 }

@@ -9,7 +9,7 @@ import java.awt.image.BufferedImage;
 
 public class Coin extends AbstractCollidable implements Updatable {
     private final Integer value, timeUnit = 1000000;
-    private boolean animation = false;
+    private boolean animation = false, isActive = true;
     private final double gravity = -0.000000003;
     private Vector2 velocity = new Vector2();
     public Coin(Vector2 position, Origin origin, BufferedImage image, Integer width, Integer height, Vector2 hitBoxOffset, Vector2 hitBoxDimensions, Integer value) {
@@ -35,8 +35,15 @@ public class Coin extends AbstractCollidable implements Updatable {
             Vector2 gForce = new Vector2(0, this.gravity * delta);
             this.velocity = this.velocity.plus(gForce);
             this.position = this.position.plus(this.velocity.times((double) delta / timeUnit));
-            if(this.position.y < -1000)
+            if(this.position.y < -1000) {
                 this.animation = false;
+                this.isActive = false;
+            }
         }
+    }
+
+    @Override
+    public boolean isActive() {
+        return this.isActive;
     }
 }

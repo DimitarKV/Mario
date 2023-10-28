@@ -1962,7 +1962,7 @@
          "objects":[
                 {
                  "height":0,
-                 "id":249,
+                 "id":276,
                  "name":"",
                  "point":true,
                  "rotation":0,
@@ -1974,12 +1974,12 @@
                 }],
          "opacity":1,
          "type":"objectgroup",
-         "visible":false,
+         "visible":true,
          "x":0,
          "y":0
         }],
  "nextlayerid":19,
- "nextobjectid":276,
+ "nextobjectid":277,
  "orientation":"orthogonal",
  "renderorder":"left-down",
  "tiledversion":"1.10.2",
