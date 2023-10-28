@@ -2,6 +2,9 @@ package types;
 
 import java.util.List;
 
+/**
+ * A DTO for map layer by tiled convention.
+ */
 public class MapLayer {
     public List<Integer> data;
     public List<MapLayerObject> objects;

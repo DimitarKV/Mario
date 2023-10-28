@@ -2,6 +2,9 @@ package types;
 
 import com.google.gson.annotations.SerializedName;
 
+/**
+ * The main descriptor DTO for tile sets.
+ */
 public class TileSetDescriptor {
     public Integer columns;
     public String image;

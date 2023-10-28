@@ -3,15 +3,17 @@ package types;
 import entities.*;
 import enums.Origin;
 import interfaces.Updatable;
-import utils.MapReader;
-import utils.TileSetReader;
-
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import utils.MapReader;
+import utils.TileSetReader;
 
+/**
+ * Responsible for level loading and resource management of a specified level.
+ */
 public class Level {
     private final MapDescriptor map;
     private final List<BufferedImage> tileset;
@@ -21,8 +23,18 @@ public class Level {
     private final Camera camera;
     private Integer coinsCount = 0;
     private final List<Updatable> updatables;
-    private boolean won = false, dead = false;
+    private boolean won = false;
+    private boolean dead = false;
+    private Integer pX = 400;
+    private Integer pY = 100;
 
+    /**
+     * A full constructor.
+     *
+     * @param level      number of the needed to be loaded level.
+     * @param playerName the name of the player to be used as a main character
+     * @param cameraPos  the initial position of the camera.
+     */
     public Level(int level, String playerName, Rectangle cameraPos) {
         File mapFile = new File("./resources/levels/" + level + "/map.tmj");
         this.map = MapReader.readMap(mapFile);
@@ -34,8 +46,8 @@ public class Level {
         this.collisions = new Collisions();
         this.updatables = new ArrayList<>();
 
-        Integer pX = 400, pY = 100;
-        var startLayer = map.mapLayers.stream().filter(ml -> ml.name.equals("Start")).findFirst().orElse(null);
+        var startLayer = map.mapLayers.stream()
+                .filter(ml -> ml.name.equals("Start")).findFirst().orElse(null);
         if (startLayer != null) {
             pX = startLayer.objects.get(0).x;
             pY = startLayer.objects.get(0).y;
@@ -52,36 +64,38 @@ public class Level {
 
 
         var tileLayers = map.mapLayers.stream().filter(ml -> ml.type.equals("tilelayer")).toList();
-        if (tileLayers != null) {
-            for (var tileLayer :
-                    tileLayers) {
-                for (int row = 0; row < tileLayer.height; row++) {
-                    for (int col = 0; col < tileLayer.width; col++) {
-                        int tileIndex = tileLayer.data.get(row * tileLayer.width + col);
-                        if (tileIndex == 0)
-                            continue;
-
-                        tileIndex--;
-
-                        Vector2 position = new Vector2(col * map.tileWidth, row * map.tileHeight);
-
-                        BasicEntity entity = new BasicEntity(position, tileset.get(tileIndex), map.tileWidth, map.tileHeight);
-                        entity.setLayer(0);
-                        this.entities.add(entity);
+        for (var tileLayer :
+                tileLayers) {
+            for (int row = 0; row < tileLayer.height; row++) {
+                for (int col = 0; col < tileLayer.width; col++) {
+                    int tileIndex = tileLayer.data.get(row * tileLayer.width + col);
+                    if (tileIndex == 0) {
+                        continue;
                     }
+
+                    tileIndex--;
+
+                    Vector2 position = new Vector2(col * map.tileWidth, row * map.tileHeight);
+
+                    BasicEntity entity = new BasicEntity(
+                            position, tileset.get(tileIndex), map.tileWidth, map.tileHeight);
+
+                    entity.setLayer(0);
+                    this.entities.add(entity);
                 }
             }
         }
 
-        var objectLayers = map.mapLayers.stream().filter(ml -> ml.type.equals("objectgroup")).toList();
+        var objectLayers =
+                map.mapLayers.stream().filter(ml -> ml.type.equals("objectgroup")).toList();
         for (var objectLayer : objectLayers) {
             for (var collidableEntity : objectLayer.objects) {
                 BufferedImage imageOptional = null;
-                if (collidableEntity.GId != null && collidableEntity.GId != 0)
-                    imageOptional = tileset.get(collidableEntity.GId - 1);
+                if (collidableEntity.gid != null && collidableEntity.gid != 0)
+                    imageOptional = tileset.get(collidableEntity.gid - 1);
 
                 Origin origin = Origin.TOP_LEFT;
-                if (collidableEntity.GId != null)
+                if (collidableEntity.gid != null)
                     origin = Origin.BOTTOM_LEFT;
 
                 if (objectLayer.name.equals("Money")) {

@@ -1,9 +1,11 @@
 package types;
 
 import com.google.gson.annotations.SerializedName;
-
 import java.util.List;
 
+/**
+ * The main DTO for map description by tiled convention.
+ */
 public class MapDescriptor {
     public Integer height;
     public Integer width;

@@ -2,12 +2,15 @@ package types;
 
 import com.google.gson.annotations.SerializedName;
 
+/**
+ * A DTO for map layer objects by tiled convention.
+ */
 public class MapLayerObject {
     @SerializedName("gid")
-    public Integer GId;
+    public Integer gid;
     public Integer height;
     @SerializedName("id")
-    public Integer Id;
+    public Integer id;
     public String name;
     public Integer rotation;
     public String type;
