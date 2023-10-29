@@ -36,6 +36,7 @@ public class LevelsMenuPanel extends JPanel {
     private JButton exit;
     private MarioFrame frame;
     private BufferedImage frameBackground;
+    private BufferedImage imageBackground;
 
     /**
      * Constructor for the menu panel.
@@ -49,6 +50,7 @@ public class LevelsMenuPanel extends JPanel {
 
         //Tiles frame
         frameBackground = ImageIO.read(new File("./resources/ui-elements/frame.png"));
+        imageBackground = ImageIO.read(new File("./resources/ui-elements/background.png"));
 
         //Font
         mario = new MarioFont();
@@ -250,6 +252,7 @@ public class LevelsMenuPanel extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
+        g.drawImage(imageBackground, 0, 0, this.getWidth() - 10, this.getHeight() - 25, null);
         g.drawImage(frameBackground, 0, 0, this.getWidth() - 10, this.getHeight() - 35, null);
     }
 }

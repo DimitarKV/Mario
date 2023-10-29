@@ -38,7 +38,6 @@ public abstract class AbstractEntity {
         return position;
     }
 
-
     public BufferedImage getImage() {
         return image;
     }

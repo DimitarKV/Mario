@@ -23,6 +23,7 @@ public class DiePanel extends JPanel {
     private MarioFrame frame;
     private ImageIcon buttonIcon;
     private BufferedImage frameBackground;
+    private BufferedImage imageBackground;
 
     /**
      * Constructor for the die state panel.
@@ -35,6 +36,7 @@ public class DiePanel extends JPanel {
         this.frame = frame;
 
         frameBackground = ImageIO.read(new File("./resources/ui-elements/frame.png"));
+        imageBackground = ImageIO.read(new File("./resources/ui-elements/background.png"));
 
         //Font
         mario = new MarioFont();
@@ -105,6 +107,7 @@ public class DiePanel extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
+        g.drawImage(imageBackground, 0, 0, this.getWidth() - 10, this.getHeight() - 25, null);
         g.drawImage(frameBackground, 0, 0, this.getWidth() - 10, this.getHeight() - 35, null);
     }
 }
