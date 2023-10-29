@@ -129,7 +129,7 @@ public class LevelsMenuPanel extends JPanel {
         soundTitlePanel.add(soundTitle, BorderLayout.CENTER);
         soundTitlePanel.setOpaque(false);
 
-        soundSlider = new JSlider(-30, 6, -13);
+        soundSlider = new JSlider(0, 100, 69);
         soundSlider.setBackground(new Color(0, 0, 0, 0));
         soundSlider.setMaximumSize(new Dimension(100, 300));
         soundSlider.setPreferredSize(new Dimension(100, 300));

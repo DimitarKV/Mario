@@ -90,7 +90,7 @@ public class MarioGame implements KeyListener, ActionListener, ChangeListener {
         this.winPanel.getNextLevel().addActionListener(this);
         this.winPanel.getLevels().addActionListener(this);
 
-        this.sound = new Sound();
+        this.sound = Sound.getInstance();
 
         this.layers.add(this.startMenuPanel);
         this.layers.add(this.levelsMenuPanel);
@@ -116,13 +116,11 @@ public class MarioGame implements KeyListener, ActionListener, ChangeListener {
                 level.update(delta);
                 if (level.isWon()) {
                     this.state = StateEnum.WIN;
-                    sound.stop("themeSong");
-                    sound.setFile("win");
+                    sound.stopAll();
                     sound.play("win");
                 } else if (level.isDead()) {
                     this.state = StateEnum.DIE;
-                    sound.stop("themeSong");
-                    sound.setFile("die");
+                    sound.stopAll();
                     sound.play("die");
                 }
                 gamePanel.setCoinCounter(level.getCoinsCount());
@@ -171,7 +169,7 @@ public class MarioGame implements KeyListener, ActionListener, ChangeListener {
                 case KeyEvent.VK_W, KeyEvent.VK_SPACE -> this.level.jump();
                 case KeyEvent.VK_ESCAPE -> {
                     this.state = StateEnum.LEVELS;
-                    sound.stop("themeSong");
+                    sound.stopAll();
                 }
                 case KeyEvent.VK_0 -> startLevel();
                 default -> { }
@@ -179,15 +177,10 @@ public class MarioGame implements KeyListener, ActionListener, ChangeListener {
         } else if (this.state == StateEnum.LEVELS) {
             switch (e.getKeyCode()) {
                 case KeyEvent.VK_ESCAPE -> {
-                    if (sound.getAudio() == null) {
-                        sound.setFile("themeSong");
-                    }
                     this.state = StateEnum.GAME;
-                    sound.play("themeSong");
+                    sound.resume("themeSong");
                 }
-                default -> {
-                    break;
-                }
+                default -> { }
             }
         }
     }
@@ -215,7 +208,6 @@ public class MarioGame implements KeyListener, ActionListener, ChangeListener {
         } else {
             if (e.getActionCommand().equals("Start")) {
                 this.setState(StateEnum.GAME);
-                sound.setFile("themeSong");
                 sound.play("themeSong");
                 sound.loop("themeSong");
 
@@ -228,24 +220,16 @@ public class MarioGame implements KeyListener, ActionListener, ChangeListener {
                 currentLevel = Integer.parseInt(command.replace("Level", ""));
                 this.startLevel();
                 this.setState(StateEnum.GAME);
-                sound.setFile("themeSong");
                 sound.play("themeSong");
                 sound.loop("themeSong");
             } else if (e.getActionCommand().equals("Continue")) {
                 this.setState(StateEnum.GAME);
-                if (sound.getAudio() == null) {
-                    sound.setFile("themeSong");
-                    sound.play("themeSong");
-                } else {
-                    sound.play("themeSong");
-                }
+                sound.resume("themeSong");
             } else if (e.getActionCommand().equals("Mute")) {
-                sound.setCurrentVolume(-80f);
-                sound.getFloatControl().setValue(-80f);
+                sound.mute();
             } else if (e.getActionCommand().equals("Restart")) {
                 this.startLevel();
                 this.setState(StateEnum.GAME);
-                sound.setFile("themeSong");
                 sound.play("themeSong");
                 sound.loop("themeSong");
             } else if (e.getActionCommand().equals("NextLevel")) {
@@ -255,7 +239,6 @@ public class MarioGame implements KeyListener, ActionListener, ChangeListener {
                 }
                 this.startLevel();
                 this.setState(StateEnum.GAME);
-                sound.setFile("themeSong");
                 sound.play("themeSong");
                 sound.loop("themeSong");
             }
@@ -266,7 +249,6 @@ public class MarioGame implements KeyListener, ActionListener, ChangeListener {
     public void stateChanged(ChangeEvent e) {
         if (this.state == StateEnum.LEVELS) {
             sound.setCurrentVolume(levelsMenuPanel.getSoundSlider().getValue());
-            sound.getFloatControl().setValue(levelsMenuPanel.getSoundSlider().getValue());
         }
     }
 }

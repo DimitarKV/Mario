@@ -27,14 +27,13 @@ public class Player extends AbstractCharacter {
                   Vector2 hitBoxDimensions, Integer width, Integer height, Collisions collisions) {
         super(spriteRoot, position, origin, null, width, height,
                 hitBoxOffset, hitBoxDimensions, collisions);
-        this.sound = new Sound();
+        this.sound = Sound.getInstance();
     }
 
     @Override
     protected boolean jump() {
         boolean result = super.jump();
         if (result) {
-            sound.setFile("jump");
             sound.play("jump");
         }
         return result;
@@ -44,6 +43,7 @@ public class Player extends AbstractCharacter {
     public void collidedWith(Collidable other) {
         if (other instanceof Coin) {
             coinsCount++;
+            sound.play("coin");
         } else if (other instanceof GameOverEntity) {
             won = true;
         } else if (other instanceof DieEntity) {
@@ -53,7 +53,6 @@ public class Player extends AbstractCharacter {
                     + (other.getHitBox().dimensions.y / 4)) {
                 this.dead = true;
             } else {
-                sound.setFile("kick");
                 sound.play("kick");
                 this.coinsCount += 69;
                 this.jumpOnce();
